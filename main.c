@@ -60,7 +60,7 @@ typedef struct Player
 {
 
     char Name[20];
-    char Pass[6];
+    char Pass[7];
     
     int Pikocoins;
     int BagCurrentSize;
@@ -380,4 +380,22 @@ bool SaveSkills(SkPointer pSkills, int skillsQuantity, char* destino){
     fwrite(pSkills, sizeof(Skill), skillsQuantity, dBSkills);
     fclose(dBSkills);
     return true;
+}
+
+bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *Name, char *Pass){
+    dataQuantities.Player++;
+    pPlayers = (PlPointer)realloc(pPlayers, dataQuantities.Player * sizeof(Player));
+    memset(pPlayers + dataQuantities.Player -1, 0, sizeof(Player));
+}
+
+bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *Name, char *Element, int HPCurrent, int HPMax, int Defense, int MagicDefense, int Attack, int MagicAttack, int Speed){
+    
+}
+
+bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *Name, char *Type, char Target){
+    
+}
+
+bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *Name, char Target, bool Element[10], double AttackScale, double MagicAttackScale){
+    
 }
