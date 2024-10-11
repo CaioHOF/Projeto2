@@ -1,2 +1,2 @@
-Players,Pikomons,Itens,Skills
-0,0,0,0
+Players,Pikomons,Itens,Skills,Element
+0,0,0,0,0

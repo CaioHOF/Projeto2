@@ -6,13 +6,31 @@
 #include <unistd.h>
 #include <time.h>
 
+typedef struct Atribute
+{
+
+    int Bonus;
+    int BonusQuantity;
+    int *Bonus;
+    int *BonusTimer;
+
+}Atribute;
+
+
 typedef struct DataQuantity
 {
+
     int Skill;
     int Item;
     int Pikomon;
     int Player;
+
 }DataQuantity;
+
+typedef struct Element
+{
+    
+}Element, *ElPointer;
 
 typedef struct Skill
 {
@@ -22,9 +40,13 @@ typedef struct Skill
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
     
     bool Element[10];
-    
+
+    int  AttackBase;
     double AttackScale;
+    int MagicBase;
     double MagicAttackScale;
+
+    double CritChance;
 
 }Skill, *SkPointer;
 
@@ -41,18 +63,25 @@ typedef struct Pikomon
 {
 
     char Name[10];
-    char Element[10];
-    
+    char IconImg[7][19];
+
+    int ElementIndex;
     int HPCurrent;
-    int HPMax;
-    int Defense;
-    int MagicDefense;
-    int Attack;
-    int MagicAttack;
-    int Speed;
+    int BaseDefense;
+    int BaseMagicDefense;
+    int BaseAttack;
+    int BaseMagicAttack;
+    int BaseSpeed;
+
+    Atribute Hp;
+    Atribute Defense;
+    Atribute MagicDefense;
+    Atribute Attack;
+    Atribute MagicAttack;
+    Atribute Speed;
     
     Skill Skills[4];
-
+    
 }Pikomon, *PiPointer;
 
 
@@ -64,15 +93,17 @@ typedef struct Player
     
     int Pikocoins;
     int BagCurrentSize;
-    int BagMaxSize;
+    int SelectedPikomonIndex;
 
-    Pikomon Pikomons[6]; 
-    
+    Pikomon Pikomons[6];
+    Pikomon PikomonsStored[12];
+
     ItPointer Bag;
 
 }Player, *PlPointer;
 
 
+//funções da main
 int DefineIndexOfElement(char* NomeElemento);
 bool DebugPlayers(PlPointer pPlayers, int index, int playersQuantity);
 bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity);
@@ -103,7 +134,7 @@ int main(){
     FILE *dBDataQuantity, *dBPlayers, *dBItens, *dBPikomons, *dBSkills; 
     //dB é de "data base"
 
-    Player playerOne, playerTwo;
+    PlPointer pPlayerOne = NULL, pPlayerTwo = NULL;
     int playerOneIndex = -1, playerTwoIndex = -1;
 
     PlPointer pPlayers;
@@ -122,7 +153,7 @@ int main(){
     } 
     fgets(readLine,256,dBDataQuantity);
     fgets(readLine,256,dBDataQuantity);
-    sscanf(readLine, "%d,%d,%d,%d", dataQuantities.Player, dataQuantities.Pikomon, dataQuantities.Item, dataQuantities.Skill);
+    sscanf(readLine, "%d,%d,%d,%d,%d", dataQuantities.Player, dataQuantities.Pikomon, dataQuantities.Item, dataQuantities.Skill);
     fclose(dBDataQuantity);
     if(dataQuantities.Player == -1 || dataQuantities.Pikomon == -1 || dataQuantities.Item == -1 || dataQuantities.Skill == -1){
         perror("Falha ao aderir dados");
@@ -325,7 +356,7 @@ bool SaveDataQuantity(DataQuantity dataQuantities, char* destino){
         perror("falha ao abrir \"dBDataQuantity\" na função \"SaveDataQuantity\"");
         return false;
     }
-    fprintf(dBDataQuantity, "Players,Pikomons,Itens,Skills\n%d,%d,%d,%d", dataQuantities.Player,dataQuantities.Pikomon,dataQuantities.Item,dataQuantities.Skill);
+    fprintf(dBDataQuantity, "Players,Pikomons,Itens,Skills,Element\n%d,%d,%d,%d,%d", dataQuantities.Player,dataQuantities.Pikomon,dataQuantities.Item,dataQuantities.Skill,dataQuantities.Element);
     fclose(dBDataQuantity);
     return true;
 }
@@ -382,18 +413,30 @@ bool SaveSkills(SkPointer pSkills, int skillsQuantity, char* destino){
     return true;
 }
 
-bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *Name, char *Pass){
+bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass){
+    //se zuar memoria culpe o memset
     dataQuantities.Player++;
     pPlayers = (PlPointer)realloc(pPlayers, dataQuantities.Player * sizeof(Player));
-    memset(pPlayers + dataQuantities.Player -1, 0, sizeof(Player));
+    memset(pPlayers + (dataQuantities.Player -2), 0, sizeof(Player));
+    strcpy(pPlayers[dataQuantities.Player-1].Name, name);
+    strcpy(pPlayers[dataQuantities.Player-1].Pass, pass);
 }
 
-bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *Name, char *Element, int HPCurrent, int HPMax, int Defense, int MagicDefense, int Attack, int MagicAttack, int Speed){
-    
+bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, int element, char **iconImg, int HPCurrent, int BaseDefense, int BaseMagicDefense, int BaseAttack, int BaseMagicAttack, int BaseSpeed){
+    //se zuar memoria culpe o memset
+    dataQuantities.Pikomon++;
+    pPikomons = (PiPointer)realloc(pPikomons, dataQuantities.Pikomon * sizeof(Pikomon));
+    memset(pPikomons + (dataQuantities.Pikomon -2), 0, sizeof(Pikomon));
+    strcpy(pPikomons[dataQuantities.Pikomon-1].Name, name);
+    pPikomons[dataQuantities.Pikomon-1].ElementIndex = element;
+    int i;
+    for(i = 0; i < 7; i++){
+        strcpy(pPikomons[dataQuantities.Pikomon-1].IconImg[i], iconImg[i]);
+    }
 }
 
 bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *Name, char *Type, char Target){
-    
+    //falta item estrutura do item
 }
 
 bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *Name, char Target, bool Element[10], double AttackScale, double MagicAttackScale){
