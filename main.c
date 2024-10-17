@@ -137,7 +137,7 @@ bool SavePlayers(PlPointer pPlayers, int playersQuantity, char* destino);
 bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, char* destino);
 bool SaveItems(ItPointer pItems, int ItemsQuantity, char* destino);
 bool SaveSkills(SkPointer pSkills, int skillsQuantity, char* destino);
-
+void limparTerminal();
 
 int main(){ 
     setlocale(LC_ALL, "portuguese");
@@ -485,4 +485,15 @@ bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *Name, char T
 
 bool AddItemPlayerBag(){
 
+}
+
+
+
+
+
+
+
+
+void limparTerminal() {
+    printf("\033[H\033[J");
 }
