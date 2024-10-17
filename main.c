@@ -140,6 +140,7 @@ bool SaveItems(ItPointer pItems, int ItemsQuantity, char* destino);
 bool SaveSkills(SkPointer pSkills, int skillsQuantity, char* destino);
 void LimparTerminal();
 void Menu();
+void MenuLogin();
 
 
 int main(){ 
@@ -545,7 +546,11 @@ printf("     *********************************************************\n");
 }
 
 
+void MenuLogin(){
 
+
+    
+}
 
 
 void LimparTerminal() {
