@@ -138,6 +138,7 @@ bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, char* destino);
 bool SaveItems(ItPointer pItems, int ItemsQuantity, char* destino);
 bool SaveSkills(SkPointer pSkills, int skillsQuantity, char* destino);
 void limparTerminal();
+void Menu();
 
 int main(){ 
     setlocale(LC_ALL, "portuguese");
@@ -260,6 +261,9 @@ int main(){
 
     //loginMenuPrincipal
     while (true){
+        Menu();
+
+
 
     }
     
@@ -488,7 +492,40 @@ bool AddItemPlayerBag(){
 }
 
 
+void Menu(){
+    struct timespec tempo;
+    tempo.tv_sec = 0;              
+    tempo.tv_nsec = 500000000;
 
+
+
+
+printf("                *********************************\n");
+nanosleep(&tempo, NULL);
+printf("                *       B E M   V I N D O       *\n");
+nanosleep(&tempo, NULL);
+printf("                *********************************\n");
+nanosleep(&tempo, NULL);
+printf("\n");
+nanosleep(&tempo, NULL);
+printf("\n");
+nanosleep(&tempo, NULL);
+printf("     *********************************************************\n");
+nanosleep(&tempo, NULL);
+printf("     * 1. P L A Y                   3. A L L P I K O S       *\n");
+nanosleep(&tempo, NULL);
+printf("     *    - - - -                      - - - - - - - -       *\n");
+nanosleep(&tempo, NULL);
+printf("     *                                                       *\n");
+nanosleep(&tempo, NULL);
+printf("     *                                                       *\n");
+nanosleep(&tempo, NULL);
+printf("     * 2. P L A Y E R S I N F O     4. E X I T               *\n");
+nanosleep(&tempo, NULL);
+printf("     *    - - - - - - - - - - -        - - - -               *\n");
+nanosleep(&tempo, NULL);
+printf("     *********************************************************\n");
+}
 
 
 
