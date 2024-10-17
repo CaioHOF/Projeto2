@@ -41,9 +41,10 @@ typedef struct Skill
 
     char Name[20];
     char Target;
+    char Element[10];
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
     
-    bool Element[10];
+    bool ElementLearn[10];
 
     int  AttackBase;
     double AttackScale;
@@ -137,8 +138,9 @@ bool SavePlayers(PlPointer pPlayers, int playersQuantity, char* destino);
 bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, char* destino);
 bool SaveItems(ItPointer pItems, int ItemsQuantity, char* destino);
 bool SaveSkills(SkPointer pSkills, int skillsQuantity, char* destino);
-void limparTerminal();
+void LimparTerminal();
 void Menu();
+
 
 int main(){ 
     setlocale(LC_ALL, "portuguese");
@@ -160,6 +162,7 @@ int main(){
 
     PlPointer pPlayerOne = NULL, pPlayerTwo = NULL;
     int playerOneIndex = -1, playerTwoIndex = -1;
+    int respostaUserMP;
 
     PlPointer pPlayers;
 
@@ -262,6 +265,20 @@ int main(){
     //loginMenuPrincipal
     while (true){
         Menu();
+        scanf("Sua escolha?: %d", &respostaUserMP);
+        if(respostaUserMP == 1){
+            printf(":)");
+        }
+        if(respostaUserMP == 2){
+            printf(":)");
+        }
+        if(respostaUserMP == 3){
+            printf(":)");
+        }
+        if(respostaUserMP == 4){
+            printf(":)");
+        }
+
 
 
 
@@ -531,6 +548,6 @@ printf("     *********************************************************\n");
 
 
 
-void limparTerminal() {
+void LimparTerminal() {
     printf("\033[H\033[J");
 }
