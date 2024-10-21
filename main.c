@@ -303,51 +303,97 @@ int main(){
 }
 /**Debug/Print Functions**/
 //------------------------------------------------------------------------------//
-bool DebugPlayers(PlPointer pPlayers, int index, int playersQuantity){
-    /*if(index == -1){
-        int j, k;
-        for(index = 0; index < playersQuantity; index++){
-            printf("| Name:| %20s | |,| Pass:| %s | |,| Pikocoins:| %3d | |,| BagCurrentSize:| %2d | |,| BagMaxSize| %2d | |;\n", pPlayers[index].Name, pPlayers[index].Pass, pPlayers[index].Pikocoins, pPlayers[index].BagCurrentSize, pPlayers[index].BagMaxSize);
-            printf("\nBag:\n");
-            for (j = 0; j < pPlayers[index].Bagcurrentsize; j++){
-                printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pPlayers[index].Bag[j].Name, pPlayers[index].Bag[j].Type, pPlayers[index].Bag[j].Target);
+bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
+    int j, k;
+
+    //-1 para pegar todos os players
+    if(index == -1) {
+        for(index = 0; index < playersQuantity; index++) {
+            if (strlen(pPlayers[index].Name) > 0) {
+                printf("| Name:| %20s | |,| Pass:| %20s | |,| Pikocoins:| %3d | |,| BagCurrentSize:| %2d | |;\n", 
+                       pPlayers[index].Name, 
+                       pPlayers[index].Pass, 
+                       pPlayers[index].Pikocoins, 
+                       pPlayers[index].BagCurrentSize);
+                
+                // Exibir itens da bolsa
+                for (j = 0; j < pPlayers[index].BagCurrentSize; j++) {
+                    if (strlen(pPlayers[index].Bag[j].Name) > 0) {
+                        printf("| Item Name:| %20s | |,| Type:| %20s | |,| Target:| %3c | |;\n", 
+                               pPlayers[index].Bag[j].Name, 
+                               pPlayers[index].Bag[j].Type, 
+                               pPlayers[index].Bag[j].EffectTarget);
+                    }
+                }
+
+                // Exibir Pokémons
+                for (j = 0; j < 12; j++) {
+                    if (strlen(pPlayers[index].PikomonsStorage[j].Name) > 0) {
+                        printf("| Nome:| %20s | |,| Element:| %20s | |,| CurrentHP:| %3d | |\n", 
+                               pPlayers[index].PikomonsStorage[j].Name, 
+                               pPlayers[index].PikomonsStorage[j].Element, 
+                               pPlayers[index].PikomonsStorage[j].CurrentHP);
+                        
+                        // arrumar numero depois        -----------------------------------------------------------------------------------------------
+                        // Exibir habilidades do pokemon
+                        for(k = 0; k < 4; k++) {
+                            if (strlen(pPlayers[index].PikomonsStorage[j].Skills[k].Name) > 0) {
+                                printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", 
+                                       pPlayers[index].PikomonsStorage[j].Skills[k].Name, 
+                                       pPlayers[index].PikomonsStorage[j].Skills[k].Target, 
+                                       pPlayers[index].PikomonsStorage[j].Skills[k].AttackScale, 
+                                       pPlayers[index].PikomonsStorage[j].Skills[k].MagicAttackScale);
+                            }
+                        }
+                    }
+                }
             }
-            printf("\nPikomons:\n");
-            for (j = 0; j < 6; j++){
-                printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPlayers[index].Pikomons[j].Name, pPlayers[index].Pikomons[j].Element, pPlayers[index].Pikomons[j].HPCurrent, pPlayers[index].Pikomons[j].HPMax, pPlayers[index].Pikomons[j].Defense, pPlayers[index].Pikomons[j].MagicDefense, pPlayers[index].Pikomons[j].Attack, pPlayers[index].Pikomons[j].MagicAttack, pPlayers[index].Pikomons[j].Speed);
-                printf("\nPikomonSkills:\n");
-                for(k = 0; k < 4; k++){
-                    pPlayers[index].Pikomons[j].Skills[k];
-                    printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", pPlayers[index].Pikomons[j].Skills.Name, pPlayers[index].Pikomons[j].Skills[k].Target, pPlayers[index].Pikomons[j].Skills[k].AttackScale, pPlayers[index].Pikomons[j].Skills[k].MagicAttackScale);
-                    printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n",pPlayers[index].Pikomons[j].Skills[k].Element[0],pPlayers[index].Pikomons[j].Skills[k].Element[1],pPlayers[index].Pikomons[j].Skills[k].Element[2],pPlayers[index].Pikomons[j].Skills[k].Element[3],pPlayers[index].Pikomons[j].Skills[k].Element[4],pPlayers[index].Pikomons[j].Skills[k].Element[5],pPlayers[index].Pikomons[j].Skills[k].Element[6],pPlayers[index].Pikomons[j].Skills[k].Element[7],pPlayers[index].Pikomons[j].Skills[k].Element[8],pPlayers[index].Pikomons[j].Skills[k].Element[9]);
-                }    
+        }
+    } else if(index > -1 && index < playersQuantity) {
+        // Exibir apenas um jogador
+        if (strlen(pPlayers[index].Name) > 0) {
+            printf("| Name:| %20s | |,| Pass:| %20s | |,| Pikocoins:| %3d | |,| BagCurrentSize:| %2d | |;\n", 
+                   pPlayers[index].Name, 
+                   pPlayers[index].Pass, 
+                   pPlayers[index].Pikocoins, 
+                   pPlayers[index].BagCurrentSize);
+            
+            // Exibir itens da bolsa
+            for (j = 0; j < pPlayers[index].BagCurrentSize; j++) {
+                if (strlen(pPlayers[index].Bag[j].Name) > 0) {
+                    printf("| Item Name:| %20s | |,| Type:| %20s | |,| Target:| %3c | |;\n", 
+                           pPlayers[index].Bag[j].Name, 
+                           pPlayers[index].Bag[j].Type, 
+                           pPlayers[index].Bag[j].EffectTarget);
+                }
             }
-            printf("\n");
+
+            // Exibir Pokémons
+            for (j = 0; j < 12; j++) {
+                if (strlen(pPlayers[index].PikomonsStorage[j].Name) > 0) {
+                    printf("| Nome:| %20s | |,| Element:| %20s | |,| CurrentHP:| %3d | |\n", 
+                           pPlayers[index].PikomonsStorage[j].Name, 
+                           pPlayers[index].PikomonsStorage[j].Element, 
+                           pPlayers[index].PikomonsStorage[j].CurrentHP);
+                    
+                    // Exibir habilidades do pokemon
+                    for(k = 0; k < 4; k++) {
+                        if (strlen(pPlayers[index].PikomonsStorage[j].Skills[k].Name) > 0) {
+                            printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", 
+                                   pPlayers[index].PikomonsStorage[j].Skills[k].Name, 
+                                   pPlayers[index].PikomonsStorage[j].Skills[k].Target, 
+                                   pPlayers[index].PikomonsStorage[j].Skills[k].AttackScale, 
+                                   pPlayers[index].PikomonsStorage[j].Skills[k].MagicAttackScale);
+                        }
+                    }
+                }
+            }
         }
-    }
-    else if(index > -1 && index < playersQuantity){
-        int j, k;
-        printf("| Name:| %20s | |,| Pass:| %s | |,| Pikocoins:| %3d | |,| BagCurrentSize:| %2d | |,| BagMaxSize| %2d | |;\n", pPlayers[index].Name, pPlayers[index].Pass, pPlayers[index].Pikocoins, pPlayers[index].BagCurrentSize, pPlayers[index].BagMaxSize);
-        printf("\nBag:\n");
-        for (j = 0; j < pPlayers[index].BagMaxSize; j++){
-            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pPlayers[index].Bag[j].Name, pPlayers[index].Bag[j].Type, pPlayers[index].Bag[j].Target);
-        }
-        printf("\nPikomons:\n");
-        for (j = 0; j < 6; j++){
-            printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPlayers[index].Pikomons[j].Name, pPlayers[index].Pikomons[j].Element, pPlayers[index].Pikomons[j].HPCurrent, pPlayers[index].Pikomons[j].HPMax, pPlayers[index].Pikomons[j].Defense, pPlayers[index].Pikomons[j].MagicDefense, pPlayers[index].Pikomons[j].Attack, pPlayers[index].Pikomons[j].MagicAttack, pPlayers[index].Pikomons[j].Speed);
-            printf("\nPikomonSkills:\n");
-            for(k = 0; k < 4; k++){
-                printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", pPlayers[index].Pikomons[j].Skills[k].Name, pPlayers[index].Pikomons[j].Skills[k].Target, pPlayers[index].Pikomons[j].Skills[k].AttackScale, pPlayers[index].Pikomons[j].Skills[k].MagicAttackScale);
-                printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n",pPlayers[index].Pikomons[j].Skills[k].Element[0],pPlayers[index].Pikomons[j].Skills[k].Element[1],pPlayers[index].Pikomons[j].Skills[k].Element[2],pPlayers[index].Pikomons[j].Skills[k].Element[3],pPlayers[index].Pikomons[j].Skills[k].Element[4],pPlayers[index].Pikomons[j].Skills[k].Element[5],pPlayers[index].Pikomons[j].Skills[k].Element[6],pPlayers[index].Pikomons[j].Skills[k].Element[7],pPlayers[index].Pikomons[j].Skills[k].Element[8],pPlayers[index].Pikomons[j].Skills[k].Element[9]);
-            }    
-        }
-        printf("\n");
-    }
-    else{
-        perror("index usado na função \"DegubPlayers\" não permitido");
+    } else {
+        perror("index tá estranho");
         return false;
     }
-    return true;*/
+    return true;
 }
 
 bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
