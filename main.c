@@ -89,7 +89,7 @@ typedef struct Skill
 
 typedef struct Item
 {
-
+    bool EffectEnded;
     char Name[20];
     char Type[20];
     char Description[3][255];
@@ -862,27 +862,104 @@ bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonP
 
 bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove){
     if(indexRemove < 0){
-        
+        perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemoveSkill\"");
+        return false;
     }
     else if(indexRemove >= dataQuantities.Skill){
-
+        perror("ERRO, \"indexRemove\" tem que ser menor que \"dataQuantities.Skill\" em \"RemoveSkill\"");
+        return false;
     }
+    
     Skill tempSkills[dataQuantities.Skill-1];
+    int i, j = 0;
+    for(i = 0; i < dataQuantities.Skill; i++){
+        if(i != indexRemove){
+            tempSkills[j] = pSkills[i];
+            j++;
+        }
+    }
+    dataQuantities.Skill--;
+    pSkills = (SkPointer)realloc(pSkills, dataQuantities.Skill *sizeof(Skill));
+    for(i = 0; i < dataQuantities.Skill; i++){
+        pSkills[i] = tempSkills[i];
+    }
 }
 
-bool RemoveItem(){
+bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
+    if(indexRemove < 0){
+        perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemoveItem\"");
+        return false;
+    }
+    else if(indexRemove >= dataQuantities.Item){
+        perror("ERRO, \"indexRemove\" tem que ser menor que \"dataQuantities.Item\" em \"RemoveItem\"");
+        return false;
+    }
     
+    Item tempItems[dataQuantities.Item-1];
+    int i, j = 0;
+    for(i = 0; i < dataQuantities.Item; i++){
+        if(i != indexRemove){
+            tempItems[j] = pItems[i];
+            j++;
+        }
+    }
+    dataQuantities.Item--;
+    pItems = (ItPointer)realloc(pItems, dataQuantities.Item *sizeof(Item));
+    for(i = 0; i < dataQuantities.Item; i++){
+        pItems[i] = tempItems[i];
+    }
 }
 
-bool RemovePikomon(){
+bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRemove){
+    if(indexRemove < 0){
+        perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemovePikomon\"");
+        return false;
+    }
+    else if(indexRemove >= dataQuantities.Pikomon){
+        perror("ERRO, \"indexRemove\" tem que ser menor que \"dataQuantities.Pikomon\" em \"RemovePikomon\"");
+        return false;
+    }
     
+    Pikomon tempPikomons[dataQuantities.Pikomon-1];
+    int i, j = 0;
+    for(i = 0; i < dataQuantities.Pikomon; i++){
+        if(i != indexRemove){
+            tempPikomons[j] = pPikomons[i];
+            j++;
+        }
+    }
+    dataQuantities.Pikomon--;
+    pPikomons = (PiPointer)realloc(pPikomons, dataQuantities.Pikomon * sizeof(Pikomon));
+    for(i = 0; i < dataQuantities.Pikomon; i++){
+        pPikomons[i] = tempPikomons[i];
+    }
 }
 
-bool RemoveItemPlayerBag(){
+bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
+    if(bagSellIndex >= pPlayers[playerIndex].BagCurrentSize){
+        perror("ERRO, \"bagSellIndex\" tem que ser menor que \"pPlayers[playerIndex].BagCurrentSize\" em \"SellItemPlayerBag\"");
+        return false;
+    }
+    else if(bagSellIndex < 0){
+        perror("ERRO, \"bagSellIndex\" não pode ser menor que zero em \"SellItemPlayerBag\"");
+        return false;
+    }
     
-}
-
-bool RemoveSkill(){
-    
+    Item tempItems[pPlayers[playerIndex].BagCurrentSize-1];
+    int i, j = 0;
+    for(i = 0; i < pPlayers[playerIndex].BagCurrentSize; i++){
+        if(i != bagSellIndex){
+            tempItems[j] = pPlayers[playerIndex].Bag[i];
+            j++; 
+        }
+        else{
+            pPlayers[playerIndex].Pikocoins += pPlayers[playerIndex].Bag[i].Value;
+        }
+    }
+    pPlayers[playerIndex].BagCurrentSize--;
+    pPlayers[playerIndex].Bag = (ItPointer)realloc(pPlayers[playerIndex].Bag, pPlayers[playerIndex].BagCurrentSize * sizeof(Item));
+    for(i = 0; i < pPlayers[playerIndex].BagCurrentSize; i++){
+        pPlayers[playerIndex].Bag[i] = tempItems[i];
+    }
 }
 //------------------------------------------------------------------------------//
