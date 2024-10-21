@@ -329,17 +329,18 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
                 // Exibir Pokémons
                 for (j = 0; j < 12; j++) {
                     if (strlen(pPlayers[index].PikomonsStorage[j].Name) > 0) {
-                        printf("| Nome:| %20s | |,| Element:| %20s | |,| CurrentHP:| %3d | |\n", 
-                               pPlayers[index].PikomonsStorage[j].Name, 
-                               pPlayers[index].PikomonsStorage[j].Element, 
-                               pPlayers[index].PikomonsStorage[j].CurrentHP,
-                               pPlayers[index].PikomonsStorage[j].Personality.BaseAttackModifier,
-                               pPlayers[index].PikomonsStorage[j].Personality.BaseDefenseModifier,
-                               pPlayers[index].PikomonsStorage[j].Personality.BaseHPModifier,
-                               pPlayers[index].PikomonsStorage[j].Personality.BaseMagicAttackModifier,
-                               pPlayers[index].PikomonsStorage[j].Personality.BaseMagicDefenseModifier,
-                               pPlayers[index].PikomonsStorage[j].Personality.BaseSpeedModifier
-                               );
+                    printf("| Nome:| %20s | |,| Element:| %10s | |,| CurrentHP:| %3d |,| Atk:| %3lf |,| Def:| %3lf |,| BaseHP:| %3lf |,| SpA:| %3lf |,| SpD:| %3lf |,| Spd:| %3lf | |\n",  
+                           pPlayers[index].PikomonsStorage[j].Name, 
+                           pPlayers[index].PikomonsStorage[j].Element.Name, 
+                           pPlayers[index].PikomonsStorage[j].CurrentHP.Total,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseAttackModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseDefenseModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseHPModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseMagicAttackModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseMagicDefenseModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseSpeedModifier
+                           
+                           );
                         
                         // arrumar numero depois        -----------------------------------------------------------------------------------------------
                         // Exibir habilidades do pokemon
@@ -378,10 +379,10 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
             // Exibir Pokémons
             for (j = 0; j < 12; j++) {
                 if (strlen(pPlayers[index].PikomonsStorage[j].Name) > 0) {
-                    printf("| Nome:| %20s | |,| Element:| %20s | |,| CurrentHP:| %3d | |\n", 
+                    printf("| Nome:| %20s | |,| Element:| %10s | |,| CurrentHP:| %3d |,| Atk:| %3lf |,| Def:| %3lf |,| BaseHP:| %3lf |,| SpA:| %3lf |,| SpD:| %3lf |,| Spd:| %3lf | |\n",  
                            pPlayers[index].PikomonsStorage[j].Name, 
-                           pPlayers[index].PikomonsStorage[j].Element, 
-                           pPlayers[index].PikomonsStorage[j].CurrentHP,
+                           pPlayers[index].PikomonsStorage[j].Element.Name, 
+                           pPlayers[index].PikomonsStorage[j].CurrentHP.Total,
                            pPlayers[index].PikomonsStorage[j].Personality.BaseAttackModifier,
                            pPlayers[index].PikomonsStorage[j].Personality.BaseDefenseModifier,
                            pPlayers[index].PikomonsStorage[j].Personality.BaseHPModifier,
@@ -394,7 +395,7 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
                     // Exibir habilidades do pokemon
                     for(k = 0; k < 4; k++) {
                         if (strlen(pPlayers[index].PikomonsStorage[j].Skills[k].Name) > 0) {
-                            printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", 
+                            printf("| Skill Name:| %3s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", 
                                    pPlayers[index].PikomonsStorage[j].Skills[k].Name, 
                                    pPlayers[index].PikomonsStorage[j].Skills[k].Target, 
                                    pPlayers[index].PikomonsStorage[j].Skills[k].AttackScale, 
@@ -412,12 +413,15 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
 }
 
 bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
-    /*if(index == -1){
+/*
+    if(index == -1){
         int j;
         for(index = 0; index < pikomonsQuantity; index++){
             printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPikomon[index].Name, pPikomon[index].Element, pPikomon[index].HPCurrent, pPikomon[index].HPMax, pPikomon[index].Defense, pPikomon[index].MagicDefense, pPikomon[index].Attack, pPikomon[index].MagicAttack, pPikomon[index].Speed);
         }
     }
+
+
     else if(index > -1 && index < pikomonsQuantity){
         printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPikomon[index].Name, pPikomon[index].Element, pPikomon[index].HPCurrent, pPikomon[index].HPMax, pPikomon[index].Defense, pPikomon[index].MagicDefense, pPikomon[index].Attack, pPikomon[index].MagicAttack, pPikomon[index].Speed);
     }
@@ -425,7 +429,8 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
         perror("index usado na função \"DebugPikomons\" não permitido");
         return false;
     }
-    return true;*/
+    return true;
+*/
 }
 
 bool DebugItems(ItPointer pItems, int index, int ItemsQuantity){
