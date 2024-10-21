@@ -140,7 +140,7 @@ bool SaveItems(ItPointer pItems, int ItemsQuantity, char* destino);
 bool SaveSkills(SkPointer pSkills, int skillsQuantity, char* destino);
 void LimparTerminal();
 void Menu();
-void MenuLogin();
+void MenuLogin(int userNumero);
 
 
 int main(){ 
@@ -262,13 +262,27 @@ int main(){
     fread(pSkills,sizeof(Skill), dataQuantities.Skill, dBSkills);
     fclose(dBSkills);
 
-
     //loginMenuPrincipal
     while (true){
         Menu();
         scanf("Sua escolha?: %d", &respostaUserMP);
         if(respostaUserMP == 1){
-            printf(":)");
+            char usernameEntrada[50];
+            char passEntrada[50];
+            bool login1 = false;
+            bool login2 = false;
+            int userNumero = 1;
+            while(login1 && login2){
+                //if(login1)
+                //{
+                    //userNumero = 2;
+                //}
+                MenuLogin(userNumero);
+                printf("                    Insira seu Username: ");
+                scanf("%s", usernameEntrada);
+                printf("                    Insira sua Senha   : ");
+                scanf("%s", passEntrada);
+            }
         }
         if(respostaUserMP == 2){
             printf(":)");
@@ -279,8 +293,6 @@ int main(){
         if(respostaUserMP == 4){
             printf(":)");
         }
-
-
 
 
     }
@@ -546,10 +558,11 @@ printf("     *********************************************************\n");
 }
 
 
-void MenuLogin(){
-
-
-    
+void MenuLogin(int userNumero) {
+    printf("                ***************************************\n");
+    printf("                *                 US%d                 *\n", userNumero);
+    printf("                ***************************************\n");
+    printf("\n");
 }
 
 
