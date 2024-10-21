@@ -138,7 +138,6 @@ typedef struct Player
     int SelectedPikomonIndex;
 
     Pikomon BatlePikomons[6];
-    int SelectedPikomonInPikomonsStorageIndexes[6];
     Pikomon PikomonsStorage[12];
 
     ItPointer Bag;
@@ -296,10 +295,14 @@ int main(){
 
     /**Principal Do Usuário**/
     //------------------------------------------------------------------------------------------------------------------//
-
+    //login
+    //menu
     //------------------------------------------------------------------------------------------------------------------//
+    //toda a vez que acaba uma batalha tem que usar essa função
+    FreeAllHeapMemoryAndSaveEverything(pSkills,pItems,pPikomons,pPlayers,dataQuantities,dataQuantity,skills,items,pikomoms,players);
 }
-
+/**Debug/Print Functions**/
+//------------------------------------------------------------------------------//
 bool DebugPlayers(PlPointer pPlayers, int index, int playersQuantity){
     /*if(index == -1){
         int j, k;
@@ -398,71 +401,11 @@ bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity){
     }
     return true;*/
 }
+//------------------------------------------------------------------------------//
 
-bool SaveDataQuantity(DataQuantity dataQuantities, const char *destino){
-    FILE* dBDataQuantity;
-    dBDataQuantity = fopen(destino, "w");
-    if(dBDataQuantity == NULL){
-        perror("falha ao abrir \"dBDataQuantity\" na função \"SaveDataQuantity\"");
-        return false;
-    }
-    fprintf(dBDataQuantity, "Players,Pikomons,Itens,Skills\n%d,%d,%d,%d", dataQuantities.Player,dataQuantities.Pikomon,dataQuantities.Item,dataQuantities.Skill);
-    fclose(dBDataQuantity);
-    return true;
-}
 
-bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino){
-    FILE* dBPlayers;
-    dBPlayers = fopen(destino, "wb");
-    if (dBPlayers == NULL)
-    {
-        perror("falha ao abrir \"dBPlayers\" na função \"SavePlayers\"");
-        return false;
-    }
-    fwrite(pPlayers, sizeof(Player), playersQuantity, dBPlayers);
-    fclose(dBPlayers);
-    return true;
-}
-
-bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino){
-    FILE* dBPikomons;
-    dBPikomons = fopen(destino, "wb");
-    if (dBPikomons == NULL)
-    {
-        perror("falha ao abrir \"dBPikomons\" na função \"SavePikomons\"");
-        return false;
-    }
-    fwrite(pPikomons, sizeof(Pikomon), pikomonsQuantity, dBPikomons);
-    fclose(dBPikomons);
-    return true;
-}
-
-bool SaveItems(ItPointer pItems, int ItemsQuantity, const char *destino){
-    FILE* dBItems;
-    dBItems = fopen(destino, "wb");
-    if (dBItems == NULL)
-    {
-        perror("falha ao abrir \"dBItems\" na função \"SaveItems\"");
-        return false;
-    }
-    fwrite(pItems, sizeof(Item), ItemsQuantity, dBItems);
-    fclose(dBItems);
-    return true;
-}
-
-bool SaveSkills(SkPointer pSkills, int skillsQuantity, const char *destino){
-    FILE* dBSkills;
-    dBSkills = fopen(destino, "wb");
-    if (dBSkills == NULL)
-    {
-        perror("falha ao abrir \"dBSkills\" na função \"SaveSkills\"");
-        return false;
-    }
-    fwrite(pSkills, sizeof(Skill), skillsQuantity, dBSkills);
-    fclose(dBSkills);
-    return true;
-}
-
+/**Save Functions**/
+//------------------------------------------------------------------------------//
 bool SavePersonalities(Personality allPersonalities[10], const char *destino){
 FILE* dBPersonalities;
     dBPersonalities = fopen(destino, "wb");
@@ -489,40 +432,246 @@ bool SaveElements(Element allElements[10], const char *destino){
     return true;
 }
 
-bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass){
-    //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
+bool SaveDataQuantity(DataQuantity dataQuantities, const char *destino){
+    FILE* dBDataQuantity;
+    dBDataQuantity = fopen(destino, "w");
+    if(dBDataQuantity == NULL){
+        perror("falha ao abrir \"dBDataQuantity\" na função \"SaveDataQuantity\"");
+        return false;
+    }
+    fprintf(dBDataQuantity, "Players,Pikomons,Itens,Skills\n%d,%d,%d,%d", dataQuantities.Player,dataQuantities.Pikomon,dataQuantities.Item,dataQuantities.Skill);
+    fclose(dBDataQuantity);
+    return true;
+}
+
+bool SaveSkills(SkPointer pSkills, int skillsQuantity, const char *destino){
+    FILE* dBSkills;
+    dBSkills = fopen(destino, "wb");
+    if (dBSkills == NULL)
+    {
+        perror("falha ao abrir \"dBSkills\" na função \"SaveSkills\"");
+        return false;
+    }
+    fwrite(pSkills, sizeof(Skill), skillsQuantity, dBSkills);
+    fclose(dBSkills);
+    return true;
+}
+
+bool SaveItems(ItPointer pItems, int ItemsQuantity, const char *destino){
+    FILE* dBItems;
+    dBItems = fopen(destino, "wb");
+    if (dBItems == NULL)
+    {
+        perror("falha ao abrir \"dBItems\" na função \"SaveItems\"");
+        return false;
+    }
+    fwrite(pItems, sizeof(Item), ItemsQuantity, dBItems);
+    fclose(dBItems);
+    return true;
+}
+
+bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino){
+    FILE* dBPikomons;
+    dBPikomons = fopen(destino, "wb");
+    if (dBPikomons == NULL)
+    {
+        perror("falha ao abrir \"dBPikomons\" na função \"SavePikomons\"");
+        return false;
+    }
+    fwrite(pPikomons, sizeof(Pikomon), pikomonsQuantity, dBPikomons);
+    fclose(dBPikomons);
+    return true;
+}
+
+bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino){
+    FILE* dBPlayers;
+    dBPlayers = fopen(destino, "wb");
+    if (dBPlayers == NULL)
+    {
+        perror("falha ao abrir \"dBPlayers\" na função \"SavePlayers\"");
+        return false;
+    }
+    fwrite(pPlayers, sizeof(Player), playersQuantity, dBPlayers);
+    fclose(dBPlayers);
+    return true;
+}
+
+//favor usar isso quando as batalhas acabarem para liberar as memorias dinamicas
+void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players){
+    //pode ter um memset cagado aqui
+    if(pSkills == NULL){
+        perror("ERRO, \"pSkills\" é NULL em \"FreeAllHeapMemory\"");
+    }
+    if(pItems == NULL){
+        perror("ERRO, \"pItems\" é NULL em \"FreeAllHeapMemory\"");
+    }
+    if(pPikomons == NULL){
+        perror("\"pPikomons\" é NULL em \"FreeAllHeapMemory\"");
+    }
     if(pPlayers == NULL){
-        perror("ERRO, \"pPlayers\" não pode ser NULL em \"AddPlayers\"");
+        perror("ERRO, \"pPlayers\" não pode ser NULL em \"FreeAllHeapMemory\"");
         return false;
     }
-    if(pass == NULL){
-        perror("ERRO, \"pass\" não pode ser NULL em \"AddPlayers\"");
-        return false;
+    SaveDataQuantity(dataquantities, dataQuantity);
+    SaveSkills(pSkills, dataquantities.Skill, skills);
+    free(pSkills);
+    SaveItems(pItems, dataquantities.Item, items);
+    free(pItems);
+    SavePikomons(pPikomons, dataquantities.Pikomon, pikomoms);
+    free(pPikomons);
+    int i, j, k;
+    for(i = 0; i < dataquantities.Player; i++){
+        for(j = 0; j < pPlayers[i].BagCurrentSize; j++){
+            pPlayers[i].Pikocoins += pPlayers[i].Bag[j].Value;
+        }
+        pPlayers[i].BagCurrentSize = 0;
+        free(pPlayers[i].Bag);
+        for(j = 0; j < 6; j++){
+            for(k = 0; k < 8; k++){
+                free(pPlayers[i].BatlePikomons[j].Atributes[k].Bonus);
+                free(pPlayers[i].BatlePikomons[j].Atributes[k].BonusTimer);
+                pPlayers[i].BatlePikomons[j].Atributes[k].BonusQuantity = 0;
+            }
+        }
+        //esse cara aqui pode dar ruim
+        memset(pPlayers[i].BatlePikomons, 0, 6 * sizeof(Pikomon));
     }
-    else if(strlen(pass) != 6){
-        perror("ERRO, \"pass\" não pode ter um tamanho diferente de 6 caracteres em \"AddPlayers\"");
+    SavePlayers(pPlayers, dataquantities.Player, players);
+    free(pPlayers);
+}
+//------------------------------------------------------------------------------//
+
+/**Manage Memory Functions**/
+//------------------------------------------------------------------------------//
+
+bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[10], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]){
+    //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
+    if(pSkills == NULL){
+        perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
         return false;
     }
     if(name == NULL){
-        perror("ERRO, \"name\" não pode ser NULL em \"AddPlayers\"");
+        perror("ERRO, \"name\" não pode ser NULL em \"AddSkill\"");
         return false;
     }
-    else if (strlen(name) > 19){
-        perror("ERRO, \"name\" não pode ter mais de 19 caracteres em \"AddPlayers\"");
+    if(target != 'S' && target != 'E' && target != 'B'){
+        perror("ERRO, \"target\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
         return false;
     }
-    
-    dataQuantities.Player++;
-    pPlayers = (PlPointer)realloc(pPlayers, dataQuantities.Player * sizeof(Player));
-    if(pPlayers == NULL){
-        perror("ERRO na realocação de memoria em \"AddPlayers\"");
+    if(elementEffectChance < 0){
+        perror("ERRO, \"elementEffectChance\" não pode ser menor que zero em \"AddSkill\"");
         return false;
     }
-    memset(&pPlayers[dataQuantities.Player-1], 0, sizeof(Player));
-    strcpy(pPlayers[dataQuantities.Player-1].Name, name);
-    strcpy(pPlayers[dataQuantities.Player-1].Pass, pass);
-    pPlayers[dataQuantities.Player-1].Pikocoins = 50;
-    return true;
+    if(critChance < 0){
+        perror("ERRO, \"critChance\" não pode ser menor que zero em \"AddSkill\"");
+        return false;
+    }
+    if(effectTarget != 'S' && effectTarget != 'E' && effectTarget != 'B'){
+        perror("ERRO, \"effectTarget\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
+        return false;
+    }
+    if(enemyEffectChance < 0){
+        perror("ERRO, \"enemyEffectChance\" não pode ser menor que zero em \"AddSkill\"");
+        return false;
+    }
+    if(selfEffectChance < 0){
+        perror("ERRO, \"selfEffectChance\" não pode ser menor que zero em \"AddSkill\"");
+        return false;
+    }
+
+    dataQuantities.Skill++;
+    pSkills = (SkPointer)realloc(pSkills, dataQuantities.Skill * sizeof(Skill));
+    if(pSkills == NULL){
+        perror("ERRO na realocação de memoria em \"AddSkill\"");
+        return false;
+    }
+    memset(&pSkills[dataQuantities.Skill-1], 0, sizeof(Skill));
+    strcpy(pSkills[dataQuantities.Skill-1].Name, name);
+    pSkills[dataQuantities.Skill-1].Target = target;
+    int i;
+    for(i = 0; i < 10; i++){
+        pSkills[dataQuantities.Skill-1].LearnablePersonalities[i] = learnablePersonalities[i];
+        pSkills[dataQuantities.Skill-1].LearnableElements[i] = LearnableElements[i];
+    }
+    pSkills[dataQuantities.Skill-1].ElementEffectChance = elementEffectChance;
+    pSkills[dataQuantities.Skill-1].Element = element;
+    pSkills[dataQuantities.Skill-1].AttackBase = attackBase;
+    pSkills[dataQuantities.Skill-1].AttackScale = attackScale;
+    pSkills[dataQuantities.Skill-1].MagicBase = magicBase;
+    pSkills[dataQuantities.Skill-1].MagicAttackScale = magicAttackScale;
+    pSkills[dataQuantities.Skill-1].CritChance = critChance;
+    pSkills[dataQuantities.Skill-1].EffectTarget = effectTarget;
+    pSkills[dataQuantities.Skill-1].EnemyEffectChance = enemyEffectChance;
+    for(i = 0; i < 8; i++){
+        pSkills[dataQuantities.Skill-1].EnemyEffect[i] = enemyEffect[i];
+    }
+    pSkills[dataQuantities.Skill-1].SelfEffectChance = selfEffectChance;
+    for(i = 0; i < 8; i++){
+        pSkills[dataQuantities.Skill-1].SelfEffect[i] = selfEffect[i];
+    }
+}
+
+bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char *description[3], int value, char effectCurrentHPTarget, Effect enemyEffectCurrentHP, Effect selfEffectCurrentHP, char effectTarget, double enemyStatusEffectChance, Effect enemyStatusEffect[8], double selfStatusEffectChance, Effect selfStatusEffect[8]){
+    //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
+    if(pItems == NULL){
+        perror("ERRO, \"pItems\" não pode ser NULL em \"AddItem\"");
+        return false;
+    }
+    if(name == NULL){
+        perror("ERRO, \"name\" não pode ser NULL em \"AddItem\"");
+        return false;
+    }
+    else if(strlen(name) > 19){
+        perror("ERRO, \"name\" não pode ter mais que 19 caracteres em \"AddItem\"");
+        return false;
+    }
+    if(type == NULL){
+        perror("ERRO, \"name\" não pode ser NULL em \"AddItem\"");
+        return false;
+    }
+    int i;
+    for(i = 0; i < 3; i++){
+        if(strlen(description[i]) > 254){
+            perror("ERRO, nenhuma das 3 strings na variavel \"*description[3]\" pode ser maior que 254 caracteres em \"AddItem\"");
+            return false;
+        }
+    }
+    if(effectCurrentHPTarget == NULL){
+        perror("ERRO, \"effectCurrentHPTarget\" não pode ser NULL em \"AddItem\"");
+        return false;
+    }
+    if(effectTarget == NULL){
+        perror("ERRO, \"effectTarget\" não pode ser NULL em \"AddItem\"");
+        return false;
+    }
+
+
+    dataQuantities.Item++;
+    pItems = (ItPointer)realloc(pItems, dataQuantities.Item * sizeof(Item));
+    if(pItems == NULL){
+        perror("ERRO na realocação de memoria em \"AddItem\"");
+        return false;
+    }
+    memset(&pItems[dataQuantities.Item-1], 0, sizeof(Item));
+    strcpy(pItems[dataQuantities.Item-1].Name, name);
+    strcpy(pItems[dataQuantities.Item-1].Type, type);
+    for(i = 0; i < 3; i++){
+        strcpy(pItems[dataQuantities.Item-1].Description[i], description[i]);
+    }
+    pItems[dataQuantities.Item-1].Value = value;
+    pItems[dataQuantities.Item-1].EffectCurrentHPTarget = effectCurrentHPTarget;
+    pItems[dataQuantities.Item-1].EnemyEffectCurrentHP = enemyEffectCurrentHP;
+    pItems[dataQuantities.Item-1].SelfEffectCurrentHP = selfEffectCurrentHP;
+    pItems[dataQuantities.Item-1].EffectTarget = effectTarget;
+    pItems[dataQuantities.Item-1].EnemyStatusEffectChance = enemyStatusEffectChance;
+    for(i = 0; i < 8; i++){
+        pItems[dataQuantities.Item-1].EnemyStatusEffect[i] = enemyStatusEffect[i];
+    }
+    pItems[dataQuantities.Item-1].SelfStatusEffectChance = selfStatusEffectChance;
+    for(i = 0; i < 8; i++){
+        pItems[dataQuantities.Item-1].SelfStatusEffect[i] = selfStatusEffect[i];
+    }
+
 }
 
 bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed){
@@ -611,134 +760,40 @@ bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, El
     return true;
 }
 
-bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char *description[3], int value, char effectCurrentHPTarget, Effect enemyEffectCurrentHP, Effect selfEffectCurrentHP, char effectTarget, double enemyStatusEffectChance, Effect enemyStatusEffect[8], double selfStatusEffectChance, Effect selfStatusEffect[8]){
+bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
-    if(pItems == NULL){
-        perror("ERRO, \"pItems\" não pode ser NULL em \"AddItem\"");
+    if(pPlayers == NULL){
+        perror("ERRO, \"pPlayers\" não pode ser NULL em \"AddPlayers\"");
+        return false;
+    }
+    if(pass == NULL){
+        perror("ERRO, \"pass\" não pode ser NULL em \"AddPlayers\"");
+        return false;
+    }
+    else if(strlen(pass) != 6){
+        perror("ERRO, \"pass\" não pode ter um tamanho diferente de 6 caracteres em \"AddPlayers\"");
         return false;
     }
     if(name == NULL){
-        perror("ERRO, \"name\" não pode ser NULL em \"AddItem\"");
+        perror("ERRO, \"name\" não pode ser NULL em \"AddPlayers\"");
         return false;
     }
-    else if(strlen(name) > 19){
-        perror("ERRO, \"name\" não pode ter mais que 19 caracteres em \"AddItem\"");
+    else if (strlen(name) > 19){
+        perror("ERRO, \"name\" não pode ter mais de 19 caracteres em \"AddPlayers\"");
         return false;
     }
-    if(type == NULL){
-        perror("ERRO, \"name\" não pode ser NULL em \"AddItem\"");
+    
+    dataQuantities.Player++;
+    pPlayers = (PlPointer)realloc(pPlayers, dataQuantities.Player * sizeof(Player));
+    if(pPlayers == NULL){
+        perror("ERRO na realocação de memoria em \"AddPlayers\"");
         return false;
     }
-    int i;
-    for(i = 0; i < 3; i++){
-        if(strlen(description[i]) > 254){
-            perror("ERRO, nenhuma das 3 strings na variavel \"*description[3]\" pode ser maior que 254 caracteres em \"AddItem\"");
-            return false;
-        }
-    }
-    if(effectCurrentHPTarget == NULL){
-        perror("ERRO, \"effectCurrentHPTarget\" não pode ser NULL em \"AddItem\"");
-        return false;
-    }
-    if(effectTarget == NULL){
-        perror("ERRO, \"effectTarget\" não pode ser NULL em \"AddItem\"");
-        return false;
-    }
-
-
-    dataQuantities.Item++;
-    pItems = (ItPointer)realloc(pItems, dataQuantities.Item * sizeof(Item));
-    if(pItems == NULL){
-        perror("ERRO na realocação de memoria em \"AddItem\"");
-        return false;
-    }
-    memset(&pItems[dataQuantities.Item-1], 0, sizeof(Item));
-    strcpy(pItems[dataQuantities.Item-1].Name, name);
-    strcpy(pItems[dataQuantities.Item-1].Type, type);
-    for(i = 0; i < 3; i++){
-        strcpy(pItems[dataQuantities.Item-1].Description[i], description[i]);
-    }
-    pItems[dataQuantities.Item-1].Value = value;
-    pItems[dataQuantities.Item-1].EffectCurrentHPTarget = effectCurrentHPTarget;
-    pItems[dataQuantities.Item-1].EnemyEffectCurrentHP = enemyEffectCurrentHP;
-    pItems[dataQuantities.Item-1].SelfEffectCurrentHP = selfEffectCurrentHP;
-    pItems[dataQuantities.Item-1].EffectTarget = effectTarget;
-    pItems[dataQuantities.Item-1].EnemyStatusEffectChance = enemyStatusEffectChance;
-    for(i = 0; i < 8; i++){
-        pItems[dataQuantities.Item-1].EnemyStatusEffect[i] = enemyStatusEffect[i];
-    }
-    pItems[dataQuantities.Item-1].SelfStatusEffectChance = selfStatusEffectChance;
-    for(i = 0; i < 8; i++){
-        pItems[dataQuantities.Item-1].SelfStatusEffect[i] = selfStatusEffect[i];
-    }
-
-}
-
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[10], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]){
-    //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
-    if(pSkills == NULL){
-        perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
-        return false;
-    }
-    if(name == NULL){
-        perror("ERRO, \"name\" não pode ser NULL em \"AddSkill\"");
-        return false;
-    }
-    if(target != 'S' && target != 'E' && target != 'B'){
-        perror("ERRO, \"target\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
-        return false;
-    }
-    if(elementEffectChance < 0){
-        perror("ERRO, \"elementEffectChance\" não pode ser menor que zero em \"AddSkill\"");
-        return false;
-    }
-    if(critChance < 0){
-        perror("ERRO, \"critChance\" não pode ser menor que zero em \"AddSkill\"");
-        return false;
-    }
-    if(effectTarget != 'S' && effectTarget != 'E' && effectTarget != 'B'){
-        perror("ERRO, \"effectTarget\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
-        return false;
-    }
-    if(enemyEffectChance < 0){
-        perror("ERRO, \"enemyEffectChance\" não pode ser menor que zero em \"AddSkill\"");
-        return false;
-    }
-    if(selfEffectChance < 0){
-        perror("ERRO, \"selfEffectChance\" não pode ser menor que zero em \"AddSkill\"");
-        return false;
-    }
-
-    dataQuantities.Skill++;
-    pSkills = (SkPointer)realloc(pSkills, dataQuantities.Skill * sizeof(Skill));
-    if(pSkills == NULL){
-        perror("ERRO na realocação de memoria em \"AddSkill\"");
-        return false;
-    }
-    memset(&pSkills[dataQuantities.Skill-1], 0, sizeof(Skill));
-    strcpy(pSkills[dataQuantities.Skill-1].Name, name);
-    pSkills[dataQuantities.Skill-1].Target = target;
-    int i;
-    for(i = 0; i < 10; i++){
-        pSkills[dataQuantities.Skill-1].LearnablePersonalities[i] = learnablePersonalities[i];
-        pSkills[dataQuantities.Skill-1].LearnableElements[i] = LearnableElements[i];
-    }
-    pSkills[dataQuantities.Skill-1].ElementEffectChance = elementEffectChance;
-    pSkills[dataQuantities.Skill-1].Element = element;
-    pSkills[dataQuantities.Skill-1].AttackBase = attackBase;
-    pSkills[dataQuantities.Skill-1].AttackScale = attackScale;
-    pSkills[dataQuantities.Skill-1].MagicBase = magicBase;
-    pSkills[dataQuantities.Skill-1].MagicAttackScale = magicAttackScale;
-    pSkills[dataQuantities.Skill-1].CritChance = critChance;
-    pSkills[dataQuantities.Skill-1].EffectTarget = effectTarget;
-    pSkills[dataQuantities.Skill-1].EnemyEffectChance = enemyEffectChance;
-    for(i = 0; i < 8; i++){
-        pSkills[dataQuantities.Skill-1].EnemyEffect[i] = enemyEffect[i];
-    }
-    pSkills[dataQuantities.Skill-1].SelfEffectChance = selfEffectChance;
-    for(i = 0; i < 8; i++){
-        pSkills[dataQuantities.Skill-1].SelfEffect[i] = selfEffect[i];
-    }
+    memset(&pPlayers[dataQuantities.Player-1], 0, sizeof(Player));
+    strcpy(pPlayers[dataQuantities.Player-1].Name, name);
+    strcpy(pPlayers[dataQuantities.Player-1].Pass, pass);
+    pPlayers[dataQuantities.Player-1].Pikocoins = 50;
+    return true;
 }
 
 bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex){
@@ -768,59 +823,66 @@ bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int
     pPlayers[playerIndex].Bag[pPlayers[playerIndex].BagCurrentSize-1] = pItems[itemIndex];
 }
 
-bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex){
-    //vai apaga memoria dentro do player ou de outros players caso o memset esteja errado
+bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities){
+    //n precisa uasar esse
     if(pPlayers == NULL){
         perror("ERRO, \"pPlayers\" não pode ser NULL em \"StorePikomonPlayer\"");
+        return false;
+    }
+    if(playerIndex < 0){
+        perror("ERRO, \"playerIndex\" não pode ser menor que zero em \"StorePikomonPlayer\"");
+        return false;
+    }
+    else if(playerIndex >= dataQuantities.Player){
+        perror("ERRO, \"playerIndex\" tem que ser menor que \"dataQuantities.Player\" em \"StorePikomonPlayer\"");
+        return false;
+    }
+    if(storagePikomonPlacementIndex < 0){
+        perror("ERRO, \"storagePikomonPlacementIndex\" não pode ser menor que zero em \"StorePikomonPlayer\"");
+        return false;
+    }
+    else if(storagePikomonPlacementIndex >= 12){
+        perror("ERRO, \"storagePikomonPlacementIndex\" tem que ser menor que 12 em \"StorePikomonPlayer\"");
         return false;
     }
     if(pPikomons == NULL){
         perror("ERRO, \"pPikomons\" não pode ser NULL em \"StorePikomonPlayer\"");
         return false;
     }
-
-}
-
-//favor usar isso quando as batalhas acabarem para liberar as memorias dinamicas
-void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players){
-    //pode ter um memset cagado aqui
-    if(pSkills == NULL){
-        perror("ERRO, \"pSkills\" é NULL em \"FreeAllHeapMemory\"");
-    }
-    if(pItems == NULL){
-        perror("ERRO, \"pItems\" é NULL em \"FreeAllHeapMemory\"");
-    }
-    if(pPikomons == NULL){
-        perror("\"pPikomons\" é NULL em \"FreeAllHeapMemory\"");
-    }
-    if(pPlayers == NULL){
-        perror("ERRO, \"pPlayers\" não pode ser NULL em \"FreeAllHeapMemory\"");
+    if(pikomonIndex < 0){
+        perror("ERRO, \"pikomonIndex\" não pode ser menor que zero em \"StorePikomonPlayer\"");
         return false;
     }
-    SaveDataQuantity(dataquantities, dataQuantity);
-    SaveSkills(pSkills, dataquantities.Skill, skills);
-    free(pSkills);
-    SaveItems(pItems, dataquantities.Item, items);
-    free(pItems);
-    SavePikomons(pPikomons, dataquantities.Pikomon, pikomoms);
-    free(pPikomons);
-    int i, j, k;
-    for(i = 0; i < dataquantities.Player; i++){
-        for(j = 0; j < pPlayers[i].BagCurrentSize; j++){
-            pPlayers[i].Pikocoins += pPlayers[i].Bag[j].Value;
-        }
-        pPlayers[i].BagCurrentSize = 0;
-        free(pPlayers[i].Bag);
-        for(j = 0; j < 6; j++){
-            for(k = 0; k < 8; k++){
-                free(pPlayers[i].BatlePikomons[j].Atributes[k].Bonus);
-                free(pPlayers[i].BatlePikomons[j].Atributes[k].BonusTimer);
-                pPlayers[i].BatlePikomons[j].Atributes[k].BonusQuantity = 0;
-            }
-        }
-        //esse cara aqui pode dar ruim
-        memset(pPlayers[i].BatlePikomons, 0, 6 * sizeof(Pikomon));
+    else if(pikomonIndex >= dataQuantities.Pikomon){
+        perror("ERRO, \"pikomonIndex\" tem que ser menor que \"dataQuantities.Pikomon\" em \"StorePikomonPlayer\"");
+        return false;
     }
-    SavePlayers(pPlayers, dataquantities.Player, players);
-    free(pPlayers);
+    pPlayers[playerIndex].PikomonsStorage[storagePikomonPlacementIndex] = pPikomons[pikomonIndex];
 }
+
+bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove){
+    if(indexRemove < 0){
+        
+    }
+    else if(indexRemove >= dataQuantities.Skill){
+
+    }
+    Skill tempSkills[dataQuantities.Skill-1];
+}
+
+bool RemoveItem(){
+    
+}
+
+bool RemovePikomon(){
+    
+}
+
+bool RemoveItemPlayerBag(){
+    
+}
+
+bool RemoveSkill(){
+    
+}
+//------------------------------------------------------------------------------//
