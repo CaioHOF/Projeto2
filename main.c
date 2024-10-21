@@ -332,7 +332,14 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
                         printf("| Nome:| %20s | |,| Element:| %20s | |,| CurrentHP:| %3d | |\n", 
                                pPlayers[index].PikomonsStorage[j].Name, 
                                pPlayers[index].PikomonsStorage[j].Element, 
-                               pPlayers[index].PikomonsStorage[j].CurrentHP);
+                               pPlayers[index].PikomonsStorage[j].CurrentHP,
+                               pPlayers[index].PikomonsStorage[j].Personality.BaseAttackModifier,
+                               pPlayers[index].PikomonsStorage[j].Personality.BaseDefenseModifier,
+                               pPlayers[index].PikomonsStorage[j].Personality.BaseHPModifier,
+                               pPlayers[index].PikomonsStorage[j].Personality.BaseMagicAttackModifier,
+                               pPlayers[index].PikomonsStorage[j].Personality.BaseMagicDefenseModifier,
+                               pPlayers[index].PikomonsStorage[j].Personality.BaseSpeedModifier
+                               );
                         
                         // arrumar numero depois        -----------------------------------------------------------------------------------------------
                         // Exibir habilidades do pokemon
@@ -374,7 +381,15 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
                     printf("| Nome:| %20s | |,| Element:| %20s | |,| CurrentHP:| %3d | |\n", 
                            pPlayers[index].PikomonsStorage[j].Name, 
                            pPlayers[index].PikomonsStorage[j].Element, 
-                           pPlayers[index].PikomonsStorage[j].CurrentHP);
+                           pPlayers[index].PikomonsStorage[j].CurrentHP,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseAttackModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseDefenseModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseHPModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseMagicAttackModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseMagicDefenseModifier,
+                           pPlayers[index].PikomonsStorage[j].Personality.BaseSpeedModifier
+                           
+                           );
                     
                     // Exibir habilidades do pokemon
                     for(k = 0; k < 4; k++) {
