@@ -325,11 +325,10 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
     if(index == -1) {
         for(index = 0; index < playersQuantity; index++) {
             if (strlen(pPlayers[index].Name) > 0) {
-                printf("| Name:| %20s | |,| Pass:| %20s | |,| Pikocoins:| %3d | |,| BagCurrentSize:| %2d | |;\n", 
+                printf("| Name:| %20s | |,| Pass:| %20s | |,| Pikocoins:| %3d |;\n", 
                        pPlayers[index].Name, 
                        pPlayers[index].Pass, 
-                       pPlayers[index].Pikocoins, 
-                       pPlayers[index].BagCurrentSize);
+                       pPlayers[index].Pikocoins);
                 
                 // Exibir itens da bolsa
                 for (j = 0; j < pPlayers[index].BagCurrentSize; j++) {
@@ -344,17 +343,17 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
                 // Exibir Pokémons
                 for (j = 0; j < 12; j++) {
                     if (strlen(pPlayers[index].PikomonsStorage[j].Name) > 0) {
-                    printf("| Nome:| %20s | |,| Element:| %10s | |,| CurrentHP:| %3d |,| Atk:| %3lf |,| Def:| %3lf |,| BaseHP:| %3lf |,| SpA:| %3lf |,| SpD:| %3lf |,| Spd:| %3lf | |\n",  
+                    printf("| Nome:| %20s | |,| Element:| %10s | |,| HP:| %3d |,| Atk:| %3lf |,| Def:| %3lf |,,| SpA:| %3lf |,| SpD:| %3lf |,| Spd:| %3lf |,| Acu:| %3lf |,| Eac:| %3lf | | \n",  
                            pPlayers[index].PikomonsStorage[j].Name, 
                            pPlayers[index].PikomonsStorage[j].Element.Name, 
-                           pPlayers[index].PikomonsStorage[j].CurrentHP.Total,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseAttackModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseDefenseModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseHPModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseMagicAttackModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseMagicDefenseModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseSpeedModifier
-                           
+                           pPlayers[index].PikomonsStorage[j].Atributes[0],
+                           pPlayers[index].PikomonsStorage[j].Atributes[4],
+                           pPlayers[index].PikomonsStorage[j].Atributes[1],
+                           pPlayers[index].PikomonsStorage[j].Atributes[6],
+                           pPlayers[index].PikomonsStorage[j].Atributes[2],
+                           pPlayers[index].PikomonsStorage[j].Atributes[7],
+                           pPlayers[index].PikomonsStorage[j].Atributes[3],
+                           pPlayers[index].PikomonsStorage[j].Atributes[5]    
                            );
                         
                         // arrumar numero depois        -----------------------------------------------------------------------------------------------
@@ -378,8 +377,7 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
             printf("| Name:| %20s | |,| Pass:| %20s | |,| Pikocoins:| %3d | |,| BagCurrentSize:| %2d | |;\n", 
                    pPlayers[index].Name, 
                    pPlayers[index].Pass, 
-                   pPlayers[index].Pikocoins, 
-                   pPlayers[index].BagCurrentSize);
+                   pPlayers[index].Pikocoins);
             
             // Exibir itens da bolsa
             for (j = 0; j < pPlayers[index].BagCurrentSize; j++) {
@@ -394,23 +392,23 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
             // Exibir Pokémons
             for (j = 0; j < 12; j++) {
                 if (strlen(pPlayers[index].PikomonsStorage[j].Name) > 0) {
-                    printf("| Nome:| %20s | |,| Element:| %10s | |,| CurrentHP:| %3d |,| Atk:| %3lf |,| Def:| %3lf |,| BaseHP:| %3lf |,| SpA:| %3lf |,| SpD:| %3lf |,| Spd:| %3lf | |\n",  
+                    printf("| Nome:| %20s | |,| Element:| %10s | |,| HP:| %3d |,| Atk:| %3lf |,| Def:| %3lf |,| SpA:| %3lf |,| SpD:| %3lf |,| Spd:| %3lf |,| Acu:| %3lf |,| Eac:| %3lf | |\n",  
                            pPlayers[index].PikomonsStorage[j].Name, 
                            pPlayers[index].PikomonsStorage[j].Element.Name, 
-                           pPlayers[index].PikomonsStorage[j].CurrentHP.Total,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseAttackModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseDefenseModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseHPModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseMagicAttackModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseMagicDefenseModifier,
-                           pPlayers[index].PikomonsStorage[j].Personality.BaseSpeedModifier
-                           
+                           pPlayers[index].PikomonsStorage[j].Atributes[0],
+                           pPlayers[index].PikomonsStorage[j].Atributes[4],
+                           pPlayers[index].PikomonsStorage[j].Atributes[1],
+                           pPlayers[index].PikomonsStorage[j].Atributes[6],
+                           pPlayers[index].PikomonsStorage[j].Atributes[2],
+                           pPlayers[index].PikomonsStorage[j].Atributes[7],
+                           pPlayers[index].PikomonsStorage[j].Atributes[3],
+                           pPlayers[index].PikomonsStorage[j].Atributes[5]    
                            );
                     
                     // Exibir habilidades do pokemon
                     for(k = 0; k < 4; k++) {
                         if (strlen(pPlayers[index].PikomonsStorage[j].Skills[k].Name) > 0) {
-                            printf("| Skill Name:| %3s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", 
+                            printf("| Skill Name:| %3s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | | ;\n", 
                                    pPlayers[index].PikomonsStorage[j].Skills[k].Name, 
                                    pPlayers[index].PikomonsStorage[j].Skills[k].Target, 
                                    pPlayers[index].PikomonsStorage[j].Skills[k].AttackScale, 
@@ -620,6 +618,8 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
     SavePlayers(pPlayers, dataquantities.Player, players);
     free(pPlayers);
 }
+
+
 //------------------------------------------------------------------------------//
 
 /**Manage Memory Functions**/
@@ -941,6 +941,7 @@ bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonP
 }
 
 bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove){
+    /*
     if(indexRemove < 0){
         perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemoveSkill\"");
         return false;
@@ -963,9 +964,11 @@ bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove
     for(i = 0; i < dataQuantities.Skill; i++){
         pSkills[i] = tempSkills[i];
     }
+    */
 }
 
 bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
+    /*
     if(indexRemove < 0){
         perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemoveItem\"");
         return false;
@@ -988,9 +991,11 @@ bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
     for(i = 0; i < dataQuantities.Item; i++){
         pItems[i] = tempItems[i];
     }
+    */
 }
 
 bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRemove){
+    /*
     if(indexRemove < 0){
         perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemovePikomon\"");
         return false;
@@ -1013,9 +1018,11 @@ bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRe
     for(i = 0; i < dataQuantities.Pikomon; i++){
         pPikomons[i] = tempPikomons[i];
     }
+    */
 }
 
 bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
+    /*
     if(bagSellIndex >= pPlayers[playerIndex].BagCurrentSize){
         perror("ERRO, \"bagSellIndex\" tem que ser menor que \"pPlayers[playerIndex].BagCurrentSize\" em \"SellItemPlayerBag\"");
         return false;
@@ -1041,11 +1048,13 @@ bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
     for(i = 0; i < pPlayers[playerIndex].BagCurrentSize; i++){
         pPlayers[playerIndex].Bag[i] = tempItems[i];
     }
+    */
 }
 //------------------------------------------------------------------------------//
 
 /**Battle functions**/
 //------------------------------------------------------------------------------//
+
 void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7]){ 
     //calcNextTurn vai ser a resposta a ser gerada
 
@@ -1086,6 +1095,7 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7
 }
 
 void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
+    /*
     bool playerOneTurn;
     int i = 0, turnCost;
     PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon;
@@ -1120,4 +1130,5 @@ void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
         }
     }
 }
+*/
 //------------------------------------------------------------------------------//
