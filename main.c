@@ -3,7 +3,11 @@
 #include <string.h>
 #include <locale.h>
 #include <stdbool.h>
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <unistd.h>
+#endif
 #include <time.h>
 
 typedef struct Personality{
@@ -89,7 +93,7 @@ typedef struct Skill
 
 typedef struct Item
 {
-
+    bool EffectEnded;
     char Name[20];
     char Type[20];
     char Description[3][255];
@@ -121,9 +125,20 @@ typedef struct Pikomon
 
     Atribute CurrentHP;
     Atribute Atributes[8];
+    //Atributes[0].Name, "HP"
+    //Atributes[1].Name, "Defense"
+    //Atributes[2].Name, "MagicDefense"
+    //Atributes[3].Name, "Acurracy"
+    //Atributes[4].Name, "Attack"
+    //Atributes[5].Name, "ElementalAcurracy"
+    //Atributes[6].Name, "MagicAttack"
+    //Atributes[7].Name, "Speed"
+    
+    int ChargedSpeed;
+    //isso é para o calculo de turno, é a velocidade que ele acumula pra poder ter mais de um turno
 
     Skill Skills[4];
-    
+
 }Pikomon, *PiPointer;
 
 
@@ -178,7 +193,6 @@ int main(){
     FILE *dBDataQuantity = NULL, *dBPlayers = NULL, *dBItens = NULL, *dBPikomons = NULL, *dBSkills = NULL, *dBPersonalities = NULL, *dBElements = NULL; 
     //dB é de "data base"
 
-    PlPointer pPlayerOne = NULL, pPlayerTwo = NULL;
     int playerOneIndex = -1, playerTwoIndex = -1;
 
     Personality allPersonalities[10];
@@ -203,7 +217,7 @@ int main(){
     //------------------------------------------------------------------------------------------------------------------//
     dBDataQuantity = fopen(dataQuantity, "r");
     if(dBDataQuantity == NULL){
-        perror("Falha ao abrir \"quantidadeDados\"");
+        perror("Falha ao abrir \"dataQuantity\"");
         return 1;
     } 
     fgets(readLine,256,dBDataQuantity);
@@ -301,6 +315,7 @@ int main(){
     //toda a vez que acaba uma batalha tem que usar essa função
     FreeAllHeapMemoryAndSaveEverything(pSkills,pItems,pPikomons,pPlayers,dataQuantities,dataQuantity,skills,items,pikomoms,players);
 }
+
 /**Debug/Print Functions**/
 //------------------------------------------------------------------------------//
 bool DebugPlayers(Player *pPlayers, int index, int playersQuantity) {
@@ -473,7 +488,7 @@ bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity){
 /**Save Functions**/
 //------------------------------------------------------------------------------//
 bool SavePersonalities(Personality allPersonalities[10], const char *destino){
-FILE* dBPersonalities;
+    FILE* dBPersonalities;
     dBPersonalities = fopen(destino, "wb");
     if (dBPersonalities == NULL)
     {
@@ -609,7 +624,6 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
 
 /**Manage Memory Functions**/
 //------------------------------------------------------------------------------//
-
 bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[10], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pSkills == NULL){
@@ -928,27 +942,182 @@ bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonP
 
 bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove){
     if(indexRemove < 0){
-        
+        perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemoveSkill\"");
+        return false;
     }
     else if(indexRemove >= dataQuantities.Skill){
-
+        perror("ERRO, \"indexRemove\" tem que ser menor que \"dataQuantities.Skill\" em \"RemoveSkill\"");
+        return false;
     }
+    
     Skill tempSkills[dataQuantities.Skill-1];
+    int i, j = 0;
+    for(i = 0; i < dataQuantities.Skill; i++){
+        if(i != indexRemove){
+            tempSkills[j] = pSkills[i];
+            j++;
+        }
+    }
+    dataQuantities.Skill--;
+    pSkills = (SkPointer)realloc(pSkills, dataQuantities.Skill *sizeof(Skill));
+    for(i = 0; i < dataQuantities.Skill; i++){
+        pSkills[i] = tempSkills[i];
+    }
 }
 
-bool RemoveItem(){
+bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
+    if(indexRemove < 0){
+        perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemoveItem\"");
+        return false;
+    }
+    else if(indexRemove >= dataQuantities.Item){
+        perror("ERRO, \"indexRemove\" tem que ser menor que \"dataQuantities.Item\" em \"RemoveItem\"");
+        return false;
+    }
     
+    Item tempItems[dataQuantities.Item-1];
+    int i, j = 0;
+    for(i = 0; i < dataQuantities.Item; i++){
+        if(i != indexRemove){
+            tempItems[j] = pItems[i];
+            j++;
+        }
+    }
+    dataQuantities.Item--;
+    pItems = (ItPointer)realloc(pItems, dataQuantities.Item *sizeof(Item));
+    for(i = 0; i < dataQuantities.Item; i++){
+        pItems[i] = tempItems[i];
+    }
 }
 
-bool RemovePikomon(){
+bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRemove){
+    if(indexRemove < 0){
+        perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemovePikomon\"");
+        return false;
+    }
+    else if(indexRemove >= dataQuantities.Pikomon){
+        perror("ERRO, \"indexRemove\" tem que ser menor que \"dataQuantities.Pikomon\" em \"RemovePikomon\"");
+        return false;
+    }
     
+    Pikomon tempPikomons[dataQuantities.Pikomon-1];
+    int i, j = 0;
+    for(i = 0; i < dataQuantities.Pikomon; i++){
+        if(i != indexRemove){
+            tempPikomons[j] = pPikomons[i];
+            j++;
+        }
+    }
+    dataQuantities.Pikomon--;
+    pPikomons = (PiPointer)realloc(pPikomons, dataQuantities.Pikomon * sizeof(Pikomon));
+    for(i = 0; i < dataQuantities.Pikomon; i++){
+        pPikomons[i] = tempPikomons[i];
+    }
 }
 
-bool RemoveItemPlayerBag(){
+bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
+    if(bagSellIndex >= pPlayers[playerIndex].BagCurrentSize){
+        perror("ERRO, \"bagSellIndex\" tem que ser menor que \"pPlayers[playerIndex].BagCurrentSize\" em \"SellItemPlayerBag\"");
+        return false;
+    }
+    else if(bagSellIndex < 0){
+        perror("ERRO, \"bagSellIndex\" não pode ser menor que zero em \"SellItemPlayerBag\"");
+        return false;
+    }
     
+    Item tempItems[pPlayers[playerIndex].BagCurrentSize-1];
+    int i, j = 0;
+    for(i = 0; i < pPlayers[playerIndex].BagCurrentSize; i++){
+        if(i != bagSellIndex){
+            tempItems[j] = pPlayers[playerIndex].Bag[i];
+            j++; 
+        }
+        else{
+            pPlayers[playerIndex].Pikocoins += pPlayers[playerIndex].Bag[i].Value;
+        }
+    }
+    pPlayers[playerIndex].BagCurrentSize--;
+    pPlayers[playerIndex].Bag = (ItPointer)realloc(pPlayers[playerIndex].Bag, pPlayers[playerIndex].BagCurrentSize * sizeof(Item));
+    for(i = 0; i < pPlayers[playerIndex].BagCurrentSize; i++){
+        pPlayers[playerIndex].Bag[i] = tempItems[i];
+    }
+}
+//------------------------------------------------------------------------------//
+
+/**Battle functions**/
+//------------------------------------------------------------------------------//
+void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7]){ 
+    //calcNextTurn vai ser a resposta a ser gerada
+
+    calcNextTurn[6] = '\0';
+    bool b;
+    int i = 0, turnCost, selfSpeedCharged, enemySpeedCharge;
+
+    if(selfPikomon.Atributes[7].Total > enemyPikomon.Atributes[7].Total) turnCost = enemyPikomon.Atributes[7].Total, b = true;
+    else turnCost = selfPikomon.Atributes[7].Total, b = false;
+
+    if(selfPikomon.Atributes[7].Total == enemyPikomon.Atributes[7].Total){
+        if((rand() % 100 + 1) > 50) b = true;
+        else b = false;
+        turnCost = selfPikomon.Atributes[7].Total;
+    }
+    while(i < 6){
+        if(b){
+            selfSpeedCharged += selfPikomon.Atributes[7].Total;
+            while(selfSpeedCharged - turnCost >= 0){
+                selfSpeedCharged -= turnCost;
+                calcNextTurn[i] = 'S';
+                i++;
+                if(i >= 6) break;
+            }
+            b = !b;
+        }
+        else{
+            enemySpeedCharge += enemyPikomon.Atributes[7].Total;
+            while(enemySpeedCharge - turnCost >= 0){
+                enemySpeedCharge -= turnCost;
+                calcNextTurn[i] = 'E';
+                i++;
+                if(i >= 6) break;
+            }
+            b = !b;
+        }
+    }
 }
 
-bool RemoveSkill(){
-    
+void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
+    bool playerOneTurn;
+    int i = 0, turnCost;
+    PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon;
+    if(selectedPlayerOnePicomon[0].Atributes[7].Total > pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex].Atributes[7].Total) turnCost = enemyPikomon.Atributes[7].Total, b = true;
+    else turnCost = selfPikomon.Atributes[7].Total, b = false;
+
+    if(selfPikomon.Atributes[7].Total == enemyPikomon.Atributes[7].Total){
+        if((rand() % 100 + 1) > 50) b = true;
+        else b = false;
+        turnCost = selfPikomon.Atributes[7].Total;
+    }
+    while(i < 6){
+        if(b){
+            selfSpeedCharged += selfPikomon.Atributes[7].Total;
+            while(selfSpeedCharged - turnCost >= 0){
+                selfSpeedCharged -= turnCost;
+                calcNextTurn[i] = 'S';
+                i++;
+                if(i >= 6) break;
+            }
+            b = !b;
+        }
+        else{
+            enemySpeedCharge += enemyPikomon.Atributes[7].Total;
+            while(enemySpeedCharge - turnCost >= 0){
+                enemySpeedCharge -= turnCost;
+                calcNextTurn[i] = 'E';
+                i++;
+                if(i >= 6) break;
+            }
+            b = !b;
+        }
+    }
 }
 //------------------------------------------------------------------------------//
