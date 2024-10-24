@@ -525,39 +525,71 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
 
 bool DebugItems(ItPointer pItems, int index, int ItemsQuantity)
 {
-    /*if(index == -1){
+    if(index == -1){
         for(index = 0; index < ItemsQuantity; index++){
-            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pItems[index].Name, pItems[index].Type, pItems[index].Target);
+            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", 
+            pItems[index].Name, 
+            pItems[index].Type, 
+            pItems[index].EffectTarget);
         }
     }
     else if(index > -1 && index < ItemsQuantity){
-            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pItems[index].Name, pItems[index].Type, pItems[index].Target);
+            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", 
+            pItems[index].Name, 
+            pItems[index].Type, 
+            pItems[index].EffectTarget);
     }
     else{
-        perror("index usado na função \"DebugItems\" não permitido");
+        perror("index ruim mano");
         return false;
     }
-    return true;*/
+    return true;
 }
 
 bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity)
 {
-    /*if(index == -1){
+    if(index == -1){
         int i;
         for(i = 0; i < skillsQuantity; i++){
-            printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", pSkills[index].Name, pSkills[index].Target, pSkills[index].AttackScale, pSkills[index].MagicAttackScale);
-            printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n\n",pSkills[index].Element[0],pSkills[index].Element[1],pSkills[index].Element[2],pSkills[index].Element[3],pSkills[index].Element[4],pSkills[index].Element[5],pSkills[index].Element[6],pSkills[index].Element[7],pSkills[index].Element[8],pSkills[index].Element[9]);
+            printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", 
+                pSkills[index].Name, 
+                pSkills[index].Target, 
+                pSkills[index].AttackScale, 
+                pSkills[index].MagicAttackScale);
+            printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n\n",pSkills[index].Element[0],
+                pSkills[index].Element[1],
+                pSkills[index].Element[2],
+                pSkills[index].Element[3],
+                pSkills[index].Element[4],
+                pSkills[index].Element[5],
+                pSkills[index].Element[6],
+                pSkills[index].Element[7],
+                pSkills[index].Element[8],
+                pSkills[index].Element[9]);
         }
     }
     else if(index > -1 && index < skillsQuantity){
-        printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", pSkills[index].Name, pSkills[index].Target, pSkills[index].AttackScale, pSkills[index].MagicAttackScale);
-        printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n\n",pSkills[index].Element[0],pSkills[index].Element[1],pSkills[index].Element[2],pSkills[index].Element[3],pSkills[index].Element[4],pSkills[index].Element[5],pSkills[index].Element[6],pSkills[index].Element[7],pSkills[index].Element[8],pSkills[index].Element[9]);
+            printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", 
+                pSkills[index].Name, 
+                pSkills[index].Target, 
+                pSkills[index].AttackScale, 
+                pSkills[index].MagicAttackScale);
+            printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n\n",pSkills[index].Element[0],
+                pSkills[index].Element[1],
+                pSkills[index].Element[2],
+                pSkills[index].Element[3],
+                pSkills[index].Element[4],
+                pSkills[index].Element[5],
+                pSkills[index].Element[6],
+                pSkills[index].Element[7],
+                pSkills[index].Element[8],
+                pSkills[index].Element[9]);
     }
     else{
         perror("index usado na função \"DebugSkills\" não permitido");
         return false;
     }
-    return true;*/
+    return true;
 }
 //------------------------------------------------------------------------------//
 
