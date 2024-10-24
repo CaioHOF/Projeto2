@@ -13,14 +13,16 @@
 typedef struct Personality{
     char Name[20];
     
-    //Definir os modificadores em double como porcentagem, Exemplo 1.2 é 120%, 0.85 é 85%
+    //Definir os modificadores em double como porcentagem, Exemplo 120 é 120%, 85 é 85%
     
-    double BaseHPModifier;
-    double BaseDefenseModifier;
-    double BaseMagicDefenseModifier;
-    double BaseAttackModifier;
-    double BaseMagicAttackModifier;
-    double BaseSpeedModifier;
+    int BaseHPModifier;
+    int BaseDefenseModifier;
+    int BaseMagicDefenseModifier;
+    int BaseAcurracyModifier;
+    int BaseAttackModifier;
+    int BaseElementalAcurracyModifier;
+    int BaseMagicAttackModifier;
+    int BaseSpeedModifier;
 
 }Personality;
 
@@ -46,10 +48,11 @@ typedef struct Atribute
 
 typedef struct Element
 {
-    char Name[20];
 
-    double StatusEffectChance;
+    char Name[20];
+    Effect CurrentHPEffect;
     Effect StatusEffect[8];
+
 
 }Element;
 
@@ -119,7 +122,7 @@ typedef struct Pikomon
 {
 
     char Name[10];
-    char IconImg[7][19];
+    char IconImg[7][20];
     Element Element;
     Personality Personality;
 
@@ -149,12 +152,13 @@ typedef struct Player
     char Pass[7];
     
     int Pikocoins;
-    int BagCurrentSize;
-    int SelectedPikomonIndex;
 
+    int SelectedPikomonIndex;
     Pikomon BatlePikomons[6];
+
     Pikomon PikomonsStorage[12];
 
+    int BagCurrentSize;
     ItPointer Bag;
 
 }Player, *PlPointer;
@@ -883,8 +887,8 @@ bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove
         perror("ERRO, \"indexRemove\" tem que ser menor que \"dataQuantities.Skill\" em \"RemoveSkill\"");
         return false;
     }
-    
-    Skill tempSkills[dataQuantities.Skill-1];
+    SkPointer tempSkills;
+    tempSkills = (SkPointer)calloc(dataQuantities.Skill-1, sizeof(Skill));
     int i, j = 0;
     for(i = 0; i < dataQuantities.Skill; i++){
         if(i != indexRemove){
@@ -897,6 +901,7 @@ bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove
     for(i = 0; i < dataQuantities.Skill; i++){
         pSkills[i] = tempSkills[i];
     }
+    free(tempSkills);
 }
 
 bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
@@ -908,8 +913,8 @@ bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
         perror("ERRO, \"indexRemove\" tem que ser menor que \"dataQuantities.Item\" em \"RemoveItem\"");
         return false;
     }
-    
-    Item tempItems[dataQuantities.Item-1];
+    ItPointer tempItems;
+    tempItems = (ItPointer)calloc(dataQuantities.Item-1, sizeof(Item));
     int i, j = 0;
     for(i = 0; i < dataQuantities.Item; i++){
         if(i != indexRemove){
@@ -922,6 +927,7 @@ bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
     for(i = 0; i < dataQuantities.Item; i++){
         pItems[i] = tempItems[i];
     }
+    free(tempItems);
 }
 
 bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRemove){
@@ -933,8 +939,8 @@ bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRe
         perror("ERRO, \"indexRemove\" tem que ser menor que \"dataQuantities.Pikomon\" em \"RemovePikomon\"");
         return false;
     }
-    
-    Pikomon tempPikomons[dataQuantities.Pikomon-1];
+    PiPointer tempPikomons;
+    tempPikomons = (PiPointer)calloc(dataQuantities.Pikomon-1, sizeof(Pikomon));
     int i, j = 0;
     for(i = 0; i < dataQuantities.Pikomon; i++){
         if(i != indexRemove){
@@ -947,9 +953,10 @@ bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRe
     for(i = 0; i < dataQuantities.Pikomon; i++){
         pPikomons[i] = tempPikomons[i];
     }
+    free(tempPikomons);
 }
 
-bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
+bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){ 
     if(bagSellIndex >= pPlayers[playerIndex].BagCurrentSize){
         perror("ERRO, \"bagSellIndex\" tem que ser menor que \"pPlayers[playerIndex].BagCurrentSize\" em \"SellItemPlayerBag\"");
         return false;
@@ -958,8 +965,13 @@ bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
         perror("ERRO, \"bagSellIndex\" não pode ser menor que zero em \"SellItemPlayerBag\"");
         return false;
     }
+    if(pPlayers[playerIndex].BagCurrentSize == 0){
+        perror("ERRO, \"pPlayers[playerIndex].BagCurrentSize\" não pode ser zero em \"SellItemPlayerBag\"");
+        return false;
+    }
     
-    Item tempItems[pPlayers[playerIndex].BagCurrentSize-1];
+    ItPointer tempItems;
+    tempItems = (ItPointer)calloc(pPlayers[playerIndex].BagCurrentSize-1, sizeof(Item));
     int i, j = 0;
     for(i = 0; i < pPlayers[playerIndex].BagCurrentSize; i++){
         if(i != bagSellIndex){
@@ -975,6 +987,7 @@ bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
     for(i = 0; i < pPlayers[playerIndex].BagCurrentSize; i++){
         pPlayers[playerIndex].Bag[i] = tempItems[i];
     }
+    free(tempItems);
 }
 //------------------------------------------------------------------------------//
 
@@ -985,10 +998,9 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7
 
     calcNextTurn[6] = '\0';
     bool b;
-    int i = 0, turnCost, selfSpeedCharged, enemySpeedCharge;
-
+    int i = 0, turnCost, selfSpeedCharged = 0, enemySpeedCharge = 0;
     if(selfPikomon.Atributes[7].Total > enemyPikomon.Atributes[7].Total) turnCost = enemyPikomon.Atributes[7].Total, b = true;
-    else turnCost = selfPikomon.Atributes[7].Total, b = false;
+    else if(selfPikomon.Atributes[7].Total < enemyPikomon.Atributes[7].Total) turnCost = selfPikomon.Atributes[7].Total, b = false;
 
     if(selfPikomon.Atributes[7].Total == enemyPikomon.Atributes[7].Total){
         if((rand() % 100 + 1) > 50) b = true;
@@ -1020,37 +1032,51 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7
 }
 
 void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
-    bool playerOneTurn;
+    bool playerOneTurn, reset, nextTurnReset, battleIsOver;
     int i = 0, turnCost;
-    PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon;
-    if(selectedPlayerOnePicomon[0].Atributes[7].Total > pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex].Atributes[7].Total) turnCost = enemyPikomon.Atributes[7].Total, b = true;
-    else turnCost = selfPikomon.Atributes[7].Total, b = false;
-
-    if(selfPikomon.Atributes[7].Total == enemyPikomon.Atributes[7].Total){
-        if((rand() % 100 + 1) > 50) b = true;
-        else b = false;
-        turnCost = selfPikomon.Atributes[7].Total;
-    }
-    while(i < 6){
-        if(b){
-            selfSpeedCharged += selfPikomon.Atributes[7].Total;
-            while(selfSpeedCharged - turnCost >= 0){
-                selfSpeedCharged -= turnCost;
-                calcNextTurn[i] = 'S';
-                i++;
-                if(i >= 6) break;
+    PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
+    reset = true;
+    battleIsOver = false;
+    while(!battleIsOver){
+        if(nextTurnReset){
+            nextTurnReset = false;
+            reset = true;
+        }
+        //Recalcula os turnos toda a vez que tiver um reset, tipo quando a velocidade alterar
+        if(reset){
+            if(selectedPlayerOnePicomon[0].Atributes[7].Total == selectedPlayerTwoPicomon[0].Atributes[7].Total){
+                if((rand() % 100 + 1) > 50) playerOneTurn = true;
+                else playerOneTurn = false;
+            turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total;
             }
-            b = !b;
+            else if(selectedPlayerOnePicomon[0].Atributes[7].Total > selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerTwoPicomon[0].Atributes[7].Total, playerOneTurn = true;
+            else if(selectedPlayerOnePicomon[0].Atributes[7].Total < selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total, playerOneTurn = false;
+        }
+
+
+        if(playerOneTurn){
+            selectedPlayerOnePicomon[0].ChargedSpeed += selectedPlayerOnePicomon[0].Atributes[7].Total;
+            while(selectedPlayerOnePicomon[0].ChargedSpeed - turnCost >= 0){
+                selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
+
+                /* 
+                    ações do player1
+                */
+
+            }
+            playerOneTurn = false;
         }
         else{
-            enemySpeedCharge += enemyPikomon.Atributes[7].Total;
-            while(enemySpeedCharge - turnCost >= 0){
-                enemySpeedCharge -= turnCost;
-                calcNextTurn[i] = 'E';
-                i++;
-                if(i >= 6) break;
+            selectedPlayerTwoPicomon[0].ChargedSpeed += selectedPlayerTwoPicomon[0].Atributes[7].Total;
+            while(selectedPlayerTwoPicomon[0].ChargedSpeed - turnCost >= 0){
+                selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
+
+                /* 
+                    ações do player2
+                */
+
             }
-            b = !b;
+            playerOneTurn = true;
         }
     }
 }
