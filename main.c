@@ -176,6 +176,7 @@ bool SaveSkills(SkPointer pSkills, int skillsQuantity, const char* destino);
 bool SaveItems(ItPointer pItems, int ItemsQuantity, const char* destino);
 bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char* destino);
 bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char* destino);
+bool Login(PlPointer pPlayers,int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2);
 
 int main(){ 
     /**Declarações**/
@@ -212,6 +213,13 @@ int main(){
     PiPointer pPikomons = NULL;
 
     PlPointer pPlayers = NULL;
+
+    // --------------------  Login  --------------------------------------
+
+    char *nomeUsuario1[20], *nomeUsuario2[20];
+
+
+
     //------------------------------------------------------------------------------------------------------------------//
 
 
@@ -1081,3 +1089,61 @@ void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
     }
 }
 //------------------------------------------------------------------------------//
+
+
+bool Login(PlPointer pPlayers,int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2){
+    char usernameEntrada[20];
+    char passEntrada[7];
+    int userNumero = 1;
+    int indexPlayerLoop;
+    bool usernameAchado = false;
+    bool senhaAchado = false;
+    login1 = false;
+    login2 = false;
+     while(!login1 || !login2){
+        if(!login1){
+            MenuLogin(userNumero);
+            printf("                    Insira seu Username: ");
+            scanf("%s", &usernameEntrada);
+            printf("                    Insira sua Senha   : ");
+            scanf("%s", &passEntrada);
+        }
+        else{
+            userNumero = 2;
+            MenuLogin(userNumero);
+            printf("                    Insira seu Username: ");
+            scanf("%s", &usernameEntrada);
+            printf("                    Insira sua Senha   : ");
+            scanf("%s", &passEntrada);
+            }
+        for (indexPlayerLoop = 0; indexPlayerLoop < playersQuantity ; indexPlayerLoop++)
+        {
+            if (strcmp(pPlayers[indexPlayerLoop].Name, usernameEntrada) == 0){
+                usernameAchado = true;
+                break;
+            }
+        }
+        for (indexPlayerLoop = 0; indexPlayerLoop < playersQuantity ; indexPlayerLoop++)
+        {
+            if (strcmp(pPlayers[indexPlayerLoop].Pass, passEntrada) == 0){
+                senhaAchado = true;
+                break;
+            }
+        }
+        if(usernameAchado && senhaAchado){
+            if(!login1){
+                nomeUsuario1 = usernameEntrada;
+                login1 = true;
+            }
+            else{
+                nomeUsuario2 = usernameEntrada;
+                login2 = true;
+            }
+            printf("Bem Vindo, %s, você está logado!", usernameEntrada);
+        }
+    }
+    return true;
+    }
+
+
+
