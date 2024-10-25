@@ -71,6 +71,10 @@ typedef struct Skill
 {
     
     char Name[20];
+    char Type[20];
+    char Description[3][255];
+    char Active[20];
+    char ActiveDescription[3][255];
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
     bool LearnablePersonalities[13];
     bool LearnableElements[10];
@@ -124,6 +128,8 @@ typedef struct Pikomon
 
     char Name[10];
     char IconImg[7][20];
+    char Passive[20];
+    char PassiveDescription[3][255];
     Element Element;
     Personality Personality;
 
