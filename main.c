@@ -470,6 +470,16 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
                        pPikomon[index].Atributes[3].Total,
                        pPikomon[index].Atributes[5]);
 
+
+                // Exibir IconImg do Pikomon
+                printf("IconImg:\n");
+                for (j = 0; j < 7; j++)
+                {
+                    printf("| %s |\n", pPikomon[index].IconImg[j]);
+                }
+                printf("\n");
+
+
                 // Exibir habilidades do Pikomon
                 for (k = 0; k < 4; k++)
                 {
@@ -501,6 +511,15 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
                    pPikomon[index].Atributes[7].Total,
                    pPikomon[index].Atributes[3].Total,
                    pPikomon[index].Atributes[5]);
+
+
+
+            printf("IconImg:\n");
+            for (j = 0; j < 7; j++)
+            {
+                printf("| %s |\n", pPikomon[index].IconImg[j]);
+            }
+            printf("\n");
 
             // Exibir habilidades do Pikomon
             for (k = 0; k < 4; k++)
