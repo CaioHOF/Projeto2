@@ -3,6 +3,7 @@
 #include <string.h>
 #include <locale.h>
 #include <stdbool.h>
+#include <math.h>
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -51,6 +52,7 @@ typedef struct Element
 
     char Name[20];
     int Effectiveness[10];
+    int ElementalDamageScale;
     Effect CurrentHPEffect;
     Effect StatusEffect[8];
 
@@ -1103,5 +1105,10 @@ void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
             playerOneTurn = true;
         }
     }
+}
+
+void CalcSkill(PiPointer atacker, int skillIndex, PiPointer defenser){
+    double physicalDamageReduction, magicDamageReduction;
+    physicalDamageReduction = 1 - (log10(defenser[0].)/log10()); 
 }
 //------------------------------------------------------------------------------//
