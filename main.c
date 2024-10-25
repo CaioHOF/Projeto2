@@ -72,7 +72,7 @@ typedef struct Skill
     
     char Name[20];
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
-    bool LearnablePersonalities[10];
+    bool LearnablePersonalities[13];
     bool LearnableElements[10];
     double ElementEffectChance;
     Element Element;
@@ -171,7 +171,7 @@ bool DebugPlayers(PlPointer pPlayers, int index, int playersQuantity);
 bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity);
 bool DebugItems(ItPointer pItems, int index, int ItemsQuantity);
 bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity);
-bool SavePersonalities(Personality allPersonalities[10], const char *destino);
+bool SavePersonalities(Personality allPersonalities[13], const char *destino);
 bool SaveElements(Element allElements[10], const char *destino);
 bool SaveDataQuantity(DataQuantity dataQuantities, const char *destino);
 bool SaveSkills(SkPointer pSkills, int skillsQuantity, const char *destino);
@@ -179,7 +179,7 @@ bool SaveItems(ItPointer pItems, int ItemsQuantity, const char *destino);
 bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino);
 bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino);
 void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players);
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[10], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]);
+bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]);
 bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char *description[3], int value, char effectCurrentHPTarget, Effect enemyEffectCurrentHP, Effect selfEffectCurrentHP, char effectTarget, double enemyStatusEffectChance, Effect enemyStatusEffect[8], double selfStatusEffectChance, Effect selfStatusEffect[8]);
 bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed);
 bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass);
@@ -231,157 +231,26 @@ int main(){
     PlPointer pPlayers = NULL;
     //------------------------------------------------------------------------------------------------------------------//
 
-
-    char Name[20];
-    int rarity;
-
-    //Definir os modificadores em double como porcentagem, Exemplo 120 é 120%, 85 é 85%
-    int BaseHPModifier;
-    int BaseDefenseModifier;
-    int BaseMagicDefenseModifier;
-    int BaseAcurracyModifier;
-    int BaseAttackModifier;
-    int BaseElementalAcurracyModifier;
-    int BaseMagicAttackModifier;
-    int BaseSpeedModifier;
-
     /**Loads**/
     //------------------------------------------------------------------------------------------------------------------//
-    strcpy(allPersonalities[0].Name, "Cabeça-Quente");
-    allPersonalities[0].rarity = 1/100;
-    allPersonalities[0].BaseHPModifier = 100;
-    allPersonalities[0].BaseDefenseModifier = 100;
-    allPersonalities[0].BaseMagicDefenseModifier = 100;
-    allPersonalities[0].BaseAcurracyModifier = 70;
-    allPersonalities[0].BaseAttackModifier = 130;
-    allPersonalities[0].BaseMagicAttackModifier = 130;
-    allPersonalities[0].BaseSpeedModifier = 100;
 
-    strcpy(allPersonalities[1].Name, "Meigo");
-    allPersonalities[1].rarity = 1/100;
-    allPersonalities[1].BaseHPModifier = 100;
-    allPersonalities[1].BaseDefenseModifier = 115;
-    allPersonalities[1].BaseMagicDefenseModifier = 115;
-    allPersonalities[1].BaseAcurracyModifier = 100;
-    allPersonalities[1].BaseAttackModifier = 85;
-    allPersonalities[1].BaseMagicAttackModifier = 90;
-    allPersonalities[1].BaseSpeedModifier = 100;
-
-    strcpy(allPersonalities[2].Name, "Apressado");
-    allPersonalities[2].rarity = 1/100;
-    allPersonalities[2].BaseHPModifier = 100;
-    allPersonalities[2].BaseDefenseModifier = 100;
-    allPersonalities[2].BaseMagicDefenseModifier = 100;
-    allPersonalities[2].BaseAcurracyModifier = 95;
-    allPersonalities[2].BaseAttackModifier = 80;
-    allPersonalities[2].BaseMagicAttackModifier = 80;
-    allPersonalities[2].BaseSpeedModifier = 130;
-
-    strcpy(allPersonalities[3].Name, "Dorminhoco");
-    allPersonalities[3].rarity = 10/100;
-    allPersonalities[3].BaseHPModifier = 100;
-    allPersonalities[3].BaseDefenseModifier = 100;
-    allPersonalities[3].BaseMagicDefenseModifier = 130;
-    allPersonalities[3].BaseAcurracyModifier = 100;
-    allPersonalities[3].BaseAttackModifier = 100;
-    allPersonalities[3].BaseMagicAttackModifier = 80;
-    allPersonalities[3].BaseSpeedModifier = 70;
-
-    strcpy(allPersonalities[4].Name, "Místico");
-    allPersonalities[4].rarity = 5/100;
-    allPersonalities[4].BaseHPModifier = 100;
-    allPersonalities[4].BaseDefenseModifier = 90;
-    allPersonalities[4].BaseMagicDefenseModifier = 130;
-    allPersonalities[4].BaseAcurracyModifier = 100;
-    allPersonalities[4].BaseAttackModifier = 70;
-    allPersonalities[4].BaseMagicAttackModifier = 130;
-    allPersonalities[4].BaseSpeedModifier = 100;
-
-    strcpy(allPersonalities[5].Name, "Hercúleo");
-    allPersonalities[5].rarity = 5/100;
-    allPersonalities[5].BaseHPModifier = 100;
-    allPersonalities[5].BaseDefenseModifier = 110;
-    allPersonalities[5].BaseMagicDefenseModifier = 90;
-    allPersonalities[5].BaseAcurracyModifier = 100;
-    allPersonalities[5].BaseAttackModifier = 130;
-    allPersonalities[5].BaseMagicAttackModifier = 70;
-    allPersonalities[5].BaseSpeedModifier = 100;
-
-    strcpy(allPersonalities[6].Name, "Assustado");
-    allPersonalities[6].rarity = 8/100;
-    allPersonalities[6].BaseHPModifier = 100;
-    allPersonalities[6].BaseDefenseModifier = 80;
-    allPersonalities[6].BaseMagicDefenseModifier = 80;
-    allPersonalities[6].BaseAcurracyModifier = 100;
-    allPersonalities[6].BaseAttackModifier = 100;
-    allPersonalities[6].BaseMagicAttackModifier = 100;
-    allPersonalities[6].BaseSpeedModifier = 130;
-
-    strcpy(allPersonalities[7].Name, "Jovial");
-    allPersonalities[7].rarity = 1/100;
-    allPersonalities[7].BaseHPModifier = 100;
-    allPersonalities[7].BaseDefenseModifier = 110;
-    allPersonalities[7].BaseMagicDefenseModifier = 110;
-    allPersonalities[7].BaseAcurracyModifier = 110;
-    allPersonalities[7].BaseAttackModifier = 110;
-    allPersonalities[7].BaseMagicAttackModifier = 110;
-    allPersonalities[7].BaseSpeedModifier = 110;
-
-    strcpy(allPersonalities[8].Name, "Afobado");
-    allPersonalities[8].rarity = 8/100;
-    allPersonalities[8].BaseHPModifier = 100;
-    allPersonalities[8].BaseDefenseModifier = 100;
-    allPersonalities[8].BaseMagicDefenseModifier = 100;
-    allPersonalities[8].BaseAcurracyModifier = 80;
-    allPersonalities[8].BaseAttackModifier = 100;
-    allPersonalities[8].BaseMagicAttackModifier = 100;
-    allPersonalities[8].BaseSpeedModifier = 120;
-
-    strcpy(allPersonalities[9].Name, "Teimoso");
-    allPersonalities[9].rarity = 1/100;
-    allPersonalities[9].BaseHPModifier = 100;
-    allPersonalities[9].BaseDefenseModifier = 85;
-    allPersonalities[9].BaseMagicDefenseModifier = 85;
-    allPersonalities[9].BaseAcurracyModifier = 130;
-    allPersonalities[9].BaseAttackModifier = 100;
-    allPersonalities[9].BaseMagicAttackModifier = 100;
-    allPersonalities[9].BaseSpeedModifier = 100;
-
-    strcpy(allPersonalities[10].Name, "Invejoso");
-    allPersonalities[10].rarity = 1/100;
-    allPersonalities[10].BaseHPModifier = 100;
-    allPersonalities[10].BaseDefenseModifier = 100;
-    allPersonalities[10].BaseMagicDefenseModifier = 120;
-    allPersonalities[10].BaseAcurracyModifier = 100;
-    allPersonalities[10].BaseAttackModifier = 100;
-    allPersonalities[10].BaseMagicAttackModifier = 120;
-    allPersonalities[10].BaseSpeedModifier = 80;
-
-    strcpy(allPersonalities[11].Name, "Resistente");
-    allPersonalities[11].rarity = 1/100;
-    allPersonalities[11].BaseHPModifier = 100;
-    allPersonalities[11].BaseDefenseModifier = 130;
-    allPersonalities[11].BaseMagicDefenseModifier = 100;
-    allPersonalities[11].BaseAcurracyModifier = 100;
-    allPersonalities[11].BaseAttackModifier = 100;
-    allPersonalities[11].BaseMagicAttackModifier = 100;
-    allPersonalities[11].BaseSpeedModifier = 70;
-
-    strcpy(allPersonalities[12].Name, "Decidido");
-    allPersonalities[12].rarity = 1/100;
-    allPersonalities[12].BaseHPModifier = 100;
-    allPersonalities[12].BaseDefenseModifier = 120;
-    allPersonalities[12].BaseMagicDefenseModifier = 100;
-    allPersonalities[12].BaseAcurracyModifier = 100;
-    allPersonalities[12].BaseAttackModifier = 120;
-    allPersonalities[12].BaseMagicAttackModifier = 100;
-    allPersonalities[12].BaseSpeedModifier = 80;
+    dBPersonalities = fopen(personalities, "rb");
+    if(dBPersonalities == NULL){
+        perror("Falha ao abrir \"personalities\"");
+        return 1;
+    }
+    fread(allPersonalities, sizeof(Personality), 13, dBPersonalities);
+    if(allPersonalities == NULL){
+        perror("Falha ao ler as personalidades!");
+        return 2;
+    }
+    fclose(dBPersonalities);
 
     dBDataQuantity = fopen(dataQuantity, "r");
     if(dBDataQuantity == NULL){
         perror("Falha ao abrir \"dataQuantity\"");
         return 1;
-    } 
+    }
     fgets(readLine,256,dBDataQuantity);
     fgets(readLine,256,dBDataQuantity);
     sscanf(readLine, "%d,%d,%d,%d", &dataQuantities.Player, &dataQuantities.Pikomon, &dataQuantities.Item, &dataQuantities.Skill);
@@ -579,7 +448,7 @@ bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity){
 
 /**Save Functions**/
 //------------------------------------------------------------------------------//
-bool SavePersonalities(Personality allPersonalities[10], const char *destino){
+bool SavePersonalities(Personality allPersonalities[13], const char *destino){
     FILE* dBPersonalities;
     dBPersonalities = fopen(destino, "wb");
     if (dBPersonalities == NULL)
@@ -587,7 +456,7 @@ bool SavePersonalities(Personality allPersonalities[10], const char *destino){
         perror("falha ao abrir \"dBPersonalities\" na função \"SavePersonalities\"");
         return false;
     }
-    fwrite(allPersonalities, sizeof(Personality), 10, dBPersonalities);
+    fwrite(allPersonalities, sizeof(Personality), 13, dBPersonalities);
     fclose(dBPersonalities);
     return true;
 }
@@ -717,7 +586,7 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
 
 /**Manage Memory Functions**/
 //------------------------------------------------------------------------------//
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[10], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]){
+bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pSkills == NULL){
         perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
@@ -762,7 +631,7 @@ bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char t
     strcpy(pSkills[dataQuantities.Skill-1].Name, name);
     pSkills[dataQuantities.Skill-1].Target = target;
     int i;
-    for(i = 0; i < 10; i++){
+    for(i = 0; i < 13; i++){
         pSkills[dataQuantities.Skill-1].LearnablePersonalities[i] = learnablePersonalities[i];
         pSkills[dataQuantities.Skill-1].LearnableElements[i] = LearnableElements[i];
     }
