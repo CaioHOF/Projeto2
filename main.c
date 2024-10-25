@@ -80,23 +80,23 @@ typedef struct Skill
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
     bool LearnablePersonalities[13];
     bool LearnableElements[10];
-    double ElementEffectChance;
+    int ElementEffectChance;
     Element Element;
 
     char Target;
     int  AttackBase;
-    double AttackScale;
+    int AttackScale;
     int MagicBase;
-    double MagicAttackScale;
-    double CritChance;
+    int MagicAttackScale;
+    int CritChance;
 
     //Isso daqui é expecificamente da skill, sem contar o elemento
     char EffectTarget;
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
-    double EnemyEffectChance; 
+    int EnemyEffectChance;
     Effect EnemyEffect[8];
 
-    double SelfEffectChance;
+    int SelfEffectChance;
     Effect SelfEffect[8];
 
 }Skill, *SkPointer;
@@ -109,6 +109,7 @@ typedef struct Item
     char Description[3][255];
     int Value;
 
+    bool CurrentHPDamageIsPhysic;
     char EffectCurrentHPTarget;
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
     Effect EnemyEffectCurrentHP;
@@ -117,10 +118,10 @@ typedef struct Item
     
     char EffectTarget;
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
-    double EnemyStatusEffectChance;
+    int EnemyStatusEffectChance;
     Effect EnemyStatusEffect[8];
 
-    double SelfStatusEffectChance;
+    int SelfStatusEffectChance;
     Effect SelfStatusEffect[8];
 
 }Item, *ItPointer;
@@ -1038,7 +1039,7 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7
             selfSpeedCharged += selfPikomon.Atributes[7].Total;
             while(selfSpeedCharged - turnCost >= 0){
                 selfSpeedCharged -= turnCost;
-                calcNextTurn[i] = 'S';
+                calcNextTurn[i] = '1';
                 i++;
                 if(i >= 6) break;
             }
@@ -1048,7 +1049,7 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7
             enemySpeedCharge += enemyPikomon.Atributes[7].Total;
             while(enemySpeedCharge - turnCost >= 0){
                 enemySpeedCharge -= turnCost;
-                calcNextTurn[i] = 'E';
+                calcNextTurn[i] = '2';
                 i++;
                 if(i >= 6) break;
             }
@@ -1108,7 +1109,38 @@ void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
 }
 
 void CalcSkill(PiPointer atacker, int skillIndex, PiPointer defenser){
+    
+    
+    double ElementEffectChance;
+    Element Element;
+
+    char Target;
+    int  AttackBase;
+    double AttackScale;
+    int MagicBase;
+    double MagicAttackScale;
+    double CritChance;
+
+    //Isso daqui é expecificamente da skill, sem contar o elemento
+    char EffectTarget;
+    //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
+    double EnemyEffectChance;
+    Effect EnemyEffect[8];
+
+    double SelfEffectChance;
+    Effect SelfEffect[8];
+    
+
+
+
     double physicalDamageReduction, magicDamageReduction;
-    physicalDamageReduction = 1 - (log10(defenser[0].)/log10()); 
+    physicalDamageReduction = 1.0 - ((log10(defenser[0].Atributes[1].Total)/log10(2)) * 0.11);
+    magicDamageReduction = 1.0 - ((log10(defenser[0].Atributes[2].Total)/log10(2)) * 0.11);
+    SkPointer usedSkill = &atacker[0].Skills[skillIndex];
+    defenser[0].CurrentHP.Total -= 
+}
+
+void UseItem(){
+
 }
 //------------------------------------------------------------------------------//
