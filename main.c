@@ -411,7 +411,7 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
                         {
                             if (strlen(pPlayers[index].PikomonsStorage[j].Skills[k].Name) > 0)
                             {
-                                printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf |;\n",
+                                printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %d| |,| MagicAttackScale:| %d |;\n",
                                        pPlayers[index].PikomonsStorage[j].Skills[k].Name,
                                        pPlayers[index].PikomonsStorage[j].Skills[k].Target,
                                        pPlayers[index].PikomonsStorage[j].Skills[k].AttackScale,
@@ -467,7 +467,7 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
                     {
                         if (strlen(pPlayers[index].PikomonsStorage[j].Skills[k].Name) > 0)
                         {
-                            printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf |;\n",
+                            printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %d | |,| MagicAttackScale:| %d |;\n",
                                    pPlayers[index].PikomonsStorage[j].Skills[k].Name,
                                    pPlayers[index].PikomonsStorage[j].Skills[k].Target,
                                    pPlayers[index].PikomonsStorage[j].Skills[k].AttackScale,
@@ -497,7 +497,7 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
             if (strlen(pPikomon[index].Name) > 0)
             {
                 // Exibe os atributos do pikomon
-                printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3lf | |,| Def:| %3lf | |,| SpA:| %3lf | |,| SpD:| %3lf | |,| Spd:| %3lf |,| Acu:| %3lf |,| Eac:| %3lf | |\n",
+                printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
                        pPikomon[index].Name,
                        pPikomon[index].Element.Name,
                        pPikomon[index].Atributes[0].Total,
@@ -507,7 +507,7 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
                        pPikomon[index].Atributes[2].Total,
                        pPikomon[index].Atributes[7].Total,
                        pPikomon[index].Atributes[3].Total,
-                       pPikomon[index].Atributes[5]);
+                       pPikomon[index].Atributes[5].Total);
 
 
                 // Exibir IconImg do Pikomon
@@ -524,7 +524,7 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
                 {
                     if (strlen(pPikomon[index].Skills[k].Name) > 0)
                     {
-                        printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n",
+                        printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %d | |,| MagicAttackScale:| %d | |;\n",
                                pPikomon[index].Skills[k].Name,
                                pPikomon[index].Skills[k].Target,
                                pPikomon[index].Skills[k].AttackScale,
@@ -539,7 +539,7 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
         // Exibir apenas um Pikomon
         if (strlen(pPikomon[index].Name) > 0)
         {
-            printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3lf | |,| Def:| %3lf | |,| SpA:| %3lf | |,| SpD:| %3lf | |,| Spd:| %3lf |,| Acu:| %3lf |,| Eac:| %3lf | |\n",
+            printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
                    pPikomon[index].Name,
                    pPikomon[index].Element.Name,
                    pPikomon[index].Atributes[0].Total,
@@ -549,7 +549,7 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
                    pPikomon[index].Atributes[2].Total,
                    pPikomon[index].Atributes[7].Total,
                    pPikomon[index].Atributes[3].Total,
-                   pPikomon[index].Atributes[5]);
+                   pPikomon[index].Atributes[5].Total);
 
 
 
@@ -565,7 +565,7 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
             {
                 if (strlen(pPikomon[index].Skills[k].Name) > 0)
                 {
-                    printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n",
+                    printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %d | |,| MagicAttackScale:| %d | |;\n",
                            pPikomon[index].Skills[k].Name,
                            pPikomon[index].Skills[k].Target,
                            pPikomon[index].Skills[k].AttackScale,
@@ -610,7 +610,7 @@ bool DebugItems(ItPointer pItems, int index, int ItemsQuantity)
                    pItems[index].SelfEffectCurrentHP.Quantity,
                    pItems[index].SelfEffectCurrentHP.Timer);
 
-            printf("| Enemy Status Effect Chance: %lf |\n", pItems[index].EnemyStatusEffectChance);
+            printf("| Enemy Status Effect Chance: %d |\n", pItems[index].EnemyStatusEffectChance);
             for (int k = 0; k < 8; k++)
             {
                 if (pItems[index].EnemyStatusEffect[k].Quantity > 0) 
@@ -622,7 +622,7 @@ bool DebugItems(ItPointer pItems, int index, int ItemsQuantity)
                 }
             }
 
-            printf("| Self Status Effect Chance: %lf |\n", pItems[index].SelfStatusEffectChance);
+            printf("| Self Status Effect Chance: %d |\n", pItems[index].SelfStatusEffectChance);
             for (int k = 0; k < 8; k++)
             {
                 if (pItems[index].SelfStatusEffect[k].Quantity > 0)
@@ -660,7 +660,7 @@ bool DebugItems(ItPointer pItems, int index, int ItemsQuantity)
                pItems[index].SelfEffectCurrentHP.Quantity,
                pItems[index].SelfEffectCurrentHP.Timer);
 
-        printf("| Enemy Status Effect Chance: %lf |\n", pItems[index].EnemyStatusEffectChance);
+        printf("| Enemy Status Effect Chance: %d |\n", pItems[index].EnemyStatusEffectChance);
         for (int k = 0; k < 8; k++)
         {
             if (pItems[index].EnemyStatusEffect[k].Quantity > 0) 
@@ -672,7 +672,7 @@ bool DebugItems(ItPointer pItems, int index, int ItemsQuantity)
             }
         }
 
-        printf("| Self Status Effect Chance: %lf |\n", pItems[index].SelfStatusEffectChance);
+        printf("| Self Status Effect Chance: %d |\n", pItems[index].SelfStatusEffectChance);
         for (int k = 0; k < 8; k++)
         {
             if (pItems[index].SelfStatusEffect[k].Quantity > 0) 
@@ -699,7 +699,7 @@ bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity)
     {
         for (index = 0; index < skillsQuantity; index++)
         {
-            printf("Name:%s | Target:%c | ElementEffectChance:%.2lf | AttackBase:%d | AttackScale:%.2lf | MagicBase:%d | MagicAttackScale:%.2lf | CritChance:%.2lf | EffectTarget:%c | EnemyEffectChance:%.2lf | SelfEffectChance:%.2lf\n",
+            printf("Name:%s | Target:%c | ElementEffectChance:%.2d | AttackBase:%d | AttackScale:%.2d | MagicBase:%d | MagicAttackScale:%.2d | CritChance:%.2d | EffectTarget:%c | EnemyEffectChance:%.2d | SelfEffectChance:%.2d\n",
                    pSkills[index].Name,
                    pSkills[index].Target,
                    pSkills[index].ElementEffectChance,
@@ -715,7 +715,7 @@ bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity)
     }
     else if (index >= 0 && index < skillsQuantity)
     {
-        printf("Name:%s | Target:%c | ElementEffectChance:%.2lf | AttackBase:%d | AttackScale:%.2lf | MagicBase:%d | MagicAttackScale:%.2lf | CritChance:%.2lf | EffectTarget:%c | EnemyEffectChance:%.2lf | SelfEffectChance:%.2lf\n",
+        printf("Name:%s | Target:%c | ElementEffectChance:%.2d | AttackBase:%d | AttackScale:%.2d | MagicBase:%d | MagicAttackScale:%.2d | CritChance:%.2d | EffectTarget:%c | EnemyEffectChance:%.2d | SelfEffectChance:%.2d\n",
                pSkills[index].Name,
                pSkills[index].Target,
                pSkills[index].ElementEffectChance,
@@ -742,12 +742,12 @@ bool DebugPersonality(Personality *personalities, int index) {
         // Exibe todos as personalidades
         for (int i = 0; i < 13; i++) {
             if (strlen(personalities[i].Name) > 0) {
-                printf("| Name:| %20s |,| BaseHPModifier:| %.2lf |,| BaseDefenseModifier:| %.2lf |,| BaseMagicDefenseModifier:| %.2lf |\n",
+                printf("| Name:| %20s |,| BaseHPModifier:| %.2d |,| BaseDefenseModifier:| %.2d |,| BaseMagicDefenseModifier:| %.2d |\n",
                        personalities[i].Name,
                        personalities[i].BaseHPModifier,
                        personalities[i].BaseDefenseModifier,
                        personalities[i].BaseMagicDefenseModifier);
-                printf("| BaseAttackModifier:| %.2lf |,| BaseMagicAttackModifier:| %.2lf |,| BaseSpeedModifier:| %.2lf |\n",
+                printf("| BaseAttackModifier:| %.2d |,| BaseMagicAttackModifier:| %.2d |,| BaseSpeedModifier:| %.2d |\n",
                        personalities[i].BaseAttackModifier,
                        personalities[i].BaseMagicAttackModifier,
                        personalities[i].BaseSpeedModifier);
@@ -756,12 +756,12 @@ bool DebugPersonality(Personality *personalities, int index) {
     } else if (index >= 0 && index < 13) {
         // Exibe apenas uma personalidade especificada pelo índice
         if (strlen(personalities[index].Name) > 0) {
-            printf("| Name:| %20s |,| BaseHPModifier:| %.2lf |,| BaseDefenseModifier:| %.2lf |,| BaseMagicDefenseModifier:| %.2lf |\n",
+            printf("| Name:| %20s |,| BaseHPModifier:| %.2d |,| BaseDefenseModifier:| %.2d |,| BaseMagicDefenseModifier:| %.2d |\n",
                    personalities[index].Name,
                    personalities[index].BaseHPModifier,
                    personalities[index].BaseDefenseModifier,
                    personalities[index].BaseMagicDefenseModifier);
-            printf("| BaseAttackModifier:| %.2lf |,| BaseMagicAttackModifier:| %.2lf |,| BaseSpeedModifier:| %.2lf |\n",
+            printf("| BaseAttackModifier:| %.2d |,| BaseMagicAttackModifier:| %.2d |,| BaseSpeedModifier:| %.2d |\n",
                    personalities[index].BaseAttackModifier,
                    personalities[index].BaseMagicAttackModifier,
                    personalities[index].BaseSpeedModifier);
