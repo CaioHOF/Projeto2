@@ -347,6 +347,65 @@ int main(){
     //------------------------------------------------------------------------------------------------------------------//
     //login
     //menu
+    bool Battle;
+    if(Battle){
+        //Variaveis calcSkill
+        bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit;
+        int selfDamage, enemyDamage;
+        
+        
+        //Variaveis Battle
+        bool playerOneTurn, reset, nextTurnReset, battleIsOver;
+        int i = 0, turnCost;
+        PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
+        reset = true;
+        battleIsOver = false;
+        
+        
+        
+        while(!battleIsOver){
+            //Recalcula os turnos toda a vez que tiver um reset, tipo quando a velocidade alterar
+            if(reset){
+                if(selectedPlayerOnePicomon[0].Atributes[7].Total == selectedPlayerTwoPicomon[0].Atributes[7].Total){
+                    if((rand() % 100 + 1) > 50) playerOneTurn = true;
+                    else playerOneTurn = false;
+                turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total;
+                }
+                else if(selectedPlayerOnePicomon[0].Atributes[7].Total > selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerTwoPicomon[0].Atributes[7].Total, playerOneTurn = true;
+                else if(selectedPlayerOnePicomon[0].Atributes[7].Total < selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total, playerOneTurn = false;
+            }
+            if(nextTurnReset){
+                nextTurnReset = false;
+                reset = true;
+            }
+
+
+            if(playerOneTurn){
+                selectedPlayerOnePicomon[0].ChargedSpeed += selectedPlayerOnePicomon[0].Atributes[7].Total;
+                while(selectedPlayerOnePicomon[0].ChargedSpeed - turnCost >= 0){
+                    selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
+
+                    /* 
+                        ações do player1
+                    */
+
+                }
+                playerOneTurn = false;
+            }
+            else{
+                selectedPlayerTwoPicomon[0].ChargedSpeed += selectedPlayerTwoPicomon[0].Atributes[7].Total;
+                while(selectedPlayerTwoPicomon[0].ChargedSpeed - turnCost >= 0){
+                    selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
+
+                    /* 
+                        ações do player2
+                    */
+
+                }
+                playerOneTurn = true;
+            }
+        }
+    }
     //------------------------------------------------------------------------------------------------------------------//
     //toda a vez que acaba uma batalha tem que usar essa função
     FreeAllHeapMemoryAndSaveEverything(pSkills,pItems,pPikomons,pPlayers,dataQuantities,dataQuantity,skills,items,pikomoms,players);
@@ -607,7 +666,39 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
 //------------------------------------------------------------------------------//
 bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
-    
+    if(pSkills == NULL){
+        perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
+        return false;
+    }
+    if(name == NULL){
+        perror("ERRO, \"name\" não pode ser NULL em \"AddSkill\"");
+        return false;
+    }
+    if(target != 'S' && target != 'E' && target != 'B'){
+        perror("ERRO, \"target\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
+        return false;
+    }
+    if(elementEffectChance < 0){
+        perror("ERRO, \"elementEffectChance\" não pode ser menor que zero em \"AddSkill\"");
+        return false;
+    }
+    if(critChance < 0){
+        perror("ERRO, \"critChance\" não pode ser menor que zero em \"AddSkill\"");
+        return false;
+    }
+    if(effectTarget != 'S' && effectTarget != 'E' && effectTarget != 'B'){
+        perror("ERRO, \"effectTarget\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
+        return false;
+    }
+    if(enemyEffectChance < 0){
+        perror("ERRO, \"enemyEffectChance\" não pode ser menor que zero em \"AddSkill\"");
+        return false;
+    }
+    if(selfEffectChance < 0){
+        perror("ERRO, \"selfEffectChance\" não pode ser menor que zero em \"AddSkill\"");
+        return false;
+    }
+
     dataQuantities.Skill++;
     pSkills = (SkPointer)realloc(pSkills, dataQuantities.Skill * sizeof(Skill));
     if(pSkills == NULL){
@@ -1058,181 +1149,131 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn)
     }
 }
 
-void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
-    bool playerOneTurn, reset, nextTurnReset, battleIsOver;
-    int i = 0, turnCost;
-    PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
-    reset = true;
-    battleIsOver = false;
-    while(!battleIsOver){
-        if(nextTurnReset){
-            nextTurnReset = false;
-            reset = true;
-        }
-        //Recalcula os turnos toda a vez que tiver um reset, tipo quando a velocidade alterar
-        if(reset){
-            if(selectedPlayerOnePicomon[0].Atributes[7].Total == selectedPlayerTwoPicomon[0].Atributes[7].Total){
-                if((rand() % 100 + 1) > 50) playerOneTurn = true;
-                else playerOneTurn = false;
-            turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total;
-            }
-            else if(selectedPlayerOnePicomon[0].Atributes[7].Total > selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerTwoPicomon[0].Atributes[7].Total, playerOneTurn = true;
-            else if(selectedPlayerOnePicomon[0].Atributes[7].Total < selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total, playerOneTurn = false;
-        }
-
-
-        if(playerOneTurn){
-            selectedPlayerOnePicomon[0].ChargedSpeed += selectedPlayerOnePicomon[0].Atributes[7].Total;
-            while(selectedPlayerOnePicomon[0].ChargedSpeed - turnCost >= 0){
-                selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
-
-                /* 
-                    ações do player1
-                */
-
-            }
-            playerOneTurn = false;
-        }
-        else{
-            selectedPlayerTwoPicomon[0].ChargedSpeed += selectedPlayerTwoPicomon[0].Atributes[7].Total;
-            while(selectedPlayerTwoPicomon[0].ChargedSpeed - turnCost >= 0){
-                selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
-
-                /* 
-                    ações do player2
-                */
-
-            }
-            playerOneTurn = true;
-        }
-    }
-}
-
-void CalcSkill(Element allElements[10], PiPointer atacker, int skillIndex, PiPointer defenser, bool elementalEffectHit, bool skillHit, bool critHit, bool selfEffectHit, bool enemyEffectHit, int selfDamage, int enemyDamage){
+void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPointer *defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage){
     int I, J, bonusQuantity;
     double elementalEffectivness;
     double physicalDamageReduction, magicDamageReduction;
-    SkPointer usedSkill = &atacker[0].Skills[skillIndex];
+    SkPointer usedSkill = &(*atacker)[0].Skills[skillIndex];
 
 
-    if(((rand() % 100)+1) <= ((double)usedSkill[0].ElementEffectHitChance) * ((double)atacker[0].Atributes[5].Total)/100.0){
-        elementalEffectHit = true;
-        physicalDamageReduction = 1.0 - ((log10(defenser[0].Atributes[1].Total)/log10(2)) * 0.11);
-        magicDamageReduction = 1.0 - ((log10(defenser[0].Atributes[2].Total)/log10(2)) * 0.11);
-        elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[defenser[0].Element.SelfElementIndex] / 100.0;
+    if(((rand() % 100)+1) <= ((double)usedSkill[0].ElementEffectHitChance) * ((double)(*atacker)[0].Atributes[5].Total)/100.0){
+        *elementalEffectHit = true;
+        physicalDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[1].Total)/log10(2)) * 0.11);
+        magicDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[2].Total)/log10(2)) * 0.11);
+        elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
 
 
-        defenser[0].CurrentHP.BonusQuantity++;
-        bonusQuantity = defenser[0].CurrentHP.BonusQuantity;
-        defenser[0].CurrentHP.acronym = (char**)realloc(defenser[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
-        defenser[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
-        defenser[0].CurrentHP.Bonus = (int*)realloc(defenser[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
-        defenser[0].CurrentHP.BonusTimer = (int*)realloc(defenser[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
-        strcpy(defenser[0].CurrentHP.acronym[bonusQuantity-1], usedSkill[0].Element.Acronym);
-        defenser[0].CurrentHP.Bonus[bonusQuantity-1] = (int)((usedSkill[0].Element.CurrentHPEffect.Quantity + (((double)usedSkill[0].Element.ElementalDamageScale) * ((double)atacker[0].Atributes[6].Total)/ 100.0)) * magicDamageReduction * elementalEffectivness);
-        defenser[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedSkill[0].Element.CurrentHPEffect.Timer;
+        (*defenser)[0].CurrentHP.BonusQuantity++;
+        bonusQuantity = (*defenser)[0].CurrentHP.BonusQuantity;
+        (*defenser)[0].CurrentHP.acronym = (char**)realloc((*defenser)[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
+        (*defenser)[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
+        (*defenser)[0].CurrentHP.Bonus = (int*)realloc((*defenser)[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
+        (*defenser)[0].CurrentHP.BonusTimer = (int*)realloc((*defenser)[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
+        strcpy((*defenser)[0].CurrentHP.acronym[bonusQuantity-1], usedSkill[0].Element.Acronym);
+        (*defenser)[0].CurrentHP.Bonus[bonusQuantity-1] = (int)((usedSkill[0].Element.CurrentHPEffect.Quantity + (((double)usedSkill[0].Element.ElementalDamageScale) * ((double)(*atacker)[0].Atributes[6].Total)/ 100.0)) * magicDamageReduction * elementalEffectivness);
+        (*defenser)[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedSkill[0].Element.CurrentHPEffect.Timer;
         
         for (I = 0; I < 8; I++){
-            defenser[0].Atributes[I].BonusQuantity++;
-            bonusQuantity = defenser[0].Atributes[I].BonusQuantity;
-            defenser[0].Atributes[I].acronym = (char**)realloc(defenser[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
-            defenser[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
-            defenser[0].Atributes[I].Bonus = (int*)realloc(defenser[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
-            defenser[0].Atributes[I].BonusTimer = (int*)realloc(defenser[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
-            strcpy(defenser[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
-            defenser[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
-            defenser[0].Atributes[I].Total += defenser[0].Atributes[I].Bonus[bonusQuantity-1];
-            defenser[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+            (*defenser)[0].Atributes[I].BonusQuantity++;
+            bonusQuantity = (*defenser)[0].Atributes[I].BonusQuantity;
+            (*defenser)[0].Atributes[I].acronym = (char**)realloc((*defenser)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+            (*defenser)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+            (*defenser)[0].Atributes[I].Bonus = (int*)realloc((*defenser)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+            (*defenser)[0].Atributes[I].BonusTimer = (int*)realloc((*defenser)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+            strcpy((*defenser)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
+            (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
+            (*defenser)[0].Atributes[I].Total += (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1];
+            (*defenser)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
         }
     }
-    else elementalEffectHit = false;
+    else *elementalEffectHit = false;
 
 
-    if(((rand() % 100)+1) <= (double)atacker[0].Atributes[3].Total * (double)usedSkill[0].hitChance / 100.0){
+    if(((rand() % 100)+1) <= (double)(*atacker)[0].Atributes[3].Total * (double)usedSkill[0].hitChance / 100.0){
         skillHit = true;
         int magicDamage, physicalDamage;
         if((rand() % 100 +1) <= usedSkill[0].CritChance) critHit = true;
 
-        magicDamage = (int)(((double)atacker[0].Atributes[6].Total * (double)usedSkill[0].MagicAttackScale / 100.0) + usedSkill[0].MagicBase) * critHit ? 2 : 1;
-        physicalDamage = (int)(((double)atacker[0].Atributes[4].Total * (double)usedSkill[0].AttackScale / 100.0) + usedSkill[0].AttackBase) * critHit ? 2 : 1;
+        magicDamage = (int)(((double)(*atacker)[0].Atributes[6].Total * (double)usedSkill[0].MagicAttackScale / 100.0) + usedSkill[0].MagicBase) * (*critHit) ? 2 : 1;
+        physicalDamage = (int)(((double)(*atacker)[0].Atributes[4].Total * (double)usedSkill[0].AttackScale / 100.0) + usedSkill[0].AttackBase) * (*critHit) ? 2 : 1;
         if(usedSkill[0].Target == 'S'){
-            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[atacker[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - ((log10(atacker[0].Atributes[1].Total)/log10(2)) * 0.11);
-            magicDamageReduction = 1.0 - ((log10(atacker[0].Atributes[2].Total)/log10(2)) * 0.11);
-            selfDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
+            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*atacker)[0].Element.SelfElementIndex] / 100.0;
+            physicalDamageReduction = 1.0 - ((log10((*atacker)[0].Atributes[1].Total)/log10(2)) * 0.11);
+            magicDamageReduction = 1.0 - ((log10((*atacker)[0].Atributes[2].Total)/log10(2)) * 0.11);
+            *selfDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
-            atacker[0].CurrentHP.Total -= selfDamage;
+            (*atacker)[0].CurrentHP.Total -= *selfDamage;
 
         }
         else if(usedSkill[0].Target == 'E'){
-            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[defenser[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - ((log10(defenser[0].Atributes[1].Total)/log10(2)) * 0.11);
-            magicDamageReduction = 1.0 - ((log10(defenser[0].Atributes[2].Total)/log10(2)) * 0.11);
-            enemyDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
+            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
+            physicalDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[1].Total)/log10(2)) * 0.11);
+            magicDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[2].Total)/log10(2)) * 0.11);
+            *enemyDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
-            defenser[0].CurrentHP.Total -= enemyDamage;
+            (*defenser)[0].CurrentHP.Total -= *enemyDamage;
 
         }
         else if(usedSkill[0].Target == 'B'){
-            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[atacker[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - ((log10(atacker[0].Atributes[1].Total)/log10(2)) * 0.11);
-            magicDamageReduction = 1.0 - ((log10(atacker[0].Atributes[2].Total)/log10(2)) * 0.11);
-            selfDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
+            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*atacker)[0].Element.SelfElementIndex] / 100.0;
+            physicalDamageReduction = 1.0 - ((log10((*atacker)[0].Atributes[1].Total)/log10(2)) * 0.11);
+            magicDamageReduction = 1.0 - ((log10((*atacker)[0].Atributes[2].Total)/log10(2)) * 0.11);
+            *selfDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
-            atacker[0].CurrentHP.Total -= selfDamage;
+            (*atacker)[0].CurrentHP.Total -= *selfDamage;
 
 
-            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[defenser[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - ((log10(defenser[0].Atributes[1].Total)/log10(2)) * 0.11);
-            magicDamageReduction = 1.0 - ((log10(defenser[0].Atributes[2].Total)/log10(2)) * 0.11);
-            enemyDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
+            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
+            physicalDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[1].Total)/log10(2)) * 0.11);
+            magicDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[2].Total)/log10(2)) * 0.11);
+            *enemyDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
-            defenser[0].CurrentHP.Total -= enemyDamage;
+            (*defenser)[0].CurrentHP.Total -= *enemyDamage;
         }
         else{
             perror("Alvo da skill usada não reconhecido");
         }
     }
-    else skillHit = false;
+    else *skillHit = false;
 
 
     if((rand() % 100 +1 <= usedSkill[0].SelfEffectHitChance)){
         selfEffectHit = true;
         for (I = 0; I < 8; I++){
-            atacker[0].Atributes[I].BonusQuantity++;
-            bonusQuantity = atacker[0].Atributes[I].BonusQuantity;
-            atacker[0].Atributes[I].acronym = (char**)realloc(atacker[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
-            atacker[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
-            atacker[0].Atributes[I].Bonus = (int*)realloc(atacker[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
-            atacker[0].Atributes[I].BonusTimer = (int*)realloc(atacker[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
-            strcpy(atacker[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
-            atacker[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
-            atacker[0].Atributes[I].Total += atacker[0].Atributes[I].Bonus[bonusQuantity-1];
-            atacker[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+            (*atacker)[0].Atributes[I].BonusQuantity++;
+            bonusQuantity = (*atacker)[0].Atributes[I].BonusQuantity;
+            (*atacker)[0].Atributes[I].acronym = (char**)realloc((*atacker)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+            (*atacker)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+            (*atacker)[0].Atributes[I].Bonus = (int*)realloc((*atacker)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+            (*atacker)[0].Atributes[I].BonusTimer = (int*)realloc((*atacker)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+            strcpy((*atacker)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
+            (*atacker)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
+            (*atacker)[0].Atributes[I].Total += (*atacker)[0].Atributes[I].Bonus[bonusQuantity-1];
+            (*atacker)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
         }
     }
-    else selfEffectHit = false;
+    else *selfEffectHit = false;
 
 
     if((rand() % 100 +1 <= usedSkill[0].EnemyEffectHitChance)){
         enemyEffectHit = true;
         for (I = 0; I < 8; I++){
-            defenser[0].Atributes[I].BonusQuantity++;
-            bonusQuantity = defenser[0].Atributes[I].BonusQuantity;
-            defenser[0].Atributes[I].acronym = (char**)realloc(defenser[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
-            defenser[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
-            defenser[0].Atributes[I].Bonus = (int*)realloc(defenser[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
-            defenser[0].Atributes[I].BonusTimer = (int*)realloc(defenser[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
-            strcpy(defenser[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
-            defenser[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
-            defenser[0].Atributes[I].Total += defenser[0].Atributes[I].Bonus[bonusQuantity-1];
-            defenser[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+            (*defenser)[0].Atributes[I].BonusQuantity++;
+            bonusQuantity = (*defenser)[0].Atributes[I].BonusQuantity;
+            (*defenser)[0].Atributes[I].acronym = (char**)realloc((*defenser)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+            (*defenser)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+            (*defenser)[0].Atributes[I].Bonus = (int*)realloc((*defenser)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+            (*defenser)[0].Atributes[I].BonusTimer = (int*)realloc((*defenser)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+            strcpy((*defenser)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
+            (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
+            (*defenser)[0].Atributes[I].Total += (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1];
+            (*defenser)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
         }
     }
-    else enemyEffectHit = false;
+    else *enemyEffectHit = false;
 }
 
-void UseItem(PlPointer playerUsing, PlPointer otherPlayer, int itemUsedIndex){
+void UseItem(PlPointer *playerUsing, PlPointer *otherPlayer, int itemUsedIndex){
     /*
 
     bool CurrentHPDamageIsPhysic;
@@ -1247,8 +1288,8 @@ void UseItem(PlPointer playerUsing, PlPointer otherPlayer, int itemUsedIndex){
     Effect StatusEffect[8];*/
     double playerUsingDamageReduction, otherPlayerDamageReduction;
     ItPointer usedItem;
-    usedItem = &playerUsing[0].Bag[itemUsedIndex];
-    playerUsingDamageReduction = usedItem[0]
+    usedItem = &(*playerUsing)[0].Bag[itemUsedIndex];
+    //playerUsingDamageReduction = usedItem[0]
 }
 
 void PassPikomonTurnTime(){
