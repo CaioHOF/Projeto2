@@ -486,21 +486,100 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
     return true;
 }
 
-bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
-    /*if(index == -1){
-        int j;
-        for(index = 0; index < pikomonsQuantity; index++){
-            printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPikomon[index].Name, pPikomon[index].Element, pPikomon[index].HPCurrent, pPikomon[index].HPMax, pPikomon[index].Defense, pPikomon[index].MagicDefense, pPikomon[index].Attack, pPikomon[index].MagicAttack, pPikomon[index].Speed);
+bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
+{
+    int j, k;
+
+    if (index == -1)
+    {
+        for (index = 0; index < pikomonsQuantity; index++)
+        {
+            if (strlen(pPikomon[index].Name) > 0)
+            {
+                // Exibe os atributos do pikomon
+                printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3lf | |,| Def:| %3lf | |,| SpA:| %3lf | |,| SpD:| %3lf | |,| Spd:| %3lf |,| Acu:| %3lf |,| Eac:| %3lf | |\n",
+                       pPikomon[index].Name,
+                       pPikomon[index].Element.Name,
+                       pPikomon[index].Atributes[0].Total,
+                       pPikomon[index].Atributes[4].Total,
+                       pPikomon[index].Atributes[1].Total,
+                       pPikomon[index].Atributes[6].Total,
+                       pPikomon[index].Atributes[2].Total,
+                       pPikomon[index].Atributes[7].Total,
+                       pPikomon[index].Atributes[3].Total,
+                       pPikomon[index].Atributes[5]);
+
+
+                // Exibir IconImg do Pikomon
+                printf("IconImg:\n");
+                for (j = 0; j < 7; j++)
+                {
+                    printf("| %s |\n", pPikomon[index].IconImg[j]);
+                }
+                printf("\n");
+
+
+                // Exibir habilidades do Pikomon
+                for (k = 0; k < 4; k++)
+                {
+                    if (strlen(pPikomon[index].Skills[k].Name) > 0)
+                    {
+                        printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n",
+                               pPikomon[index].Skills[k].Name,
+                               pPikomon[index].Skills[k].Target,
+                               pPikomon[index].Skills[k].AttackScale,
+                               pPikomon[index].Skills[k].MagicAttackScale);
+                    }
+                }
+            }
         }
     }
-    else if(index > -1 && index < pikomonsQuantity){
-        printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPikomon[index].Name, pPikomon[index].Element, pPikomon[index].HPCurrent, pPikomon[index].HPMax, pPikomon[index].Defense, pPikomon[index].MagicDefense, pPikomon[index].Attack, pPikomon[index].MagicAttack, pPikomon[index].Speed);
+    else if (index >= 0 && index < pikomonsQuantity)
+    {
+        // Exibir apenas um Pikomon
+        if (strlen(pPikomon[index].Name) > 0)
+        {
+            printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3lf | |,| Def:| %3lf | |,| SpA:| %3lf | |,| SpD:| %3lf | |,| Spd:| %3lf |,| Acu:| %3lf |,| Eac:| %3lf | |\n",
+                   pPikomon[index].Name,
+                   pPikomon[index].Element.Name,
+                   pPikomon[index].Atributes[0].Total,
+                   pPikomon[index].Atributes[4].Total,
+                   pPikomon[index].Atributes[1].Total,
+                   pPikomon[index].Atributes[6].Total,
+                   pPikomon[index].Atributes[2].Total,
+                   pPikomon[index].Atributes[7].Total,
+                   pPikomon[index].Atributes[3].Total,
+                   pPikomon[index].Atributes[5]);
+
+
+
+            printf("IconImg:\n");
+            for (j = 0; j < 7; j++)
+            {
+                printf("| %s |\n", pPikomon[index].IconImg[j]);
+            }
+            printf("\n");
+
+            // Exibir habilidades do Pikomon
+            for (k = 0; k < 4; k++)
+            {
+                if (strlen(pPikomon[index].Skills[k].Name) > 0)
+                {
+                    printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n",
+                           pPikomon[index].Skills[k].Name,
+                           pPikomon[index].Skills[k].Target,
+                           pPikomon[index].Skills[k].AttackScale,
+                           pPikomon[index].Skills[k].MagicAttackScale);
+                }
+            }
+        }
     }
-    else{
-        perror("index usado na função \"DebugPikomons\" não permitido");
+    else
+    {
+        perror("Vê esse indice ai man");
         return false;
     }
-    return true;*/
+    return true;
 }
 
 bool DebugItems(ItPointer pItems, int index, int ItemsQuantity){
