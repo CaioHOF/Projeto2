@@ -181,6 +181,7 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity);
 bool DebugItems(ItPointer pItems, int index, int ItemsQuantity);
 bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity);
 bool DebugPersonality(Personality *personalities, int index);
+bool DebugElements(Element *elements, int index);
 bool SavePersonalities(Personality allPersonalities[13], const char *destino);
 bool SaveElements(Element allElements[10], const char *destino);
 bool SaveDataQuantity(DataQuantity dataQuantities, const char *destino);
@@ -772,6 +773,54 @@ bool DebugPersonality(Personality *personalities, int index) {
     }
     return true;
 }
+
+bool DebugElements(Element *elements, int index) {
+    int i, j;
+
+    // -1 para pegar todos os elementos
+    if (index == -1) {
+        for (i = 0; i < 10; i++) {
+            if (strlen(elements[i].Name) > 0) {
+                printf("| Element Name:| %20s | |,| Status Effect Chance:| %.2lf |;\n",
+                       elements[i].Name,
+                       elements[i].StatusEffectChance);
+
+                // Exibir efeitos de status
+                for (j = 0; j < 8; j++) {
+                    if (elements[i].StatusEffect[j].Quantity > 0) {
+                        printf("| Status Effect %d:| Quantity: %d |,| Timer: %d |;\n",
+                               j + 1,
+                               elements[i].StatusEffect[j].Quantity,
+                               elements[i].StatusEffect[j].Timer);
+                    }
+                }
+            }
+        }
+    } else if (index >= 0 && index < 10) {
+        // Exibir apenas um elemento
+        if (strlen(elements[index].Name) > 0) {
+            printf("| Element Name:| %20s | |,| Status Effect Chance:| %.2lf |;\n",
+                   elements[index].Name,
+                   elements[index].StatusEffectChance);
+
+            // Exibir efeitos de status
+            for (j = 0; j < 8; j++) {
+                if (elements[index].StatusEffect[j].Quantity > 0) {
+                    printf("| Status Effect %d:| Quantity: %d |,| Timer: %d |;\n",
+                           j + 1,
+                           elements[index].StatusEffect[j].Quantity,
+                           elements[index].StatusEffect[j].Timer);
+                }
+            }
+        }
+    } else {
+        perror("index tá estranho");
+        return false;
+    }
+
+    return true;
+}
+
 
 //------------------------------------------------------------------------------//
 
