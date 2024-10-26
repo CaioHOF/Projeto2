@@ -358,7 +358,7 @@ int main(){
 
     printf("Gostaria de cadastrar-se?(S/n): ");
 
-    scanf(" %c", &respostaCadastro); // O espaço antes de %c ignora espaços em branco
+    scanf(" %c", &respostaCadastro); 
 
         if (respostaCadastro == 's' || respostaCadastro == 'S') {
             
@@ -1598,7 +1598,7 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn)
             b = !b;
         }
     }
-    */
+    
 }
 
 void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPointer *defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage){
