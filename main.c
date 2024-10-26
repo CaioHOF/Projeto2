@@ -1129,7 +1129,7 @@ void CalcSkill(PiPointer atacker, int skillIndex, PiPointer defenser){
     physicalDamageReduction = 1.0 - ((log10(defenser[0].Atributes[1].Total)/log10(2)) * 0.11);
     magicDamageReduction = 1.0 - ((log10(defenser[0].Atributes[2].Total)/log10(2)) * 0.11);
     SkPointer usedSkill = &atacker[0].Skills[skillIndex];
-    defenser[0].CurrentHP.Total -= 
+    //defenser[0].CurrentHP.Total -= 
 }
 
 void UseItem(){
