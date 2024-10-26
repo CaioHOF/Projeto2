@@ -582,20 +582,115 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
     return true;
 }
 
-bool DebugItems(ItPointer pItems, int index, int ItemsQuantity){
-    /*if(index == -1){
-        for(index = 0; index < ItemsQuantity; index++){
-            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pItems[index].Name, pItems[index].Type, pItems[index].Target);
+bool DebugItems(ItPointer pItems, int index, int ItemsQuantity)
+{
+    // Se index for -1, debugar todos os itens
+    if (index == -1)
+    {
+        for (index = 0; index < ItemsQuantity; index++)
+        {
+            // Exibir informações do item
+            printf("| Item #%d | Name: %s | Type: %s | Value: %d | EffectEnded: %s |\n",
+                   index + 1,
+                   pItems[index].Name,
+                   pItems[index].Type,
+                   pItems[index].Value,
+                   pItems[index].EffectEnded ? "true" : "false");
+
+            for (int j = 0; j < 3; j++)
+            {
+                printf("| Description[%d]: %s |\n", j, pItems[index].Description[j]);
+            }
+
+            printf("| Enemy Effect Current HP | Quantity: %d | Timer: %d |\n",
+                   pItems[index].EnemyEffectCurrentHP.Quantity,
+                   pItems[index].EnemyEffectCurrentHP.Timer);
+
+            printf("| Self Effect Current HP | Quantity: %d | Timer: %d |\n",
+                   pItems[index].SelfEffectCurrentHP.Quantity,
+                   pItems[index].SelfEffectCurrentHP.Timer);
+
+            printf("| Enemy Status Effect Chance: %lf |\n", pItems[index].EnemyStatusEffectChance);
+            for (int k = 0; k < 8; k++)
+            {
+                if (pItems[index].EnemyStatusEffect[k].Quantity > 0) 
+                {
+                    printf("| Enemy Status Effect[%d] | Quantity: %d | Timer: %d |\n",
+                           k,
+                           pItems[index].EnemyStatusEffect[k].Quantity,
+                           pItems[index].EnemyStatusEffect[k].Timer);
+                }
+            }
+
+            printf("| Self Status Effect Chance: %lf |\n", pItems[index].SelfStatusEffectChance);
+            for (int k = 0; k < 8; k++)
+            {
+                if (pItems[index].SelfStatusEffect[k].Quantity > 0)
+                {
+                    printf("| Self Status Effect[%d] | Quantity: %d | Timer: %d |\n",
+                           k,
+                           pItems[index].SelfStatusEffect[k].Quantity,
+                           pItems[index].SelfStatusEffect[k].Timer);
+                }
+            }
+
+            printf("\n");
         }
     }
-    else if(index > -1 && index < ItemsQuantity){
-            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pItems[index].Name, pItems[index].Type, pItems[index].Target);
+    // Exibir apenas um item específico
+    else if (index >= 0 && index < ItemsQuantity)
+    {
+        printf("| Item #%d | Name: %s | Type: %s | Value: %d | EffectEnded: %s |\n",
+               index + 1,
+               pItems[index].Name,
+               pItems[index].Type,
+               pItems[index].Value,
+               pItems[index].EffectEnded ? "true" : "false");
+
+        for (int j = 0; j < 3; j++)
+        {
+            printf("| Description[%d]: %s |\n", j, pItems[index].Description[j]);
+        }
+
+        printf("| Enemy Effect Current HP | Quantity: %d | Timer: %d |\n",
+               pItems[index].EnemyEffectCurrentHP.Quantity,
+               pItems[index].EnemyEffectCurrentHP.Timer);
+
+        printf("| Self Effect Current HP | Quantity: %d | Timer: %d |\n",
+               pItems[index].SelfEffectCurrentHP.Quantity,
+               pItems[index].SelfEffectCurrentHP.Timer);
+
+        printf("| Enemy Status Effect Chance: %lf |\n", pItems[index].EnemyStatusEffectChance);
+        for (int k = 0; k < 8; k++)
+        {
+            if (pItems[index].EnemyStatusEffect[k].Quantity > 0) 
+            {
+                printf("| Enemy Status Effect[%d] | Quantity: %d | Timer: %d |\n",
+                       k,
+                       pItems[index].EnemyStatusEffect[k].Quantity,
+                       pItems[index].EnemyStatusEffect[k].Timer);
+            }
+        }
+
+        printf("| Self Status Effect Chance: %lf |\n", pItems[index].SelfStatusEffectChance);
+        for (int k = 0; k < 8; k++)
+        {
+            if (pItems[index].SelfStatusEffect[k].Quantity > 0) 
+            {
+                printf("| Self Status Effect[%d] | Quantity: %d | Timer: %d |\n",
+                       k,
+                       pItems[index].SelfStatusEffect[k].Quantity,
+                       pItems[index].SelfStatusEffect[k].Timer);
+            }
+        }
     }
-    else{
-        perror("index usado na função \"DebugItems\" não permitido");
+    else
+    {
+        perror("index tá estranho");
         return false;
     }
-    return true;*/
+
+    return true;
 }
 
 bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity){
