@@ -737,6 +737,42 @@ bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity)
     return true;
 }
 
+bool DebugPersonality(Personality *personalities, int index) {
+    if (index == -1) {
+        // Exibe todos as personalidades
+        for (int i = 0; i < 13; i++) {
+            if (strlen(personalities[i].Name) > 0) {
+                printf("| Name:| %20s |,| BaseHPModifier:| %.2lf |,| BaseDefenseModifier:| %.2lf |,| BaseMagicDefenseModifier:| %.2lf |\n",
+                       personalities[i].Name,
+                       personalities[i].BaseHPModifier,
+                       personalities[i].BaseDefenseModifier,
+                       personalities[i].BaseMagicDefenseModifier);
+                printf("| BaseAttackModifier:| %.2lf |,| BaseMagicAttackModifier:| %.2lf |,| BaseSpeedModifier:| %.2lf |\n",
+                       personalities[i].BaseAttackModifier,
+                       personalities[i].BaseMagicAttackModifier,
+                       personalities[i].BaseSpeedModifier);
+            }
+        }
+    } else if (index >= 0 && index < 13) {
+        // Exibe apenas uma personalidade especificada pelo índice
+        if (strlen(personalities[index].Name) > 0) {
+            printf("| Name:| %20s |,| BaseHPModifier:| %.2lf |,| BaseDefenseModifier:| %.2lf |,| BaseMagicDefenseModifier:| %.2lf |\n",
+                   personalities[index].Name,
+                   personalities[index].BaseHPModifier,
+                   personalities[index].BaseDefenseModifier,
+                   personalities[index].BaseMagicDefenseModifier);
+            printf("| BaseAttackModifier:| %.2lf |,| BaseMagicAttackModifier:| %.2lf |,| BaseSpeedModifier:| %.2lf |\n",
+                   personalities[index].BaseAttackModifier,
+                   personalities[index].BaseMagicAttackModifier,
+                   personalities[index].BaseSpeedModifier);
+        }
+    } else {
+        perror("Índice inválido para personalidade.");
+        return false;
+    }
+    return true;
+}
+
 //------------------------------------------------------------------------------//
 
 
