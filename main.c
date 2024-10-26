@@ -252,8 +252,19 @@ int main(){
     //------------------------------------------------------------------------------------------------------------------//
 
     /**Loads**/
+
+    /*typedef struct Element
+{
+
+    char Name[20];
+    char Acronym[4];
+    int Effectiveness[10];
+    int ElementalDamageScale;
+    int SelfElementIndex;
+    Effect CurrentHPEffect;
+    Effect StatusEffect[8];*/
+
     //------------------------------------------------------------------------------------------------------------------//
-    
     dBPersonalities = fopen(personalities, "rb");
     if(dBPersonalities == NULL){
         perror("Falha ao abrir \"personalities\"");
@@ -265,6 +276,120 @@ int main(){
         return 2;
     }
     fclose(dBPersonalities);
+
+    //Comum
+        strcpy(allElements[0].Name, "Comum"); 
+        strcpy(allElements[0].Acronym, "Slp");
+        allElements[0].Effectiveness[0] = 100; 
+        allElements[0].Effectiveness[1] = 100;
+        allElements[0].Effectiveness[2] = 100;
+        allElements[0].Effectiveness[3] = 100;
+        allElements[0].Effectiveness[4] = 100;
+        allElements[0].Effectiveness[5] = 100;
+        allElements[0].Effectiveness[6] = 100;
+        allElements[0].Effectiveness[7] = 100;
+        allElements[0].Effectiveness[8] = 100;
+        allElements[0].Effectiveness[9] = 100;
+        allElements[0].ElementalDamageScale = 0;
+        allElements[0].SelfElementIndex = 0;
+        strcpy(allElements[0].CurrentHPEffect.Acronym, NULL);
+        allElements[0].CurrentHPEffect.Quantity = 0;
+        allElements[0].CurrentHPEffect.Timer = 0;
+        strcpy(allElements[0].StatusEffect[0].Acronym, NULL);
+        allElements[0].StatusEffect[0].Quantity = 0;
+        allElements[0].StatusEffect[0].Timer = 0;
+        strcpy(allElements[0].StatusEffect[1].Acronym, "NULL");
+        allElements[0].StatusEffect[1].Quantity = 0;
+        allElements[0].StatusEffect[1].Timer = 0;
+        strcpy(allElements[0].StatusEffect[2].Acronym, "Def");
+        allElements[0].StatusEffect[2].Quantity = 0;
+        allElements[0].StatusEffect[2].Timer = 0;
+        strcpy(allElements[0].StatusEffect[3].Acronym, "MaD");
+        allElements[0].StatusEffect[3].Quantity = 0;
+        allElements[0].StatusEffect[3].Timer = 0; 
+        strcpy(allElements[0].StatusEffect[4].Acronym, "Acc");
+        allElements[0].StatusEffect[4].Quantity = 0;
+        allElements[0].StatusEffect[4].Timer = 0;
+        strcpy(allElements[0].StatusEffect[5].Acronym, "Atk");
+        allElements[0].StatusEffect[5].Quantity = 0;
+        allElements[0].StatusEffect[5].Timer = 0;
+        strcpy(allElements[0].StatusEffect[6].Acronym, "MaA");
+        allElements[0].StatusEffect[6].Quantity = 0;
+        allElements[0].StatusEffect[6].Timer = 0;
+        strcpy(allElements[0].StatusEffect[7].Acronym, "Spd");
+        allElements[0].StatusEffect[7].Quantity = -100;
+        allElements[0].StatusEffect[7].Timer = 3;
+
+    //Flamejante
+        //Comum
+        strcpy(allElements[1].Name, "Flamejante"); 
+        strcpy(allElements[1].Acronym, "Brn");
+        allElements[1].Effectiveness[0] = 100; //Comum
+        allElements[1].Effectiveness[1] = 50;  //Flamejante
+        allElements[1].Effectiveness[2] = 50;  //Aquático
+        allElements[1].Effectiveness[3] = 200; //Natural
+        allElements[1].Effectiveness[4] = 100; //Elétrico
+        allElements[1].Effectiveness[5] = 100; //Misterioso
+        allElements[1].Effectiveness[6] = 100; //Luminoso
+        allElements[1].Effectiveness[7] = 200; //Frio
+        allElements[1].Effectiveness[8] = 50;  //Mineral
+        allElements[1].Effectiveness[9] = 100; //Tóxico
+        allElements[1].ElementalDamageScale = 010;
+        allElements[1].SelfElementIndex = 0;
+        strcpy(allElements[0].CurrentHPEffect.Acronym, NULL);
+        allElements[1].CurrentHPEffect.Quantity = 0;
+        allElements[1].CurrentHPEffect.Timer = 0;
+        strcpy(allElements[0].StatusEffect[0].Acronym, NULL);
+        allElements[1].StatusEffect[0].Quantity = 0;
+        allElements[1].StatusEffect[0].Timer = 0;
+        strcpy(allElements[0].StatusEffect[1].Acronym, NULL);
+        allElements[1].StatusEffect[1].Quantity = 0;
+        allElements[1].StatusEffect[1].Timer = 0;
+        strcpy(allElements[0].StatusEffect[2].Acronym, NULL);
+        allElements[1].StatusEffect[2].Quantity = 0;
+        allElements[1].StatusEffect[2].Timer = 0;
+        strcpy(allElements[0].StatusEffect[3].Acronym, NULL);
+        allElements[1].StatusEffect[3].Quantity = 0;
+        allElements[1].StatusEffect[3].Timer = 0;
+        strcpy(allElements[0].StatusEffect[4].Acronym, NULL);
+        allElements[1].StatusEffect[4].Quantity = 0;
+        allElements[1].StatusEffect[4].Timer = 0;
+        strcpy(allElements[0].StatusEffect[5].Acronym, NULL);
+        allElements[1].StatusEffect[5].Quantity = 0;
+        allElements[1].StatusEffect[5].Timer = 0;
+        strcpy(allElements[0].StatusEffect[6].Acronym, NULL);
+        allElements[1].StatusEffect[6].Quantity = 0;
+        allElements[1].StatusEffect[6].Timer = 0;
+        strcpy(allElements[0].StatusEffect[7].Acronym, NULL);
+        allElements[1].StatusEffect[7].Quantity = -100;
+        allElements[1].StatusEffect[7].Timer = 3;    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    dBElements = fopen(elements, "rb");
+    if(dBElements == NULL){
+        perror("Falha ao abrir \"elements\"");
+        return 1;
+    }
+    fread(allElements, sizeof(Element), 10, dBElements);
+    if(allElements == NULL){
+        perror("Falha ao ler os Elementos!");
+        return 2;
+    }
+    fclose(dBElements);
+
 
     dBDataQuantity = fopen(dataQuantity, "r");
     if(dBDataQuantity == NULL){
@@ -701,7 +826,7 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
 bool DebugItems(ItPointer pItems, int index, int ItemsQuantity)
 {
     // Se index for -1, debugar todos os itens
-    if (index == -1)
+    /*if (index == -1)
     {
         for (index = 0; index < ItemsQuantity; index++)
         {
@@ -806,12 +931,12 @@ bool DebugItems(ItPointer pItems, int index, int ItemsQuantity)
         return false;
     }
 
-    return true;
+    return true;*/
 }
 
 bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity)
 {
-    if (index == -1)
+    /*if (index == -1)
     {
         for (index = 0; index < skillsQuantity; index++)
         {
@@ -886,11 +1011,11 @@ bool DebugPersonality(Personality *personalities, int index) {
         perror("Índice inválido para personalidade.");
         return false;
     }
-    return true;
+    return true;*/
 }
 
 bool DebugElements(Element *elements, int index) {
-    if (index == -1) {
+    /*if (index == -1) {
         // Exibir todos os elementos
         for (int i = 0; i < 10; i++) {
             printf("| Element Name:| %20s |,| Elemental Damage Scale:| %3d |\n", 
@@ -938,7 +1063,7 @@ bool DebugElements(Element *elements, int index) {
         perror("index fora do intervalo");
         return false;
     }
-    return true;
+    return true;*/
 }
 
 
@@ -1142,7 +1267,7 @@ bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char
         (*pSkills)[dataQuantities->Skill - 1].LearnableElements[i] = LearnableElements[i];
     }
     
-    (*pSkills)[dataQuantities->Skill - 1].ElementEffectChance = elementEffectChance;
+    (*pSkills)[dataQuantities->Skill - 1].ElementEffectHitChance = elementEffectChance;
     (*pSkills)[dataQuantities->Skill - 1].Element = element;
     (*pSkills)[dataQuantities->Skill - 1].AttackBase = attackBase;
     (*pSkills)[dataQuantities->Skill - 1].AttackScale = attackScale;
@@ -1150,13 +1275,13 @@ bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char
     (*pSkills)[dataQuantities->Skill - 1].MagicAttackScale = magicAttackScale;
     (*pSkills)[dataQuantities->Skill - 1].CritChance = critChance;
     (*pSkills)[dataQuantities->Skill - 1].EffectTarget = effectTarget;
-    (*pSkills)[dataQuantities->Skill - 1].EnemyEffectChance = enemyEffectChance;
+    (*pSkills)[dataQuantities->Skill - 1].EnemyEffectHitChance = enemyEffectChance;
     
     for (int i = 0; i < 8; i++) {
         (*pSkills)[dataQuantities->Skill - 1].EnemyEffect[i] = enemyEffect[i];
     }
     
-    (*pSkills)[dataQuantities->Skill - 1].SelfEffectChance = selfEffectChance;
+    (*pSkills)[dataQuantities->Skill - 1].SelfEffectHitChance = selfEffectChance;
     
     for (int i = 0; i < 8; i++) {
         (*pSkills)[dataQuantities->Skill - 1].SelfEffect[i] = selfEffect[i];
@@ -1165,7 +1290,7 @@ bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char
     return true; 
 }
 
-bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]) {
+/*bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]) {
 
     if (pSkills == NULL || *pSkills == NULL) {
         perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
@@ -1236,7 +1361,7 @@ bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char
     }
 
     return true;
-}
+}*/
 
 bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed) {
     // Se o memset estiver errado, ele estará apagando memória de outras variáveis;
