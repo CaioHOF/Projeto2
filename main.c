@@ -180,28 +180,13 @@ bool DebugPlayers(PlPointer pPlayers, int index, int playersQuantity);
 bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity);
 bool DebugItems(ItPointer pItems, int index, int ItemsQuantity);
 bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity);
-bool SavePersonalities(Personality allPersonalities[13], const char *destino);
-bool SaveElements(Element allElements[10], const char *destino);
-bool SaveDataQuantity(DataQuantity dataQuantities, const char *destino);
-bool SaveSkills(SkPointer pSkills, int skillsQuantity, const char *destino);
-bool SaveItems(ItPointer pItems, int ItemsQuantity, const char *destino);
-bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino);
-bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino);
-void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players);
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]);
-bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char *description[3], int value, char effectCurrentHPTarget, Effect enemyEffectCurrentHP, Effect selfEffectCurrentHP, char effectTarget, double enemyStatusEffectChance, Effect enemyStatusEffect[8], double selfStatusEffectChance, Effect selfStatusEffect[8]);
-bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed);
-bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass);
-bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex);
-bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities);
-bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove);
-bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove);
-bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRemove);
-bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex);
-void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7]);
-void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex);
-
-
+bool SavePersonalities(Personality allPersonalities[10], const char* destino);
+bool SaveElements(Element allElements[10], const char* destino);
+bool SaveSkills(SkPointer pSkills, int skillsQuantity, const char* destino);
+bool SaveItems(ItPointer pItems, int ItemsQuantity, const char* destino);
+bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char* destino);
+bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char* destino);
+bool Login(PlPointer pPlayers,int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2);
 
 int main(){ 
     /**Declarações**/
@@ -238,6 +223,13 @@ int main(){
     PiPointer pPikomons = NULL;
 
     PlPointer pPlayers = NULL;
+
+    // --------------------  Login  --------------------------------------
+
+    char *nomeUsuario1[20], *nomeUsuario2[20];
+
+
+
     //------------------------------------------------------------------------------------------------------------------//
 
     /**Loads**/
@@ -1144,3 +1136,56 @@ void UseItem(){
 
 }
 //------------------------------------------------------------------------------//
+
+
+bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2) {
+    char usernameEntrada[20];
+    char passEntrada[7];
+    int userNumero = 1;
+    int indexPlayerLoop;
+    bool usernameAchado, senhaAchado;
+
+    *login1 = false;
+    *login2 = false;
+
+    while (!(*login1) || !(*login2)) {
+        usernameAchado = false;
+        senhaAchado = false;
+
+        if (!(*login1)) {
+            userNumero = 1;
+        } else {
+            userNumero = 2;
+        }
+
+        MenuLogin(userNumero);
+        printf("                    Insira seu Username: ");
+        scanf("%19s", usernameEntrada); 
+        printf("                    Insira sua Senha   : ");
+        scanf("%6s", passEntrada);
+
+        for (indexPlayerLoop = 0; indexPlayerLoop < playersQuantity; indexPlayerLoop++) {
+            if (strcmp(pPlayers[indexPlayerLoop].Name, usernameEntrada) == 0 &&
+                strcmp(pPlayers[indexPlayerLoop].Pass, passEntrada) == 0) {
+                usernameAchado = true;
+                senhaAchado = true;
+                break;
+            }
+        }
+
+        if (usernameAchado && senhaAchado) {
+            if (!(*login1)) {
+                strcpy(nomeUsuario1, usernameEntrada);
+                *login1 = true;
+            } else {
+                strcpy(nomeUsuario2, usernameEntrada);
+                *login2 = true;
+            }
+            printf("Bem-vindo, %s! Você está logado!\n", usernameEntrada);
+        } else {
+            printf("Usuário ou senha incorretos. Tente novamente.\n");
+        }
+    }
+
+    return true;
+}
