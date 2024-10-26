@@ -108,10 +108,12 @@ typedef struct Skill
 
 typedef struct Item
 {
-    bool EffectEnded;
+
     char Name[20];
     char Type[20];
     char Description[3][255];
+    char Active[20];
+    char ActiveDescription[3][255];
     int Value;
 
     bool CurrentHPDamageIsPhysic;
@@ -244,7 +246,7 @@ int main(){
 
     /**Loads**/
     //------------------------------------------------------------------------------------------------------------------//
-
+    
     dBPersonalities = fopen(personalities, "rb");
     if(dBPersonalities == NULL){
         perror("Falha ao abrir \"personalities\"");
@@ -605,39 +607,7 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
 //------------------------------------------------------------------------------//
 bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
-    if(pSkills == NULL){
-        perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
-        return false;
-    }
-    if(name == NULL){
-        perror("ERRO, \"name\" não pode ser NULL em \"AddSkill\"");
-        return false;
-    }
-    if(target != 'S' && target != 'E' && target != 'B'){
-        perror("ERRO, \"target\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
-        return false;
-    }
-    if(elementEffectChance < 0){
-        perror("ERRO, \"elementEffectChance\" não pode ser menor que zero em \"AddSkill\"");
-        return false;
-    }
-    if(critChance < 0){
-        perror("ERRO, \"critChance\" não pode ser menor que zero em \"AddSkill\"");
-        return false;
-    }
-    if(effectTarget != 'S' && effectTarget != 'E' && effectTarget != 'B'){
-        perror("ERRO, \"effectTarget\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
-        return false;
-    }
-    if(enemyEffectChance < 0){
-        perror("ERRO, \"enemyEffectChance\" não pode ser menor que zero em \"AddSkill\"");
-        return false;
-    }
-    if(selfEffectChance < 0){
-        perror("ERRO, \"selfEffectChance\" não pode ser menor que zero em \"AddSkill\"");
-        return false;
-    }
-
+    
     dataQuantities.Skill++;
     pSkills = (SkPointer)realloc(pSkills, dataQuantities.Skill * sizeof(Skill));
     if(pSkills == NULL){
@@ -1050,7 +1020,7 @@ bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
 
 /**Battle functions**/
 //------------------------------------------------------------------------------//
-void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7]){ 
+void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn){ 
     //calcNextTurn vai ser a resposta a ser gerada
 
     calcNextTurn[6] = '\0';
@@ -1262,8 +1232,23 @@ void CalcSkill(Element allElements[10], PiPointer atacker, int skillIndex, PiPoi
     else enemyEffectHit = false;
 }
 
-void UseItem(){
+void UseItem(PlPointer playerUsing, PlPointer otherPlayer, int itemUsedIndex){
+    /*
 
+    bool CurrentHPDamageIsPhysic;
+    char EffectCurrentHPTarget;
+    //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
+    Effect EffectCurrentHP;
+    //Esse valor é usado pra definir o quanto uma poção de cura cura e em quanto tempo, ou um veneno. O outro serve para alterar os status da vida maxima 
+    
+    char EffectTarget;
+    //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
+    int StatusEffectChance;
+    Effect StatusEffect[8];*/
+    double playerUsingDamageReduction, otherPlayerDamageReduction;
+    ItPointer usedItem;
+    usedItem = &playerUsing[0].Bag[itemUsedIndex];
+    playerUsingDamageReduction = usedItem[0]
 }
 
 void PassPikomonTurnTime(){
