@@ -202,7 +202,11 @@ bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRe
 bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex);
 void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7]);
 void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex);
+void LimparTerminal();
+void Menu();
+void MenuLogin(int userNumero);
 bool Login(PlPointer pPlayers,int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2);
+
 
 int main(){ 
     /**Declarações**/
@@ -1571,4 +1575,53 @@ bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, 
     }
 
     return true;
+}
+
+
+void Menu(){
+    struct timespec tempo;
+    tempo.tv_sec = 0;              
+    tempo.tv_nsec = 500000000;
+
+
+
+
+printf("                *********************************\n");
+nanosleep(&tempo, NULL);
+printf("                *       B E M   V I N D O       *\n");
+nanosleep(&tempo, NULL);
+printf("                *********************************\n");
+nanosleep(&tempo, NULL);
+printf("\n");
+nanosleep(&tempo, NULL);
+printf("\n");
+nanosleep(&tempo, NULL);
+printf("     *********************************************************\n");
+nanosleep(&tempo, NULL);
+printf("     * 1. P L A Y                   3. A L L P I K O S       *\n");
+nanosleep(&tempo, NULL);
+printf("     *    - - - -                      - - - - - - - -       *\n");
+nanosleep(&tempo, NULL);
+printf("     *                                                       *\n");
+nanosleep(&tempo, NULL);
+printf("     *                                                       *\n");
+nanosleep(&tempo, NULL);
+printf("     * 2. P L A Y E R S I N F O     4. E X I T               *\n");
+nanosleep(&tempo, NULL);
+printf("     *    - - - - - - - - - - -        - - - -               *\n");
+nanosleep(&tempo, NULL);
+printf("     *********************************************************\n");
+}
+
+
+void MenuLogin(int userNumero) {
+    printf("                ***************************************\n");
+    printf("                *                 US%d                 *\n", userNumero);
+    printf("                ***************************************\n");
+    printf("\n");
+}
+
+
+void LimparTerminal() {
+    printf("\033[H\033[J");
 }
