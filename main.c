@@ -350,7 +350,7 @@ int main(){
     bool Battle;
     if(Battle){
         //Variaveis calcSkill
-        bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit;
+        bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit, usedItemStatusHit;
         int selfDamage, enemyDamage;
         
         
@@ -1162,28 +1162,31 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
         magicDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[2].Total)/log10(2)) * 0.11);
         elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
 
-
-        (*defenser)[0].CurrentHP.BonusQuantity++;
-        bonusQuantity = (*defenser)[0].CurrentHP.BonusQuantity;
-        (*defenser)[0].CurrentHP.acronym = (char**)realloc((*defenser)[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
-        (*defenser)[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
-        (*defenser)[0].CurrentHP.Bonus = (int*)realloc((*defenser)[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
-        (*defenser)[0].CurrentHP.BonusTimer = (int*)realloc((*defenser)[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
-        strcpy((*defenser)[0].CurrentHP.acronym[bonusQuantity-1], usedSkill[0].Element.Acronym);
-        (*defenser)[0].CurrentHP.Bonus[bonusQuantity-1] = (int)((usedSkill[0].Element.CurrentHPEffect.Quantity + (((double)usedSkill[0].Element.ElementalDamageScale) * ((double)(*atacker)[0].Atributes[6].Total)/ 100.0)) * magicDamageReduction * elementalEffectivness);
-        (*defenser)[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedSkill[0].Element.CurrentHPEffect.Timer;
+        if(usedSkill[0].Element.CurrentHPEffect.Timer > 0){
+            (*defenser)[0].CurrentHP.BonusQuantity++;
+            bonusQuantity = (*defenser)[0].CurrentHP.BonusQuantity;
+            (*defenser)[0].CurrentHP.acronym = (char**)realloc((*defenser)[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
+            (*defenser)[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
+            (*defenser)[0].CurrentHP.Bonus = (int*)realloc((*defenser)[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
+            (*defenser)[0].CurrentHP.BonusTimer = (int*)realloc((*defenser)[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
+            strcpy((*defenser)[0].CurrentHP.acronym[bonusQuantity-1], usedSkill[0].Element.Acronym);
+            (*defenser)[0].CurrentHP.Bonus[bonusQuantity-1] = (int)((usedSkill[0].Element.CurrentHPEffect.Quantity + (((double)usedSkill[0].Element.ElementalDamageScale) * ((double)(*atacker)[0].Atributes[6].Total)/ 100.0)) * magicDamageReduction * elementalEffectivness);
+            (*defenser)[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedSkill[0].Element.CurrentHPEffect.Timer;
+        }
         
         for (I = 0; I < 8; I++){
-            (*defenser)[0].Atributes[I].BonusQuantity++;
-            bonusQuantity = (*defenser)[0].Atributes[I].BonusQuantity;
-            (*defenser)[0].Atributes[I].acronym = (char**)realloc((*defenser)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
-            (*defenser)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
-            (*defenser)[0].Atributes[I].Bonus = (int*)realloc((*defenser)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
-            (*defenser)[0].Atributes[I].BonusTimer = (int*)realloc((*defenser)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
-            strcpy((*defenser)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
-            (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
-            (*defenser)[0].Atributes[I].Total += (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1];
-            (*defenser)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+            if(usedSkill[0].Element.StatusEffect[I].Timer > 0){
+                (*defenser)[0].Atributes[I].BonusQuantity++;
+                bonusQuantity = (*defenser)[0].Atributes[I].BonusQuantity;
+                (*defenser)[0].Atributes[I].acronym = (char**)realloc((*defenser)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                (*defenser)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                (*defenser)[0].Atributes[I].Bonus = (int*)realloc((*defenser)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                (*defenser)[0].Atributes[I].BonusTimer = (int*)realloc((*defenser)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                strcpy((*defenser)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
+                (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
+                (*defenser)[0].Atributes[I].Total += (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1];
+                (*defenser)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+            }
         }
     }
     else *elementalEffectHit = false;
@@ -1240,16 +1243,18 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
     if((rand() % 100 +1 <= usedSkill[0].SelfEffectHitChance)){
         selfEffectHit = true;
         for (I = 0; I < 8; I++){
-            (*atacker)[0].Atributes[I].BonusQuantity++;
-            bonusQuantity = (*atacker)[0].Atributes[I].BonusQuantity;
-            (*atacker)[0].Atributes[I].acronym = (char**)realloc((*atacker)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
-            (*atacker)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
-            (*atacker)[0].Atributes[I].Bonus = (int*)realloc((*atacker)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
-            (*atacker)[0].Atributes[I].BonusTimer = (int*)realloc((*atacker)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
-            strcpy((*atacker)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
-            (*atacker)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
-            (*atacker)[0].Atributes[I].Total += (*atacker)[0].Atributes[I].Bonus[bonusQuantity-1];
-            (*atacker)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+            if(usedSkill[0].Element.StatusEffect[I].Timer > 0){
+                (*atacker)[0].Atributes[I].BonusQuantity++;
+                bonusQuantity = (*atacker)[0].Atributes[I].BonusQuantity;
+                (*atacker)[0].Atributes[I].acronym = (char**)realloc((*atacker)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                (*atacker)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                (*atacker)[0].Atributes[I].Bonus = (int*)realloc((*atacker)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                (*atacker)[0].Atributes[I].BonusTimer = (int*)realloc((*atacker)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                strcpy((*atacker)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
+                (*atacker)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
+                (*atacker)[0].Atributes[I].Total += (*atacker)[0].Atributes[I].Bonus[bonusQuantity-1];
+                (*atacker)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+            }
         }
     }
     else *selfEffectHit = false;
@@ -1258,24 +1263,25 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
     if((rand() % 100 +1 <= usedSkill[0].EnemyEffectHitChance)){
         enemyEffectHit = true;
         for (I = 0; I < 8; I++){
-            (*defenser)[0].Atributes[I].BonusQuantity++;
-            bonusQuantity = (*defenser)[0].Atributes[I].BonusQuantity;
-            (*defenser)[0].Atributes[I].acronym = (char**)realloc((*defenser)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
-            (*defenser)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
-            (*defenser)[0].Atributes[I].Bonus = (int*)realloc((*defenser)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
-            (*defenser)[0].Atributes[I].BonusTimer = (int*)realloc((*defenser)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
-            strcpy((*defenser)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
-            (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
-            (*defenser)[0].Atributes[I].Total += (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1];
-            (*defenser)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+            if(usedSkill[0].Element.StatusEffect[I].Timer > 0){
+                (*defenser)[0].Atributes[I].BonusQuantity++;
+                bonusQuantity = (*defenser)[0].Atributes[I].BonusQuantity;
+                (*defenser)[0].Atributes[I].acronym = (char**)realloc((*defenser)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                (*defenser)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                (*defenser)[0].Atributes[I].Bonus = (int*)realloc((*defenser)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                (*defenser)[0].Atributes[I].BonusTimer = (int*)realloc((*defenser)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                strcpy((*defenser)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
+                (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
+                (*defenser)[0].Atributes[I].Total += (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1];
+                (*defenser)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+            }
         }
     }
     else *enemyEffectHit = false;
 }
 
-void UseItem(PlPointer *playerUsing, PlPointer *otherPlayer, int itemUsedIndex){
+void UseItem(PlPointer *selfPlayer, PlPointer *enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit){
     /*
-
     bool CurrentHPDamageIsPhysic;
     char EffectCurrentHPTarget;
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
@@ -1286,10 +1292,71 @@ void UseItem(PlPointer *playerUsing, PlPointer *otherPlayer, int itemUsedIndex){
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
     int StatusEffectChance;
     Effect StatusEffect[8];*/
-    double playerUsingDamageReduction, otherPlayerDamageReduction;
+    int I, bonusQuantity;
+    double pikomonDamageReduction, otherpikomonDamageReduction;
     ItPointer usedItem;
-    usedItem = &(*playerUsing)[0].Bag[itemUsedIndex];
-    //playerUsingDamageReduction = usedItem[0]
+    PiPointer pikomon, otherPikomon;
+    usedItem = &(*selfPlayer)[0].Bag[itemUsedIndex];
+    pikomon = &(*selfPlayer)[0].BatlePikomons[(*selfPlayer)[0].SelectedPikomonIndex];
+    otherPikomon = &(*enemyPlayer)[0].BatlePikomons[(*enemyPlayer)[0].SelectedPikomonIndex];
+    if(usedItem[0].CurrentHPDamageIsPhysic){
+        pikomonDamageReduction = 1.0 - ((log10(pikomon[0].Atributes[1].Total)/log10(2)) * 0.11);
+        otherpikomonDamageReduction = 1.0 - ((log10(otherPikomon[0].Atributes[1].Total)/log10(2)) * 0.11); 
+    }
+    else{
+        pikomonDamageReduction = 1.0 - ((log10(pikomon[0].Atributes[2].Total)/log10(2)) * 0.11);
+        otherpikomonDamageReduction = 1.0 - ((log10(otherPikomon[0].Atributes[2].Total)/log10(2)) * 0.11);
+    }
+
+    if(usedItem[0].EffectCurrentHPTarget == 'S'){
+        if(rand() % 100 +1 <= usedItem[0].StatusEffectChance){
+            *usedItemStatusHit = true;
+            if(usedItem[0].EffectCurrentHP.Timer > 0){
+                pikomon[0].CurrentHP.BonusQuantity++;
+                bonusQuantity = pikomon[0].CurrentHP.BonusQuantity;
+                pikomon[0].CurrentHP.acronym = (char**)realloc(pikomon[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
+                pikomon[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
+                pikomon[0].CurrentHP.Bonus = (int*)realloc(pikomon[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
+                pikomon[0].CurrentHP.BonusTimer = (int*)realloc(pikomon[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
+                strcpy(pikomon[0].CurrentHP.acronym[bonusQuantity-1], usedItem[0].EffectCurrentHP.Acronym);
+                pikomon[0].CurrentHP.Bonus[bonusQuantity-1] = (int)( usedItem[0].EffectCurrentHP.Quantity * pikomonDamageReduction);
+                pikomon[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedItem[0].EffectCurrentHP.Timer;
+            }
+            
+            for (I = 0; I < 8; I++){
+                if(usedItem[0].StatusEffect[I].Timer > 0){
+                    pikomon[0].Atributes[I].BonusQuantity++;
+                    bonusQuantity = pikomon[0].Atributes[I].BonusQuantity;
+                    pikomon[0].Atributes[I].acronym = (char**)realloc(pikomon[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                    pikomon[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                    pikomon[0].Atributes[I].Bonus = (int*)realloc(pikomon[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                    pikomon[0].Atributes[I].BonusTimer = (int*)realloc(pikomon[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                    strcpy(pikomon[0].Atributes[I].acronym[bonusQuantity-1], usedItem[0].StatusEffect[I].Acronym);
+                    pikomon[0].Atributes[I].Bonus[bonusQuantity-1] = usedItem[0].StatusEffect[I].Quantity;
+                    pikomon[0].Atributes[I].Total += pikomon[0].Atributes[I].Bonus[bonusQuantity-1];
+                    pikomon[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedItem[0].StatusEffect[I].Timer;
+                }
+            }
+        }
+        else *usedItemStatusHit = false;
+    }
+    else if(usedItem[0].EffectCurrentHPTarget == 'E'){
+        if(rand() % 100 +1 <= usedItem[0].StatusEffectChance){
+            *usedItemStatusHit = true;
+
+        }
+        else *usedItemStatusHit = false;
+    }
+    else if(usedItem[0].EffectCurrentHPTarget == 'B'){
+        if(rand() % 100 +1 <= usedItem[0].StatusEffectChance){
+            *usedItemStatusHit = true;
+
+        }
+        else *usedItemStatusHit = false;
+    }
+    else{
+        perror("usedItem[0].EffectCurrentHPTarget nao reconhecido");
+    }
 }
 
 void PassPikomonTurnTime(){
