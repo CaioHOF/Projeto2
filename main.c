@@ -365,7 +365,7 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
 {
     int j, k;
 
-    //-1 para pegar todos os players
+    // -1 para pegar todos os players
     if (index == -1)
     {
         for (index = 0; index < playersQuantity; index++)
@@ -382,7 +382,7 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
                 {
                     if (strlen(pPlayers[index].Bag[j].Name) > 0)
                     {
-                        printf("| Item Name:| %20s | |,| Type:| %20s | |,| Target:| %3c | |;\n",
+                        printf("| Item Name:| %20s | |,| Type:| %20s | |,| Target:| %3c |;\n",
                                pPlayers[index].Bag[j].Name,
                                pPlayers[index].Bag[j].Type,
                                pPlayers[index].Bag[j].EffectTarget);
@@ -394,25 +394,24 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
                 {
                     if (strlen(pPlayers[index].PikomonsStorage[j].Name) > 0)
                     {
-                        printf("| Nome:| %20s | |,| Element:| %10s | |,| HP:| %3d |,| Atk:| %3lf |,| Def:| %3lf |,,| SpA:| %3lf |,| SpD:| %3lf |,| Spd:| %3lf |,| Acu:| %3lf |,| Eac:| %3lf | | \n",
+                        printf("| Nome:| %20s | |,| Element:| %10s | |,| HP:| %3d |,| Atk:| %3d |,| Def:| %3d |,,| SpA:| %3d |,| SpD:| %3d |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d |\n",
                                pPlayers[index].PikomonsStorage[j].Name,
                                pPlayers[index].PikomonsStorage[j].Element.Name,
-                               pPlayers[index].PikomonsStorage[j].Atributes[0],
-                               pPlayers[index].PikomonsStorage[j].Atributes[4],
-                               pPlayers[index].PikomonsStorage[j].Atributes[1],
-                               pPlayers[index].PikomonsStorage[j].Atributes[6],
-                               pPlayers[index].PikomonsStorage[j].Atributes[2],
-                               pPlayers[index].PikomonsStorage[j].Atributes[7],
-                               pPlayers[index].PikomonsStorage[j].Atributes[3],
-                               pPlayers[index].PikomonsStorage[j].Atributes[5]);
+                               pPlayers[index].PikomonsStorage[j].Atributes[0].Total,
+                               pPlayers[index].PikomonsStorage[j].Atributes[4].Total,
+                               pPlayers[index].PikomonsStorage[j].Atributes[1].Total,
+                               pPlayers[index].PikomonsStorage[j].Atributes[6].Total,
+                               pPlayers[index].PikomonsStorage[j].Atributes[2].Total,
+                               pPlayers[index].PikomonsStorage[j].Atributes[7].Total,
+                               pPlayers[index].PikomonsStorage[j].Atributes[3].Total,
+                               pPlayers[index].PikomonsStorage[j].Atributes[5].Total);
 
-                        // arrumar numero depois        -----------------------------------------------------------------------------------------------
-                        // Exibir habilidades do pokemon
+                        // Exibir habilidades do Pokémon
                         for (k = 0; k < 4; k++)
                         {
                             if (strlen(pPlayers[index].PikomonsStorage[j].Skills[k].Name) > 0)
                             {
-                                printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n",
+                                printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf |;\n",
                                        pPlayers[index].PikomonsStorage[j].Skills[k].Name,
                                        pPlayers[index].PikomonsStorage[j].Skills[k].Target,
                                        pPlayers[index].PikomonsStorage[j].Skills[k].AttackScale,
@@ -424,12 +423,12 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
             }
         }
     }
-    else if (index > -1 && index < playersQuantity)
+    else if (index >= 0 && index < playersQuantity)
     {
         // Exibir apenas um jogador
         if (strlen(pPlayers[index].Name) > 0)
         {
-            printf("| Name:| %20s | |,| Pass:| %20s | |,| Pikocoins:| %3d | |,| BagCurrentSize:| %2d | |;\n",
+            printf("| Name:| %20s | |,| Pass:| %20s | |,| Pikocoins:| %3d |;\n",
                    pPlayers[index].Name,
                    pPlayers[index].Pass,
                    pPlayers[index].Pikocoins);
@@ -439,7 +438,7 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
             {
                 if (strlen(pPlayers[index].Bag[j].Name) > 0)
                 {
-                    printf("| Item Name:| %20s | |,| Type:| %20s | |,| Target:| %3c | |;\n",
+                    printf("| Item Name:| %20s | |,| Type:| %20s | |,| Target:| %3c |;\n",
                            pPlayers[index].Bag[j].Name,
                            pPlayers[index].Bag[j].Type,
                            pPlayers[index].Bag[j].EffectTarget);
@@ -451,24 +450,24 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
             {
                 if (strlen(pPlayers[index].PikomonsStorage[j].Name) > 0)
                 {
-                    printf("| Nome:| %20s | |,| Element:| %10s | |,| HP:| %3d |,| Atk:| %3lf |,| Def:| %3lf |,| SpA:| %3lf |,| SpD:| %3lf |,| Spd:| %3lf |,| Acu:| %3lf |,| Eac:| %3lf | |\n",
+                    printf("| Nome:| %20s | |,| Element:| %10s | |,| HP:| %3d |,| Atk:| %3d |,| Def:| %3d |,,| SpA:| %3d |,| SpD:| %3d |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d |\n",
                            pPlayers[index].PikomonsStorage[j].Name,
                            pPlayers[index].PikomonsStorage[j].Element.Name,
-                           pPlayers[index].PikomonsStorage[j].Atributes[0],
-                           pPlayers[index].PikomonsStorage[j].Atributes[4],
-                           pPlayers[index].PikomonsStorage[j].Atributes[1],
-                           pPlayers[index].PikomonsStorage[j].Atributes[6],
-                           pPlayers[index].PikomonsStorage[j].Atributes[2],
-                           pPlayers[index].PikomonsStorage[j].Atributes[7],
-                           pPlayers[index].PikomonsStorage[j].Atributes[3],
-                           pPlayers[index].PikomonsStorage[j].Atributes[5]);
+                           pPlayers[index].PikomonsStorage[j].Atributes[0].Total,
+                           pPlayers[index].PikomonsStorage[j].Atributes[4].Total,
+                           pPlayers[index].PikomonsStorage[j].Atributes[1].Total,
+                           pPlayers[index].PikomonsStorage[j].Atributes[6].Total,
+                           pPlayers[index].PikomonsStorage[j].Atributes[2].Total,
+                           pPlayers[index].PikomonsStorage[j].Atributes[7].Total,
+                           pPlayers[index].PikomonsStorage[j].Atributes[3].Total,
+                           pPlayers[index].PikomonsStorage[j].Atributes[5].Total);
 
-                    // Exibir habilidades do pokemon
+                    // Exibir habilidades do Pokémon
                     for (k = 0; k < 4; k++)
                     {
                         if (strlen(pPlayers[index].PikomonsStorage[j].Skills[k].Name) > 0)
                         {
-                            printf("| Skill Name:| %3s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | | ;\n",
+                            printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf |;\n",
                                    pPlayers[index].PikomonsStorage[j].Skills[k].Name,
                                    pPlayers[index].PikomonsStorage[j].Skills[k].Target,
                                    pPlayers[index].PikomonsStorage[j].Skills[k].AttackScale,
@@ -481,7 +480,7 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
     }
     else
     {
-        perror("index tá estranho");
+        perror("Índice do paraguai");
         return false;
     }
     return true;
