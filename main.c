@@ -350,7 +350,39 @@ int main(){
     //------------------------------------------------------------------------------------------------------------------//
     int respostaUserMP;
     bool login1 = false, login2 = false;
-    char nomeUsuario1[20], nomeUsuario2[20];
+    char nomeUsuario1[20], nomeUsuario2[20], respostaCadastro;
+
+    printf("Gostaria de cadastrar-se?(S/n): ");
+
+    scanf(" %c", &respostaCadastro); // O espaço antes de %c ignora espaços em branco
+
+        if (respostaCadastro == 's' || respostaCadastro == 'S') {
+            
+            char name[20];
+            char pass[7];
+            printf("Digite o nome do jogador (até 19 caracteres): ");
+            scanf("%19s", name); 
+            printf("Digite a senha do jogador (6 caracteres): ");
+            scanf("%6s", pass); 
+
+            if (AddPlayer(pPlayers, dataQuantities, name, pass)) {
+                if (SavePlayers(pPlayers, dataQuantities.Player, "Players.bin")) {
+                    //SaveDataQuantity(dataQuantities, "DataQuantity.txt");
+                    printf(" %s",pPlayers[0].Name);
+                    printf(" %s",pPlayers[0].Pass);
+                    getchar();
+                    getchar();
+                    printf("Jogador cadastrado e salvo com sucesso!\n");
+                } else {
+                    printf("Falha ao salvar os jogadores.\n");
+                }
+            } else {
+                printf("Falha ao cadastrar o jogador.\n");
+            }
+
+
+        }
+
 
 
      while (true){
@@ -362,7 +394,7 @@ int main(){
             Login(pPlayers, dataQuantities.Player, &login1, &login2, nomeUsuario1, nomeUsuario2);
         }
         if(respostaUserMP == 2){
-            printf(":)");
+                printf(":)");
         }
         if(respostaUserMP == 3){
             printf(":)");
@@ -1205,7 +1237,6 @@ bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, El
 }
 
 bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass){
-    /*
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pPlayers == NULL){
         perror("ERRO, \"pPlayers\" não pode ser NULL em \"AddPlayers\"");
@@ -1239,7 +1270,6 @@ bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char
     strcpy(pPlayers[dataQuantities.Player-1].Pass, pass);
     pPlayers[dataQuantities.Player-1].Pikocoins = 50;
     return true;
-    */
 }
 
 bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex){
@@ -1669,3 +1699,4 @@ void MenuLogin(int userNumero) {
 void LimparTerminal() {
     printf("\033[H\033[J");
 }
+
