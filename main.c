@@ -975,6 +975,7 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
 /**Manage Memory Functions**/
 //------------------------------------------------------------------------------//
 bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]){
+    /*
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pSkills == NULL){
         perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
@@ -1039,9 +1040,11 @@ bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char t
     for(i = 0; i < 8; i++){
         pSkills[dataQuantities.Skill-1].SelfEffect[i] = selfEffect[i];
     }
+    */
 }
 
 bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char *description[3], int value, char effectCurrentHPTarget, Effect enemyEffectCurrentHP, Effect selfEffectCurrentHP, char effectTarget, double enemyStatusEffectChance, Effect enemyStatusEffect[8], double selfStatusEffectChance, Effect selfStatusEffect[8]){
+    /*
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pItems == NULL){
         perror("ERRO, \"pItems\" não pode ser NULL em \"AddItem\"");
@@ -1093,10 +1096,11 @@ bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *ty
     for(i = 0; i < 8; i++){
         pItems[dataQuantities.Item-1].SelfStatusEffect[i] = selfStatusEffect[i];
     }
-
+    */
 }
 
 bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed){
+    /*
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pPikomons == NULL){
         perror("ERRO, \"pPikomons\" não pode ser NULL em \"AddPikomon\"");
@@ -1180,9 +1184,11 @@ bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, El
     strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[7].Name, "Speed");
     pPikomons[dataQuantities.Pikomon-1].Atributes[7].Base = BaseSpeed;
     return true;
+    */
 }
 
 bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass){
+    /*
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pPlayers == NULL){
         perror("ERRO, \"pPlayers\" não pode ser NULL em \"AddPlayers\"");
@@ -1216,9 +1222,11 @@ bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char
     strcpy(pPlayers[dataQuantities.Player-1].Pass, pass);
     pPlayers[dataQuantities.Player-1].Pikocoins = 50;
     return true;
+    */
 }
 
 bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex){
+    /*
     if(pPlayers == NULL){
         perror("ERRO, \"pPlayers\" não pode ser NULL em \"AddItemPlayerBag\"");
         return false;
@@ -1243,9 +1251,11 @@ bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int
         return false;
     }
     pPlayers[playerIndex].Bag[pPlayers[playerIndex].BagCurrentSize-1] = pItems[itemIndex];
+    */
 }
 
 bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities){
+    /*
     //n precisa uasar esse
     if(pPlayers == NULL){
         perror("ERRO, \"pPlayers\" não pode ser NULL em \"StorePikomonPlayer\"");
@@ -1280,9 +1290,11 @@ bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonP
         return false;
     }
     pPlayers[playerIndex].PikomonsStorage[storagePikomonPlacementIndex] = pPikomons[pikomonIndex];
+    */
 }
 
 bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove){
+    /*
     if(indexRemove < 0){
         perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemoveSkill\"");
         return false;
@@ -1306,9 +1318,11 @@ bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove
         pSkills[i] = tempSkills[i];
     }
     free(tempSkills);
+    */
 }
 
 bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
+    /*
     if(indexRemove < 0){
         perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemoveItem\"");
         return false;
@@ -1332,9 +1346,11 @@ bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
         pItems[i] = tempItems[i];
     }
     free(tempItems);
+    */
 }
 
 bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRemove){
+    /*
     if(indexRemove < 0){
         perror("ERRO, \"indexRemove\" não pode ser menor que zero em \"RemovePikomon\"");
         return false;
@@ -1358,9 +1374,11 @@ bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRe
         pPikomons[i] = tempPikomons[i];
     }
     free(tempPikomons);
+    */
 }
 
 bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){ 
+    /*
     if(bagSellIndex >= pPlayers[playerIndex].BagCurrentSize){
         perror("ERRO, \"bagSellIndex\" tem que ser menor que \"pPlayers[playerIndex].BagCurrentSize\" em \"SellItemPlayerBag\"");
         return false;
@@ -1392,6 +1410,7 @@ bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
         pPlayers[playerIndex].Bag[i] = tempItems[i];
     }
     free(tempItems);
+    */
 }
 //------------------------------------------------------------------------------//
 
@@ -1400,6 +1419,7 @@ bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
 /**Battle functions**/
 //------------------------------------------------------------------------------//
 void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7]){ 
+    /*
     //calcNextTurn vai ser a resposta a ser gerada
 
     calcNextTurn[6] = '\0';
@@ -1435,9 +1455,11 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7
             b = !b;
         }
     }
+    */
 }
 
 void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
+    /*
     bool playerOneTurn, reset, nextTurnReset, battleIsOver;
     int i = 0, turnCost;
     PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
@@ -1465,9 +1487,9 @@ void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
             while(selectedPlayerOnePicomon[0].ChargedSpeed - turnCost >= 0){
                 selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
 
-                /* 
-                    ações do player1
-                */
+                //
+                    //ações do player1
+                //
 
             }
             playerOneTurn = false;
@@ -1477,18 +1499,19 @@ void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex){
             while(selectedPlayerTwoPicomon[0].ChargedSpeed - turnCost >= 0){
                 selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
 
-                /* 
+                //
                     ações do player2
-                */
+                //
 
             }
             playerOneTurn = true;
         }
     }
+    */
 }
 
 void CalcSkill(PiPointer atacker, int skillIndex, PiPointer defenser){
-    
+    /*
     
     double ElementEffectChance;
     Element Element;
@@ -1517,6 +1540,7 @@ void CalcSkill(PiPointer atacker, int skillIndex, PiPointer defenser){
     magicDamageReduction = 1.0 - ((log10(defenser[0].Atributes[2].Total)/log10(2)) * 0.11);
     SkPointer usedSkill = &atacker[0].Skills[skillIndex];
     //defenser[0].CurrentHP.Total -= 
+    */
 }
 
 void UseItem(){
