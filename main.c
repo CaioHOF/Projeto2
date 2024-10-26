@@ -244,11 +244,6 @@ int main(){
 
     PlPointer pPlayers = NULL;
 
-    // --------------------  Login  --------------------------------------
-
-    char *nomeUsuario1[20], *nomeUsuario2[20];
-
-
 
     //------------------------------------------------------------------------------------------------------------------//
 
@@ -353,8 +348,30 @@ int main(){
 
     /**Principal Do Usuário**/
     //------------------------------------------------------------------------------------------------------------------//
-    //login
-    //menu
+    int respostaUserMP;
+    bool login1 = false, login2 = false;
+    char nomeUsuario1[20], nomeUsuario2[20];
+
+
+     while (true){
+        Menu();
+        printf("Sua escolha?: ");
+        scanf(" %d", &respostaUserMP);
+        if(respostaUserMP == 1){
+            LimparTerminal();
+            Login(pPlayers, dataQuantities.Player, &login1, &login2, nomeUsuario1, nomeUsuario2);
+        }
+        if(respostaUserMP == 2){
+            printf(":)");
+        }
+        if(respostaUserMP == 3){
+            printf(":)");
+        }
+        if(respostaUserMP == 4){
+            printf(":)");
+        }
+
+    }
     //------------------------------------------------------------------------------------------------------------------//
     //toda a vez que acaba uma batalha tem que usar essa função
     FreeAllHeapMemoryAndSaveEverything(pSkills,pItems,pPikomons,pPlayers,dataQuantities,dataQuantity,skills,items,pikomoms,players);
@@ -1570,9 +1587,9 @@ bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, 
         }
 
         MenuLogin(userNumero);
-        printf("                    Insira seu Username: ");
+        printf("\n                    Insira seu Username: ");
         scanf("%19s", usernameEntrada); 
-        printf("                    Insira sua Senha   : ");
+        printf("\n                    Insira sua Senha   : ");
         scanf("%6s", passEntrada);
 
         for (indexPlayerLoop = 0; indexPlayerLoop < playersQuantity; indexPlayerLoop++) {
@@ -1594,7 +1611,10 @@ bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, 
             }
             printf("Bem-vindo, %s! Você está logado!\n", usernameEntrada);
         } else {
-            printf("Usuário ou senha incorretos. Tente novamente.\n");
+            printf("Usuário ou senha incorretos. Tente novamente(Press Enter).\n");
+            getchar();
+            getchar();
+            LimparTerminal();
         }
     }
 
@@ -1605,7 +1625,7 @@ bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, 
 void Menu(){
     struct timespec tempo;
     tempo.tv_sec = 0;              
-    tempo.tv_nsec = 500000000;
+    tempo.tv_nsec = 200000000;
 
 
 
