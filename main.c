@@ -1929,10 +1929,54 @@ bool GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element,
 }
 
 
+bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade) {
+    Player* playerAtual = &players[playerAtualIndex];
+
+    printf("_____________________________________\n");
+    printf("|                                   |\n");
+    printf("|        !Você tem %d pikocoins!     |\n", playerAtual->Pikocoins);
+    printf("|                                   |\n");
+    printf("_____________________________________\n");
 
 
+    printf("Pikomons disponíveis para compra:\n");
+    DebugPikomons(pPikomon, -1, pikomonQuantidade.Pikomon);
+    printf("Escolha um Pikomon para comprar (ou -1 para sair): ");
+    
+    int playerEscolha;
+    scanf("%d", &playerEscolha);
 
+    if (playerEscolha == -1) {
+        return true;
+    }
 
+    if (playerEscolha < 0 || playerEscolha >= pikomonQuantidade.Pikomon) {
+        printf("Escolha inválida. Tente novamente.\n");
+        return false;
+    }
 
+    if (playerAtual->Pikocoins < 10) {
+        printf("Você não tem Pikocoins suficientes para comprar este Pikomon.\n");
+        return false;
+    }
 
+    int quantidadePikomonArmazenado = 0;
+    for (int i = 0; i < 12; i++) {
+        if (strlen(playerAtual->PikomonsStorage[i].Name) > 0) {
+            quantidadePikomonArmazenado++;
+        }
+    }
+
+    if (quantidadePikomonArmazenado >= 12) {
+        printf("Você já possui o máximo de Pikomons permitido no armazenamento.\n");
+        return false;
+    }
+
+    playerAtual->PikomonsStorage[quantidadePikomonArmazenado] = pPikomon[playerEscolha];
+    playerAtual->Pikocoins -= 10;
+
+    printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", pPikomon[playerEscolha].Name, playerAtual->Pikocoins);
+    
+    return true;
+}
 
