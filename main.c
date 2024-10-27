@@ -211,7 +211,7 @@ void LimparTerminal();
 void Menu();
 void MenuLogin(int userNumero);
 void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos);
-bool Login(PlPointer pPlayers,int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2);
+bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, int *indexUs1, int *indexUs2);
 bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality* personalities);
 
 
@@ -359,7 +359,8 @@ int main(){
     //------------------------------------------------------------------------------------------------------------------//
     int respostaUserMP;
     bool login1 = false, login2 = false;
-    char nomeUsuario1[20], nomeUsuario2[20], respostaCadastro;
+    char respostaCadastro;
+    int indexUs1,indexUs2;
 
     printf("Gostaria de cadastrar-se?(S/n): ");
 
@@ -402,7 +403,7 @@ int main(){
         scanf(" %d", &respostaUserMP);
         if(respostaUserMP == 1){
             LimparTerminal();
-            Login(pPlayers, dataQuantities.Player, &login1, &login2, nomeUsuario1, nomeUsuario2);
+            Login(pPlayers, dataQuantities.Player, &login1, &login2, &indexUs1, &indexUs2);
         }
         if(respostaUserMP == 2){
                 printf(":)");
@@ -1739,12 +1740,13 @@ void PassPikomonTurnTime(){
 
 
 
-bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2) {
+bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, int *indexUs1, int *indexUs2) {
     char usernameEntrada[20];
     char passEntrada[7];
     int userNumero = 1;
     int indexPlayerLoop;
     bool usernameAchado, senhaAchado;
+    char nomeUsuario1[20];
 
     *login1 = false;
     *login2 = false;
@@ -1783,9 +1785,10 @@ bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, 
         if (usernameAchado && senhaAchado) {
             if (!(*login1)) {
                 strcpy(nomeUsuario1, usernameEntrada);
+                *indexUs1 = indexPlayerLoop;
                 *login1 = true;
             } else {
-                strcpy(nomeUsuario2, usernameEntrada);
+                *indexUs2 = indexPlayerLoop;
                 *login2 = true;
             }
             printf("Bem-vindo, %s! Você está logado!(Press Enter)\n", usernameEntrada);
