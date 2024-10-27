@@ -212,7 +212,7 @@ void Menu();
 void MenuLogin(int userNumero);
 void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos);
 bool Login(PlPointer pPlayers,int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2);
-
+bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality* personalities);
 
 
 
@@ -1929,7 +1929,7 @@ bool GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element,
 }
 
 
-bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade) {
+bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality* personalities) { 
     Player* playerAtual = &players[playerAtualIndex];
 
     printf("_____________________________________\n");
@@ -1937,7 +1937,6 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
     printf("|        !Você tem %d pikocoins!     |\n", playerAtual->Pikocoins);
     printf("|                                   |\n");
     printf("_____________________________________\n");
-
 
     printf("Pikomons disponíveis para compra:\n");
     DebugPikomons(pPikomon, -1, pikomonQuantidade.Pikomon);
@@ -1960,6 +1959,12 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
         return false;
     }
 
+    Pikomon novoPikomon = pPikomon[playerEscolha];
+    if (!GerarPikomon(novoPikomon, personalities, pPikomon[playerEscolha].Element, pPikomon[playerEscolha].Atributes[0].Total, pPikomon[playerEscolha].Atributes[1].Total, pPikomon[playerEscolha].Atributes[2].Total, pPikomon[playerEscolha].Atributes[3].Total, pPikomon[playerEscolha].Atributes[4].Total, pPikomon[playerEscolha].Atributes[5].Total, pPikomon[playerEscolha].Atributes[6].Total, pPikomon[playerEscolha].Atributes[7].Total)) {
+        printf("Falha ao gerar Pikomon. Tente novamente.\n");
+        return false;
+    }
+
     int quantidadePikomonArmazenado = 0;
     for (int i = 0; i < 12; i++) {
         if (strlen(playerAtual->PikomonsStorage[i].Name) > 0) {
@@ -1972,10 +1977,10 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
         return false;
     }
 
-    playerAtual->PikomonsStorage[quantidadePikomonArmazenado] = pPikomon[playerEscolha];
+    playerAtual->PikomonsStorage[quantidadePikomonArmazenado] = novoPikomon;
     playerAtual->Pikocoins -= 10;
 
-    printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", pPikomon[playerEscolha].Name, playerAtual->Pikocoins);
+    printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", novoPikomon.Name, playerAtual->Pikocoins);
     
     return true;
 }
