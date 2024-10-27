@@ -212,7 +212,7 @@ void Menu();
 void MenuLogin(int userNumero);
 void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos);
 bool Login(PlPointer pPlayers,int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2);
-
+bool GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed);
 
 
 
@@ -1927,9 +1927,6 @@ bool GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element,
 
     return true;
 }
-
-
-
 
 
 
