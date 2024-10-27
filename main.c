@@ -19,9 +19,9 @@ typedef struct Personality{
     int BaseHPModifier;
     int BaseDefenseModifier;
     int BaseMagicDefenseModifier;
-    int BaseAcurracyModifier;
+    int BaseAccuracyModifier;
     int BaseAttackModifier;
-    int BaseElementalAcurracyModifier;
+    int BaseElementalAccuracyModifier;
     int BaseMagicAttackModifier;
     int BaseSpeedModifier;
 
@@ -120,7 +120,7 @@ typedef struct Item
     char EffectCurrentHPTarget;
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
     Effect EffectCurrentHP;
-    //Esse valor é usado pra definir o quanto uma poção de cura cura e em quanto tempo, ou um veneno. O outro serve para alterar os status da vida maxima 
+    //Esse valor é usado pra definir o quanto uma pocao de cura cura e em quanto tempo, ou um veneno. O outro serve para alterar os status da vida maxima 
     
     char EffectTarget;
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
@@ -145,9 +145,9 @@ typedef struct Pikomon
     //Atributes[0].Name, "HP"
     //Atributes[1].Name, "Defense"
     //Atributes[2].Name, "MagicDefense"
-    //Atributes[3].Name, "Acurracy"
+    //Atributes[3].Name, "Accuracy"
     //Atributes[4].Name, "Attack"
-    //Atributes[5].Name, "ElementalAcurracy"
+    //Atributes[5].Name, "ElementalAccuracy"
     //Atributes[6].Name, "MagicAttack"
     //Atributes[7].Name, "Speed"
     
@@ -179,7 +179,7 @@ typedef struct Player
 
 
 
-//funções da main
+//funcoes da main
 bool DebugPlayers(PlPointer pPlayers, int index, int playersQuantity);
 bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity);
 bool DebugItems(ItPointer pItems, int index, int ItemsQuantity);
@@ -192,9 +192,9 @@ bool SaveItems(ItPointer pItems, int ItemsQuantity, const char *destino);
 bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino);
 bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino);
 void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players);
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]);
-bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char *description[3], int value, char effectCurrentHPTarget, Effect enemyEffectCurrentHP, Effect selfEffectCurrentHP, char effectTarget, double enemyStatusEffectChance, Effect enemyStatusEffect[8], double selfStatusEffectChance, Effect selfStatusEffect[8]);
-bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed);
+bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]);
+bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char description[3][255], int value, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, double StatusEffectChance, Effect StatusEffect[8]);
+bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
 bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass);
 bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex);
 bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities);
@@ -204,15 +204,13 @@ bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRe
 bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex);
 void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7]);
 void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex);
-
+double DefenseReductionCalc(double value);
 
 
 int main(){ 
-    //Declarações
+    //Declaracoes
     //------------------------------------------------------------------------------------------------------------------//
     setlocale(LC_ALL, "portuguese");
-    setenv("TZ","America/Sao_Paulo",1);
-    tzset();
     srand(time(NULL));
     
     const char *dataQuantity = "DataQuantity.txt", *players = "Players.bin", *items = "Items.bin", *pikomoms = "Pikomoms.bin", *skills = "Skills.bin", *personalities = "Personalities.bin", *elements = "Elements.bin";
@@ -247,14 +245,14 @@ int main(){
     //Loads
     //------------------------------------------------------------------------------------------------------------------//
     //Define Personalities
-    /*strcpy(allPersonalities[0].Name, "Cabeça-Quente");
+    /*strcpy(allPersonalities[0].Name, "Cabeca-Quente");
     allPersonalities[0].rarity = 8;
     allPersonalities[0].BaseHPModifier = 100;
     allPersonalities[0].BaseDefenseModifier = 100;
     allPersonalities[0].BaseMagicDefenseModifier = 100;
-    allPersonalities[0].BaseAcurracyModifier = 70;
+    allPersonalities[0].BaseAccuracyModifier = 70;
     allPersonalities[0].BaseAttackModifier = 130;
-    allPersonalities[0].BaseElementalAcurracyModifier = 70;
+    allPersonalities[0].BaseElementalAccuracyModifier = 70;
     allPersonalities[0].BaseMagicAttackModifier = 130;
     allPersonalities[0].BaseSpeedModifier = 100;
 
@@ -263,9 +261,9 @@ int main(){
     allPersonalities[1].BaseHPModifier = 100;
     allPersonalities[1].BaseDefenseModifier = 115;
     allPersonalities[1].BaseMagicDefenseModifier = 115;
-    allPersonalities[1].BaseAcurracyModifier = 100;
+    allPersonalities[1].BaseAccuracyModifier = 100;
     allPersonalities[1].BaseAttackModifier = 85;
-    allPersonalities[1].BaseElementalAcurracyModifier = 100;
+    allPersonalities[1].BaseElementalAccuracyModifier = 100;
     allPersonalities[1].BaseMagicAttackModifier = 85;
     allPersonalities[1].BaseSpeedModifier = 100;
 
@@ -274,9 +272,9 @@ int main(){
     allPersonalities[2].BaseHPModifier = 100;
     allPersonalities[2].BaseDefenseModifier = 100;
     allPersonalities[2].BaseMagicDefenseModifier = 100;
-    allPersonalities[2].BaseAcurracyModifier = 95;
+    allPersonalities[2].BaseAccuracyModifier = 95;
     allPersonalities[2].BaseAttackModifier = 80;
-    allPersonalities[2].BaseElementalAcurracyModifier = 95;
+    allPersonalities[2].BaseElementalAccuracyModifier = 95;
     allPersonalities[2].BaseMagicAttackModifier = 80;
     allPersonalities[2].BaseSpeedModifier = 130;
 
@@ -285,9 +283,9 @@ int main(){
     allPersonalities[3].BaseHPModifier = 100;
     allPersonalities[3].BaseDefenseModifier = 100;
     allPersonalities[3].BaseMagicDefenseModifier = 130;
-    allPersonalities[3].BaseAcurracyModifier = 100;
+    allPersonalities[3].BaseAccuracyModifier = 100;
     allPersonalities[3].BaseAttackModifier = 100;
-    allPersonalities[3].BaseElementalAcurracyModifier = 100;
+    allPersonalities[3].BaseElementalAccuracyModifier = 100;
     allPersonalities[3].BaseMagicAttackModifier = 80;
     allPersonalities[3].BaseSpeedModifier = 70;
 
@@ -296,9 +294,9 @@ int main(){
     allPersonalities[4].BaseHPModifier = 100;
     allPersonalities[4].BaseDefenseModifier = 90;
     allPersonalities[4].BaseMagicDefenseModifier = 130;
-    allPersonalities[4].BaseAcurracyModifier = 100;
+    allPersonalities[4].BaseAccuracyModifier = 100;
     allPersonalities[4].BaseAttackModifier = 70;
-    allPersonalities[4].BaseElementalAcurracyModifier = 100;
+    allPersonalities[4].BaseElementalAccuracyModifier = 100;
     allPersonalities[4].BaseMagicAttackModifier = 130;
     allPersonalities[4].BaseSpeedModifier = 100;
 
@@ -307,9 +305,9 @@ int main(){
     allPersonalities[5].BaseHPModifier = 100;
     allPersonalities[5].BaseDefenseModifier = 110;
     allPersonalities[5].BaseMagicDefenseModifier = 90;
-    allPersonalities[5].BaseAcurracyModifier = 100;
+    allPersonalities[5].BaseAccuracyModifier = 100;
     allPersonalities[5].BaseAttackModifier = 130;
-    allPersonalities[5].BaseElementalAcurracyModifier = 100;
+    allPersonalities[5].BaseElementalAccuracyModifier = 100;
     allPersonalities[5].BaseMagicAttackModifier = 70;
     allPersonalities[5].BaseSpeedModifier = 100;
 
@@ -318,9 +316,9 @@ int main(){
     allPersonalities[6].BaseHPModifier = 100;
     allPersonalities[6].BaseDefenseModifier = 80;
     allPersonalities[6].BaseMagicDefenseModifier = 80;
-    allPersonalities[6].BaseAcurracyModifier = 100;
+    allPersonalities[6].BaseAccuracyModifier = 100;
     allPersonalities[6].BaseAttackModifier = 100;
-    allPersonalities[6].BaseElementalAcurracyModifier = 100;
+    allPersonalities[6].BaseElementalAccuracyModifier = 100;
     allPersonalities[6].BaseMagicAttackModifier = 100;
     allPersonalities[6].BaseSpeedModifier = 130;
 
@@ -329,7 +327,7 @@ int main(){
     allPersonalities[7].BaseHPModifier = 100;
     allPersonalities[7].BaseDefenseModifier = 110;
     allPersonalities[7].BaseMagicDefenseModifier = 110;
-    allPersonalities[7].BaseAcurracyModifier = 110;
+    allPersonalities[7].BaseAccuracyModifier = 110;
     allPersonalities[7].BaseAttackModifier = 110;
     allPersonalities[7].BaseMagicAttackModifier = 110;
     allPersonalities[7].BaseSpeedModifier = 110;
@@ -339,9 +337,9 @@ int main(){
     allPersonalities[8].BaseHPModifier = 100;
     allPersonalities[8].BaseDefenseModifier = 100;
     allPersonalities[8].BaseMagicDefenseModifier = 100;
-    allPersonalities[8].BaseAcurracyModifier = 80;
+    allPersonalities[8].BaseAccuracyModifier = 80;
     allPersonalities[8].BaseAttackModifier = 100;
-    allPersonalities[8].BaseElementalAcurracyModifier = 80;
+    allPersonalities[8].BaseElementalAccuracyModifier = 80;
     allPersonalities[8].BaseMagicAttackModifier = 100;
     allPersonalities[8].BaseSpeedModifier = 120;
 
@@ -350,9 +348,9 @@ int main(){
     allPersonalities[9].BaseHPModifier = 100;
     allPersonalities[9].BaseDefenseModifier = 85;
     allPersonalities[9].BaseMagicDefenseModifier = 85;
-    allPersonalities[9].BaseAcurracyModifier = 130;
+    allPersonalities[9].BaseAccuracyModifier = 130;
     allPersonalities[9].BaseAttackModifier = 100;
-    allPersonalities[9].BaseElementalAcurracyModifier = 130;
+    allPersonalities[9].BaseElementalAccuracyModifier = 130;
     allPersonalities[9].BaseMagicAttackModifier = 100;
     allPersonalities[9].BaseSpeedModifier = 100;
 
@@ -361,9 +359,9 @@ int main(){
     allPersonalities[10].BaseHPModifier = 100;
     allPersonalities[10].BaseDefenseModifier = 100;
     allPersonalities[10].BaseMagicDefenseModifier = 120;
-    allPersonalities[10].BaseAcurracyModifier = 100;
+    allPersonalities[10].BaseAccuracyModifier = 100;
     allPersonalities[10].BaseAttackModifier = 100;
-    allPersonalities[10].BaseElementalAcurracyModifier = 100;
+    allPersonalities[10].BaseElementalAccuracyModifier = 100;
     allPersonalities[10].BaseMagicAttackModifier = 120;
     allPersonalities[10].BaseSpeedModifier = 80;
 
@@ -372,8 +370,8 @@ int main(){
     allPersonalities[11].BaseHPModifier = 100;
     allPersonalities[11].BaseDefenseModifier = 130;
     allPersonalities[11].BaseMagicDefenseModifier = 100;
-    allPersonalities[11].BaseAcurracyModifier = 100;
-    allPersonalities[11].BaseElementalAcurracyModifier = 100;
+    allPersonalities[11].BaseAccuracyModifier = 100;
+    allPersonalities[11].BaseElementalAccuracyModifier = 100;
     allPersonalities[11].BaseAttackModifier = 100;
     allPersonalities[11].BaseMagicAttackModifier = 100;
     allPersonalities[11].BaseSpeedModifier = 70;
@@ -383,9 +381,9 @@ int main(){
     allPersonalities[12].BaseHPModifier = 100;
     allPersonalities[12].BaseDefenseModifier = 120;
     allPersonalities[12].BaseMagicDefenseModifier = 100;
-    allPersonalities[12].BaseAcurracyModifier = 100;
+    allPersonalities[12].BaseAccuracyModifier = 100;
     allPersonalities[12].BaseAttackModifier = 120;
-    allPersonalities[12].BaseElementalAcurracyModifier = 100;
+    allPersonalities[12].BaseElementalAccuracyModifier = 100;
     allPersonalities[12].BaseMagicAttackModifier = 100;
     allPersonalities[12].BaseSpeedModifier = 80;
     
@@ -393,7 +391,7 @@ int main(){
 
     //Define Elements
     /*
-    
+        
     */
 
     dBPersonalities = fopen(personalities, "rb");
@@ -508,7 +506,7 @@ int main(){
     //------------------------------------------------------------------------------------------------------------------//
     //login
     //menu
-    bool Battle;
+    bool Battle = false;
     if(Battle){
         //Variaveis calcSkill
         bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit, usedItemStatusHit;
@@ -516,12 +514,11 @@ int main(){
         
         
         //Variaveis Battle
-        bool playerOneTurn, reset, nextTurnReset, battleIsOver;
+        bool playerOneTurn, reset, nextTurnReset = false, battleIsOver;
         int i = 0, turnCost;
         PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
         reset = true;
         battleIsOver = false;
-        
         
         
         while(!battleIsOver){
@@ -547,7 +544,7 @@ int main(){
                     selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
 
                     
-                        //ações do player1
+                        //acoes do player1
                     
 
                 }
@@ -559,7 +556,7 @@ int main(){
                     selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
 
                      
-                        //ações do player2
+                        //acoes do player2
                     
 
                 }
@@ -568,7 +565,7 @@ int main(){
         }
     }
     //------------------------------------------------------------------------------------------------------------------//
-    //toda a vez que acaba uma batalha tem que usar essa função
+    //toda a vez que acaba uma batalha tem que usar essa funcao
     FreeAllHeapMemoryAndSaveEverything(pSkills,pItems,pPikomons,pPlayers,dataQuantities,dataQuantity,skills,items,pikomoms,players);
 }
 
@@ -603,7 +600,7 @@ bool SavePersonalities(Personality allPersonalities[13], const char *destino){
     dBPersonalities = fopen(destino, "wb");
     if (dBPersonalities == NULL)
     {
-        perror("falha ao abrir \"dBPersonalities\" na função \"SavePersonalities\"");
+        perror("falha ao abrir \"dBPersonalities\" na funcao \"SavePersonalities\"");
         return false;
     }
     fwrite(allPersonalities, sizeof(Personality), 13, dBPersonalities);
@@ -616,7 +613,7 @@ bool SaveElements(Element allElements[10], const char *destino){
     dBElements = fopen(destino, "wb");
     if (dBElements == NULL)
     {
-        perror("falha ao abrir \"dBElements\" na função \"SaveElements\"");
+        perror("falha ao abrir \"dBElements\" na funcao \"SaveElements\"");
         return false;
     }
     fwrite(allElements, sizeof(Element), 10, dBElements);
@@ -628,7 +625,7 @@ bool SaveDataQuantity(DataQuantity dataQuantities, const char *destino){
     FILE* dBDataQuantity;
     dBDataQuantity = fopen(destino, "w");
     if(dBDataQuantity == NULL){
-        perror("falha ao abrir \"dBDataQuantity\" na função \"SaveDataQuantity\"");
+        perror("falha ao abrir \"dBDataQuantity\" na funcao \"SaveDataQuantity\"");
         return false;
     }
     fprintf(dBDataQuantity, "Players,Pikomons,Itens,Skills\n%d,%d,%d,%d", dataQuantities.Player,dataQuantities.Pikomon,dataQuantities.Item,dataQuantities.Skill);
@@ -641,7 +638,7 @@ bool SaveSkills(SkPointer pSkills, int skillsQuantity, const char *destino){
     dBSkills = fopen(destino, "wb");
     if (dBSkills == NULL)
     {
-        perror("falha ao abrir \"dBSkills\" na função \"SaveSkills\"");
+        perror("falha ao abrir \"dBSkills\" na funcao \"SaveSkills\"");
         return false;
     }
     fwrite(pSkills, sizeof(Skill), skillsQuantity, dBSkills);
@@ -654,7 +651,7 @@ bool SaveItems(ItPointer pItems, int ItemsQuantity, const char *destino){
     dBItems = fopen(destino, "wb");
     if (dBItems == NULL)
     {
-        perror("falha ao abrir \"dBItems\" na função \"SaveItems\"");
+        perror("falha ao abrir \"dBItems\" na funcao \"SaveItems\"");
         return false;
     }
     fwrite(pItems, sizeof(Item), ItemsQuantity, dBItems);
@@ -667,7 +664,7 @@ bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino
     dBPikomons = fopen(destino, "wb");
     if (dBPikomons == NULL)
     {
-        perror("falha ao abrir \"dBPikomons\" na função \"SavePikomons\"");
+        perror("falha ao abrir \"dBPikomons\" na funcao \"SavePikomons\"");
         return false;
     }
     fwrite(pPikomons, sizeof(Pikomon), pikomonsQuantity, dBPikomons);
@@ -680,7 +677,7 @@ bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino){
     dBPlayers = fopen(destino, "wb");
     if (dBPlayers == NULL)
     {
-        perror("falha ao abrir \"dBPlayers\" na função \"SavePlayers\"");
+        perror("falha ao abrir \"dBPlayers\" na funcao \"SavePlayers\"");
         return false;
     }
     fwrite(pPlayers, sizeof(Player), playersQuantity, dBPlayers);
@@ -780,7 +777,7 @@ bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char t
     dataQuantities.Skill++;
     pSkills = (SkPointer)realloc(pSkills, dataQuantities.Skill * sizeof(Skill));
     if(pSkills == NULL){
-        perror("ERRO na realocação de memoria em \"AddSkill\"");
+        perror("ERRO na realocacao de memoria em \"AddSkill\"");
         return false;
     }
     memset(&pSkills[dataQuantities.Skill-1], 0, sizeof(Skill));
@@ -807,9 +804,10 @@ bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char t
     for(i = 0; i < 8; i++){
         pSkills[dataQuantities.Skill-1].SelfEffect[i] = selfEffect[i];
     }
+    return true;
 }
 
-bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char *description[3], int value, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, double StatusEffectChance, Effect StatusEffect[8]){
+bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char description[3][255], int value, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, double StatusEffectChance, Effect StatusEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pItems == NULL){
         perror("ERRO, \"pItems\" não pode ser NULL em \"AddItem\"");
@@ -839,7 +837,7 @@ bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *ty
     dataQuantities.Item++;
     pItems = (ItPointer)realloc(pItems, dataQuantities.Item * sizeof(Item));
     if(pItems == NULL){
-        perror("ERRO na realocação de memoria em \"AddItem\"");
+        perror("ERRO na realocacao de memoria em \"AddItem\"");
         return false;
     }
     memset(&pItems[dataQuantities.Item-1], 0, sizeof(Item));
@@ -856,10 +854,11 @@ bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *ty
     for(i = 0; i < 8; i++){
         pItems[dataQuantities.Item-1].StatusEffect[i] = StatusEffect[i];
     }
+    return true;
 
 }
 
-bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed){
+bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pPikomons == NULL){
         perror("ERRO, \"pPikomons\" não pode ser NULL em \"AddPikomon\"");
@@ -889,16 +888,16 @@ bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, El
         perror("ERRO, \"BaseMagicDefense\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
-    if(BaseAcurracy == 0){
-        perror("ERRO, \"BaseAcurracy\" não pode ser 0 em \"AddPikomon\"");
+    if(BaseAccuracy == 0){
+        perror("ERRO, \"BaseAccuracy\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
     if(BaseAttack == 0){
         perror("ERRO, \"BaseAttack\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
-    if(BaseElementalAcurracy == 0){
-        perror("ERRO, \"BaseElementalAcurracy\" não pode ser 0 em \"AddPikomon\"");
+    if(BaseElementalAccuracy == 0){
+        perror("ERRO, \"BaseElementalAccuracy\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
     if(BaseMagicAttack == 0){
@@ -914,7 +913,7 @@ bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, El
     dataQuantities.Pikomon++;
     pPikomons = (PiPointer)realloc(pPikomons, dataQuantities.Pikomon * sizeof(Pikomon));
     if(pPikomons == NULL){
-        perror("ERRO na realocação de memoria em \"AddPikomon\"");
+        perror("ERRO na realocacao de memoria em \"AddPikomon\"");
         return false;
     }
     memset(&pPikomons[dataQuantities.Pikomon-1], 0, sizeof(Pikomon));
@@ -944,8 +943,8 @@ bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, El
     pPikomons[dataQuantities.Pikomon-1].Atributes[2].acronym = NULL;
     pPikomons[dataQuantities.Pikomon-1].Atributes[2].Bonus = NULL;
     pPikomons[dataQuantities.Pikomon-1].Atributes[2].BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[3].Name, "Acurracy");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[3].Base = BaseAcurracy;
+    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[3].Name, "Accuracy");
+    pPikomons[dataQuantities.Pikomon-1].Atributes[3].Base = BaseAccuracy;
     pPikomons[dataQuantities.Pikomon-1].Atributes[3].acronym = NULL;
     pPikomons[dataQuantities.Pikomon-1].Atributes[3].Bonus = NULL;
     pPikomons[dataQuantities.Pikomon-1].Atributes[3].BonusTimer = NULL;
@@ -954,8 +953,8 @@ bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, El
     pPikomons[dataQuantities.Pikomon-1].Atributes[4].acronym = NULL;
     pPikomons[dataQuantities.Pikomon-1].Atributes[4].Bonus = NULL;
     pPikomons[dataQuantities.Pikomon-1].Atributes[4].BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[5].Name, "ElementalAcurracy");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[5].Base = BaseElementalAcurracy;
+    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[5].Name, "ElementalAccuracy");
+    pPikomons[dataQuantities.Pikomon-1].Atributes[5].Base = BaseElementalAccuracy;
     pPikomons[dataQuantities.Pikomon-1].Atributes[5].acronym = NULL;
     pPikomons[dataQuantities.Pikomon-1].Atributes[5].Bonus = NULL;
     pPikomons[dataQuantities.Pikomon-1].Atributes[5].BonusTimer = NULL;
@@ -998,7 +997,7 @@ bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char
     dataQuantities.Player++;
     pPlayers = (PlPointer)realloc(pPlayers, dataQuantities.Player * sizeof(Player));
     if(pPlayers == NULL){
-        perror("ERRO na realocação de memoria em \"AddPlayers\"");
+        perror("ERRO na realocacao de memoria em \"AddPlayers\"");
         return false;
     }
     memset(&pPlayers[dataQuantities.Player-1], 0, sizeof(Player));
@@ -1029,10 +1028,11 @@ bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int
     pPlayers[playerIndex].BagCurrentSize++;
     pPlayers[playerIndex].Bag = (ItPointer)realloc(pPlayers[playerIndex].Bag, pPlayers[playerIndex].BagCurrentSize * sizeof(Item));
     if(pPlayers[playerIndex].Bag == NULL){
-        perror("ERRO na realocação de memoria em \"AddItemPlayerBag\"");
+        perror("ERRO na realocacao de memoria em \"AddItemPlayerBag\"");
         return false;
     }
     pPlayers[playerIndex].Bag[pPlayers[playerIndex].BagCurrentSize-1] = pItems[itemIndex];
+    return true;
 }
 
 bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities){
@@ -1070,6 +1070,7 @@ bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonP
         return false;
     }
     pPlayers[playerIndex].PikomonsStorage[storagePikomonPlacementIndex] = pPikomons[pikomonIndex];
+    return true;
 }
 
 bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove){
@@ -1096,6 +1097,7 @@ bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove
         pSkills[i] = tempSkills[i];
     }
     free(tempSkills);
+    return true;
 }
 
 bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
@@ -1122,6 +1124,7 @@ bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove){
         pItems[i] = tempItems[i];
     }
     free(tempItems);
+    return true;
 }
 
 bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRemove){
@@ -1148,6 +1151,7 @@ bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRe
         pPikomons[i] = tempPikomons[i];
     }
     free(tempPikomons);
+    return true;
 }
 
 bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){ 
@@ -1182,6 +1186,7 @@ bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
         pPlayers[playerIndex].Bag[i] = tempItems[i];
     }
     free(tempItems);
+    return true;
 }
 //------------------------------------------------------------------------------//
 
@@ -1273,7 +1278,7 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
     if(((rand() % 100)+1) <= (double)(*atacker)[0].Atributes[3].Total * (double)usedSkill[0].hitChance / 100.0){
         *skillHit = true;
         int magicDamage, physicalDamage;
-        if((rand() % 100 +1) <= usedSkill[0].CritChance) critHit = true;
+        if((rand() % 100 +1) <= usedSkill[0].CritChance) *critHit = true;
 
         magicDamage = (int)(((double)(*atacker)[0].Atributes[6].Total * (double)usedSkill[0].MagicAttackScale / 100.0) + usedSkill[0].MagicBase) * (*critHit) ? 2 : 1;
         physicalDamage = (int)(((double)(*atacker)[0].Atributes[4].Total * (double)usedSkill[0].AttackScale / 100.0) + usedSkill[0].AttackBase) * (*critHit) ? 2 : 1;
@@ -1510,7 +1515,7 @@ void PassPikomonTurnTime(PiPointer *pikomon){
     int I, J, K, indexToRemove;
     Effect *tempEffect;
     PiPointer pik;
-    pik = &(*pikomon);
+    pik = *pikomon;
     
     for(J = 0; J < pik[0].CurrentHP.BonusQuantity; J++){
         pik[0].CurrentHP.BonusTimer[J]--;
@@ -1590,9 +1595,10 @@ void PassPikomonTurnTime(PiPointer *pikomon){
 
 //Log function
 //------------------------------------------------------------------------------//
-//a função log do math.h estava dando um conflito muito estranho toda a vez que chamava com alguma variavel dentro
+//a funcao log do math.h estava dando um conflito muito estranho toda a vez que chamava com alguma variavel dentro
 double DefenseReductionCalc(double value){
     int base = 2;
-    return Ln(value) / Ln(base);
+    return log(value) / log(base);
+    return 1.0;
 }
 //------------------------------------------------------------------------------//
