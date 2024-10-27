@@ -253,18 +253,8 @@ int main(){
 
     /**Loads**/
 
-    /*typedef struct Element
-{
+    //------------------------------------------------------------------------------------------------------------------//][
 
-    char Name[20];
-    char Acronym[4];
-    int Effectiveness[10];
-    int ElementalDamageScale;
-    int SelfElementIndex;
-    Effect CurrentHPEffect;
-    Effect StatusEffect[8];*/
-
-    //------------------------------------------------------------------------------------------------------------------//
     dBPersonalities = fopen(personalities, "rb");
     if(dBPersonalities == NULL){
         perror("Falha ao abrir \"personalities\"");
@@ -276,107 +266,6 @@ int main(){
         return 2;
     }
     fclose(dBPersonalities);
-
-    //Comum
-        strcpy(allElements[0].Name, "Comum"); 
-        strcpy(allElements[0].Acronym, "Slp");
-        allElements[0].Effectiveness[0] = 100; 
-        allElements[0].Effectiveness[1] = 100;
-        allElements[0].Effectiveness[2] = 100;
-        allElements[0].Effectiveness[3] = 100;
-        allElements[0].Effectiveness[4] = 100;
-        allElements[0].Effectiveness[5] = 100;
-        allElements[0].Effectiveness[6] = 100;
-        allElements[0].Effectiveness[7] = 100;
-        allElements[0].Effectiveness[8] = 100;
-        allElements[0].Effectiveness[9] = 100;
-        allElements[0].ElementalDamageScale = 0;
-        allElements[0].SelfElementIndex = 0;
-        strcpy(allElements[0].CurrentHPEffect.Acronym, NULL);
-        allElements[0].CurrentHPEffect.Quantity = 0;
-        allElements[0].CurrentHPEffect.Timer = 0;
-        strcpy(allElements[0].StatusEffect[0].Acronym, NULL);
-        allElements[0].StatusEffect[0].Quantity = 0;
-        allElements[0].StatusEffect[0].Timer = 0;
-        strcpy(allElements[0].StatusEffect[1].Acronym, "NULL");
-        allElements[0].StatusEffect[1].Quantity = 0;
-        allElements[0].StatusEffect[1].Timer = 0;
-        strcpy(allElements[0].StatusEffect[2].Acronym, "Def");
-        allElements[0].StatusEffect[2].Quantity = 0;
-        allElements[0].StatusEffect[2].Timer = 0;
-        strcpy(allElements[0].StatusEffect[3].Acronym, "MaD");
-        allElements[0].StatusEffect[3].Quantity = 0;
-        allElements[0].StatusEffect[3].Timer = 0; 
-        strcpy(allElements[0].StatusEffect[4].Acronym, "Acc");
-        allElements[0].StatusEffect[4].Quantity = 0;
-        allElements[0].StatusEffect[4].Timer = 0;
-        strcpy(allElements[0].StatusEffect[5].Acronym, "Atk");
-        allElements[0].StatusEffect[5].Quantity = 0;
-        allElements[0].StatusEffect[5].Timer = 0;
-        strcpy(allElements[0].StatusEffect[6].Acronym, "MaA");
-        allElements[0].StatusEffect[6].Quantity = 0;
-        allElements[0].StatusEffect[6].Timer = 0;
-        strcpy(allElements[0].StatusEffect[7].Acronym, "Spd");
-        allElements[0].StatusEffect[7].Quantity = -100;
-        allElements[0].StatusEffect[7].Timer = 3;
-
-    //Flamejante
-        //Comum
-        strcpy(allElements[1].Name, "Flamejante"); 
-        strcpy(allElements[1].Acronym, "Brn");
-        allElements[1].Effectiveness[0] = 100; //Comum
-        allElements[1].Effectiveness[1] = 50;  //Flamejante
-        allElements[1].Effectiveness[2] = 50;  //Aquático
-        allElements[1].Effectiveness[3] = 200; //Natural
-        allElements[1].Effectiveness[4] = 100; //Elétrico
-        allElements[1].Effectiveness[5] = 100; //Misterioso
-        allElements[1].Effectiveness[6] = 100; //Luminoso
-        allElements[1].Effectiveness[7] = 200; //Frio
-        allElements[1].Effectiveness[8] = 50;  //Mineral
-        allElements[1].Effectiveness[9] = 100; //Tóxico
-        allElements[1].ElementalDamageScale = 010;
-        allElements[1].SelfElementIndex = 0;
-        strcpy(allElements[0].CurrentHPEffect.Acronym, NULL);
-        allElements[1].CurrentHPEffect.Quantity = 0;
-        allElements[1].CurrentHPEffect.Timer = 0;
-        strcpy(allElements[0].StatusEffect[0].Acronym, NULL);
-        allElements[1].StatusEffect[0].Quantity = 0;
-        allElements[1].StatusEffect[0].Timer = 0;
-        strcpy(allElements[0].StatusEffect[1].Acronym, NULL);
-        allElements[1].StatusEffect[1].Quantity = 0;
-        allElements[1].StatusEffect[1].Timer = 0;
-        strcpy(allElements[0].StatusEffect[2].Acronym, NULL);
-        allElements[1].StatusEffect[2].Quantity = 0;
-        allElements[1].StatusEffect[2].Timer = 0;
-        strcpy(allElements[0].StatusEffect[3].Acronym, NULL);
-        allElements[1].StatusEffect[3].Quantity = 0;
-        allElements[1].StatusEffect[3].Timer = 0;
-        strcpy(allElements[0].StatusEffect[4].Acronym, NULL);
-        allElements[1].StatusEffect[4].Quantity = 0;
-        allElements[1].StatusEffect[4].Timer = 0;
-        strcpy(allElements[0].StatusEffect[5].Acronym, NULL);
-        allElements[1].StatusEffect[5].Quantity = 0;
-        allElements[1].StatusEffect[5].Timer = 0;
-        strcpy(allElements[0].StatusEffect[6].Acronym, NULL);
-        allElements[1].StatusEffect[6].Quantity = 0;
-        allElements[1].StatusEffect[6].Timer = 0;
-        strcpy(allElements[0].StatusEffect[7].Acronym, NULL);
-        allElements[1].StatusEffect[7].Quantity = -100;
-        allElements[1].StatusEffect[7].Timer = 3;    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     dBElements = fopen(elements, "rb");
     if(dBElements == NULL){
@@ -477,6 +366,7 @@ int main(){
 
     /**Principal Do Usuário**/
     //------------------------------------------------------------------------------------------------------------------//
+    /*
     int respostaUserMP;
     bool login1 = false, login2 = false;
     char nomeUsuario1[20], nomeUsuario2[20], respostaCadastro;
@@ -564,16 +454,17 @@ int main(){
                 nextTurnReset = false;
                 reset = true;
             }
+            
 
-
+           
             if(playerOneTurn){
                 selectedPlayerOnePicomon[0].ChargedSpeed += selectedPlayerOnePicomon[0].Atributes[7].Total;
                 while(selectedPlayerOnePicomon[0].ChargedSpeed - turnCost >= 0){
                     selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
 
-                    /* 
+                    
                         ações do player1
-                    */
+                    
 
                 }
                 playerOneTurn = false;
@@ -583,15 +474,15 @@ int main(){
                 while(selectedPlayerTwoPicomon[0].ChargedSpeed - turnCost >= 0){
                     selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
 
-                    /* 
+                    
                         ações do player2
-                    */
+                    
 
                 }
                 playerOneTurn = true;
             }
         }
-    }
+    }*/
     //------------------------------------------------------------------------------------------------------------------//
     //toda a vez que acaba uma batalha tem que usar essa função
     FreeAllHeapMemoryAndSaveEverything(pSkills,pItems,pPikomons,pPlayers,dataQuantities,dataQuantity,skills,items,pikomoms,players);
@@ -1725,7 +1616,7 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn)
     }
     
 }
-
+/*
 void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPointer *defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage){
     int I, J, bonusQuantity;
     double elementalEffectivness;
@@ -1767,9 +1658,9 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
 
 
     if(((rand() % 100)+1) <= (double)(*atacker)[0].Atributes[3].Total * (double)usedSkill[0].hitChance / 100.0){
-        skillHit = true;
+        *skillHit = true;
         int magicDamage, physicalDamage;
-        if((rand() % 100 +1) <= usedSkill[0].CritChance) critHit = true;
+        if((rand() % 100 +1) <= usedSkill[0].CritChance) *critHit = true;
 
         magicDamage = (int)(((double)(*atacker)[0].Atributes[6].Total * (double)usedSkill[0].MagicAttackScale / 100.0) + usedSkill[0].MagicBase) * (*critHit) ? 2 : 1;
         physicalDamage = (int)(((double)(*atacker)[0].Atributes[4].Total * (double)usedSkill[0].AttackScale / 100.0) + usedSkill[0].AttackBase) * (*critHit) ? 2 : 1;
@@ -1815,7 +1706,7 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
 
 
     if((rand() % 100 +1 <= usedSkill[0].SelfEffectHitChance)){
-        selfEffectHit = true;
+        *selfEffectHit = true;
         for (I = 0; I < 8; I++){
             (*atacker)[0].Atributes[I].BonusQuantity++;
             bonusQuantity = (*atacker)[0].Atributes[I].BonusQuantity;
@@ -1833,7 +1724,7 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
 
 
     if((rand() % 100 +1 <= usedSkill[0].EnemyEffectHitChance)){
-        enemyEffectHit = true;
+        *enemyEffectHit = true;
         for (I = 0; I < 8; I++){
             (*defenser)[0].Atributes[I].BonusQuantity++;
             bonusQuantity = (*defenser)[0].Atributes[I].BonusQuantity;
@@ -1862,12 +1753,12 @@ void UseItem(PlPointer *playerUsing, PlPointer *otherPlayer, int itemUsedIndex){
     char EffectTarget;
     //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
     int StatusEffectChance;
-    Effect StatusEffect[8];*/
+    Effect StatusEffect[8];
     double playerUsingDamageReduction, otherPlayerDamageReduction;
     ItPointer usedItem;
     usedItem = &(*playerUsing)[0].Bag[itemUsedIndex];
     //playerUsingDamageReduction = usedItem[0]
-}
+}*/
 
 void PassPikomonTurnTime(){
     //vai ter problema com o CurrentHp.acronym e os atribute.acronym. neles não se podem usar o realloc porque não libera os ponteiros individuais
