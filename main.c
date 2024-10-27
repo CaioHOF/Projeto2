@@ -210,6 +210,7 @@ void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex);
 void LimparTerminal();
 void Menu();
 void MenuLogin(int userNumero);
+void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon);
 bool Login(PlPointer pPlayers,int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2);
 
 
@@ -359,11 +360,6 @@ int main(){
     int respostaUserMP;
     bool login1 = false, login2 = false;
     char nomeUsuario1[20], nomeUsuario2[20], respostaCadastro;
-
-
-    
-
-    getchar();
 
     printf("Gostaria de cadastrar-se?(S/n): ");
 
@@ -1859,34 +1855,34 @@ void LimparTerminal() {
 
 
 void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon) {
-    int i = 0;
-    LimparTerminal();
+
+    LimparTerminal();  
 
     // Pikomon inimigo
     printf(" __________________________________________________________________________________________________________________________________________ \n");
-    printf("|                    %20s                                                                                                                  |\n", epPikomon.Name);
-    printf("|                    HP: %d/%d                                                                                                             |\n", epPikomon.CurrentHP.Total, epPikomon.Atributes[0].Total);
-    printf("|%19s                                                                                                                                      |\n"),ppPikomon.IconImg[0];
-    printf("|%19s                                                                                                                                      |\n"),ppPikomon.IconImg[1];
-    printf("|%19s                                                                                                                                      |\n"),ppPikomon.IconImg[2];
-    printf("|%19s                                                                                                                                      |\n"),ppPikomon.IconImg[3];
-    printf("|%19s                                                                                                                                      |\n"),ppPikomon.IconImg[4];
-    printf("|%19s                                                                                                                                      |\n"),ppPikomon.IconImg[5];
-    printf("|%19s                                                                                                                                      |\n"),ppPikomon.IconImg[6];
+    printf("|                    %-20s                                                                                                  |\n", epPikomon.Name);
+    printf("|                    HP: %d/%d                                                                                                           |\n", epPikomon.CurrentHP.Total, epPikomon.Atributes[0].Total);
+    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[0]);
+    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[1]);
+    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[2]);
+    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[3]);
+    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[4]);
+    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[5]);
+    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[6]);
     printf("|                                                                                                                                          |\n");
     printf("|__________________________________________________________________________________________________________________________________________|\n\n");
 
     // Pikomon do jogador Turno
     printf(" __________________________________________________________________________________________________________________________________________ \n");
-    printf("|                   |%20s                |                                                                                                 |\n", ppPikomon.Name);
-    printf("|                   |HP: %7d/%7d         |                                                                                                 |\n", ppPikomon.CurrentHP.Total, ppPikomon.Atributes[0].Total);
-    printf("|%19s               |ATK: %15d           |      1. A T A C A R                                         2. I T E N S                        |\n", ppPikomon.IconImg[0], ppPikomon.Atributes[4].Total);
-    printf("|%19s               |DEF: %15d           |         - - - - - -                                            - - - - -                        |\n", ppPikomon.IconImg[1], ppPikomon.Atributes[1].Total);
-    printf("|%19s               |SpA: %15d           |                                                                                                 |\n", ppPikomon.IconImg[2], ppPikomon.Atributes[6].Total);
-    printf("|%19s               |SpD: %15d           |                                                                                                 |\n", ppPikomon.IconImg[3], ppPikomon.Atributes[2].Total);
-    printf("|%19s               |Spd: %15d           |      3. T R O C A R                                         4. D E S I S T I R                  |\n", ppPikomon.IconImg[4], ppPikomon.Atributes[7].Total);
-    printf("|%19s               |                    |         - - - - - -                                            - - - - - - - -                  |\n"),ppPikomon.IconImg[5];
-    printf("|%19s               |                    |                                                                                                 |\n"),ppPikomon.IconImg[6];    
-    printf("|                   |                    |                                                                                                 |\n");                    
+    printf("|                   |%-20s |                                                                                                 |\n", ppPikomon.Name);
+    printf("|                   |HP: %-7d/%-7d |                                                                                                 |\n", ppPikomon.CurrentHP.Total, ppPikomon.Atributes[0].Total);
+    printf("|%19s|ATK: %-15d|      1. A T A C A R                                         2. I T E N S                        |\n", ppPikomon.IconImg[0], ppPikomon.Atributes[4].Total);
+    printf("|%19s|DEF: %-15d|         - - - - - -                                            - - - - -                        |\n", ppPikomon.IconImg[1], ppPikomon.Atributes[1].Total);
+    printf("|%19s|SpA: %-15d|                                                                                                 |\n", ppPikomon.IconImg[2], ppPikomon.Atributes[6].Total);
+    printf("|%19s|SpD: %-15d|                                                                                                 |\n", ppPikomon.IconImg[3], ppPikomon.Atributes[2].Total);
+    printf("|%19s|Spd: %-15d|      3. T R O C A R                                         4. D E S I S T I R                  |\n", ppPikomon.IconImg[4], ppPikomon.Atributes[7].Total);
+    printf("|%19s|                    |         - - - - - -                                            - - - - - - - -                  |\n", ppPikomon.IconImg[5]);
+    printf("|%19s|                    |                                                                                                 |\n", ppPikomon.IconImg[6]);
+    printf("|                   |                    |                                                                                                 |\n");
     printf("|___________________|____________________|_________________________________________________________________________________________________|\n\n");
 }
