@@ -1887,3 +1887,52 @@ void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos) {
     printf("|                   |                    |                                                                                                 |\n");
     printf("|___________________|____________________|_________________________________________________________________________________________________|\n\n");
 }
+
+
+bool GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed) {
+    if (personalities == NULL || 13 <= 0) {
+        return false;
+    }
+
+    // Isso aq inicializa o gerador de numeros
+    srand(time(NULL));
+
+    int totalRaridades = 0;
+    for (int i = 0; i < 13; i++) {
+        totalRaridades += personalities[i].rarity;
+    }
+
+    int valorAleatorio = rand() % totalRaridades;
+    int raridadeSum = 0;
+    for (int i = 0; i < 13; i++) {
+        raridadeSum += personalities[i].rarity;
+        if (valorAleatorio < raridadeSum) {
+            pPikomon.Personality = personalities[i];
+            break;
+        }
+    }
+
+    pPikomon.Atributes[0].Base = (int)(BaseHP * pPikomon.Personality.BaseHPModifier / 100);
+    pPikomon.Atributes[1].Base = (int)(BaseDefense * pPikomon.Personality.BaseDefenseModifier / 100);
+    pPikomon.Atributes[2].Base = (int)(BaseMagicDefense * pPikomon.Personality.BaseMagicDefenseModifier / 100);
+    pPikomon.Atributes[3].Base = (int)(BaseAcurracy * pPikomon.Personality.BaseAcurracyModifier / 100);
+    pPikomon.Atributes[4].Base = (int)(BaseAttack * pPikomon.Personality.BaseAttackModifier / 100);
+    pPikomon.Atributes[5].Base = (int)(BaseElementalAcurracy * pPikomon.Personality.BaseElementalAcurracyModifier / 100);
+    pPikomon.Atributes[6].Base = (int)(BaseMagicAttack * pPikomon.Personality.BaseMagicAttackModifier / 100);
+    pPikomon.Atributes[7].Base = (int)(BaseSpeed * pPikomon.Personality.BaseSpeedModifier / 100);
+
+    pPikomon.Element = element;
+
+    //PRECISA AINDA COLOCAR O ADDPIKOMON NO STORAGE DO PLAYER
+
+    return true;
+}
+
+
+
+
+
+
+
+
+
