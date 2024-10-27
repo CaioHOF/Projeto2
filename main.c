@@ -210,7 +210,7 @@ void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex);
 void LimparTerminal();
 void Menu();
 void MenuLogin(int userNumero);
-void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon);
+void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos);
 bool Login(PlPointer pPlayers,int playersQuantity, bool *login1, bool *login2, char *nomeUsuario1, char *nomeUsuario2);
 
 
@@ -1854,7 +1854,7 @@ void LimparTerminal() {
 }
 
 
-void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon) {
+void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos) {
 
     LimparTerminal();  
 
@@ -1872,6 +1872,7 @@ void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon) {
     printf("|                                                                                                                                          |\n");
     printf("|__________________________________________________________________________________________________________________________________________|\n\n");
 
+    printf("%-s\n", Turnos);
     // Pikomon do jogador Turno
     printf(" __________________________________________________________________________________________________________________________________________ \n");
     printf("|                   |%-20s |                                                                                                 |\n", ppPikomon.Name);
