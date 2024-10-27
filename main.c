@@ -362,7 +362,7 @@ int main(){
 
     printf("Gostaria de cadastrar-se?(S/n): ");
 
-    scanf(" %c", &respostaCadastro); // O espaço antes de %c ignora espaços em branco
+    scanf(" %c", &respostaCadastro);
 
         if (respostaCadastro == 's' || respostaCadastro == 'S') {
             
@@ -375,25 +375,27 @@ int main(){
 
             if (AddPlayer(&pPlayers, &dataQuantities, name, pass)) {
                 if (SavePlayers(pPlayers, dataQuantities.Player, "Players.bin")) {
-                    //SaveDataQuantity(dataQuantities, "DataQuantity.txt");
-                    printf(" %s",pPlayers[0].Name);
-                    printf(" %s",pPlayers[0].Pass);
+                    SaveDataQuantity(dataQuantities, "DataQuantity.txt");
+                    printf("Jogador cadastrado e salvo com sucesso!(Press Enter)\n");
                     getchar();
                     getchar();
-                    printf("Jogador cadastrado e salvo com sucesso!\n");
                 } else {
-                    printf("Falha ao salvar os jogadores.\n");
+                    printf("Falha ao salvar os jogadores.(Press Enter)\n");
+                    getchar();
+                    getchar();
                 }
             } else {
-                printf("Falha ao cadastrar o jogador.\n");
+                printf("Falha ao cadastrar o jogador.(Press Enter)\n");
+                getchar();
+                getchar();
             }
-
 
         }
 
 
 
      while (true){
+        LimparTerminal();
         Menu();
         printf("Sua escolha?: ");
         scanf(" %d", &respostaUserMP);
@@ -1584,7 +1586,7 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn)
 }
 
 void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPointer *defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage){
-
+/*
     int I, J, bonusQuantity;
     double elementalEffectivness;
     double physicalDamageReduction, magicDamageReduction;
@@ -1707,6 +1709,7 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
     }
     else *enemyEffectHit = false;
  
+ */
 }
 
 void UseItem(PlPointer *playerUsing, PlPointer *otherPlayer, int itemUsedIndex){
@@ -1760,7 +1763,13 @@ bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, 
         scanf("%19s", usernameEntrada); 
         printf("\n                    Insira sua Senha   : ");
         scanf("%6s", passEntrada);
-
+        if(*login1 && strcmp(usernameEntrada, nomeUsuario1) == 0){
+            printf("Usuário já logado. Tente novamente.(Press Enter)\n");
+            getchar();
+            getchar();
+            LimparTerminal();
+        }
+        else{
         for (indexPlayerLoop = 0; indexPlayerLoop < playersQuantity; indexPlayerLoop++) {
             if (strcmp(pPlayers[indexPlayerLoop].Name, usernameEntrada) == 0 &&
                 strcmp(pPlayers[indexPlayerLoop].Pass, passEntrada) == 0) {
@@ -1778,13 +1787,17 @@ bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, 
                 strcpy(nomeUsuario2, usernameEntrada);
                 *login2 = true;
             }
-            printf("Bem-vindo, %s! Você está logado!\n", usernameEntrada);
+            printf("Bem-vindo, %s! Você está logado!(Press Enter)\n", usernameEntrada);
+            getchar();
+            getchar();
+            LimparTerminal();
         } else {
-            printf("Usuário ou senha incorretos. Tente novamente(Press Enter).\n");
+            printf("Usuário ou senha incorretos. Tente novamente.(Press Enter)\n");
             getchar();
             getchar();
             LimparTerminal();
         }
+    }
     }
 
     return true;
