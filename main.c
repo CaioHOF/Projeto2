@@ -246,7 +246,150 @@ int main(){
 
     /**Loads**/
     //------------------------------------------------------------------------------------------------------------------//
+    strcpy(allPersonalities[0].Name, "Cabeça-Quente");
+    allPersonalities[0].rarity = 8;
+    allPersonalities[0].BaseHPModifier = 100;
+    allPersonalities[0].BaseDefenseModifier = 100;
+    allPersonalities[0].BaseMagicDefenseModifier = 100;
+    allPersonalities[0].BaseAcurracyModifier = 70;
+    allPersonalities[0].BaseAttackModifier = 130;
+    allPersonalities[0].BaseElementalAcurracyModifier = 70;
+    allPersonalities[0].BaseMagicAttackModifier = 130;
+    allPersonalities[0].BaseSpeedModifier = 100;
+
+    strcpy(allPersonalities[1].Name, "Meigo");
+    allPersonalities[1].rarity = 10;
+    allPersonalities[1].BaseHPModifier = 100;
+    allPersonalities[1].BaseDefenseModifier = 115;
+    allPersonalities[1].BaseMagicDefenseModifier = 115;
+    allPersonalities[1].BaseAcurracyModifier = 100;
+    allPersonalities[1].BaseAttackModifier = 85;
+    allPersonalities[1].BaseElementalAcurracyModifier = 100;
+    allPersonalities[1].BaseMagicAttackModifier = 85;
+    allPersonalities[1].BaseSpeedModifier = 100;
+
+    strcpy(allPersonalities[2].Name, "Apressado");
+    allPersonalities[2].rarity = 5;
+    allPersonalities[2].BaseHPModifier = 100;
+    allPersonalities[2].BaseDefenseModifier = 100;
+    allPersonalities[2].BaseMagicDefenseModifier = 100;
+    allPersonalities[2].BaseAcurracyModifier = 95;
+    allPersonalities[2].BaseAttackModifier = 80;
+    allPersonalities[2].BaseElementalAcurracyModifier = 95;
+    allPersonalities[2].BaseMagicAttackModifier = 80;
+    allPersonalities[2].BaseSpeedModifier = 130;
+
+    strcpy(allPersonalities[3].Name, "Dorminhoco");
+    allPersonalities[3].rarity = 11;
+    allPersonalities[3].BaseHPModifier = 100;
+    allPersonalities[3].BaseDefenseModifier = 100;
+    allPersonalities[3].BaseMagicDefenseModifier = 130;
+    allPersonalities[3].BaseAcurracyModifier = 100;
+    allPersonalities[3].BaseAttackModifier = 100;
+    allPersonalities[3].BaseElementalAcurracyModifier = 100;
+    allPersonalities[3].BaseMagicAttackModifier = 80;
+    allPersonalities[3].BaseSpeedModifier = 70;
+
+    strcpy(allPersonalities[4].Name, "Místico");
+    allPersonalities[4].rarity = 6;
+    allPersonalities[4].BaseHPModifier = 100;
+    allPersonalities[4].BaseDefenseModifier = 90;
+    allPersonalities[4].BaseMagicDefenseModifier = 130;
+    allPersonalities[4].BaseAcurracyModifier = 100;
+    allPersonalities[4].BaseAttackModifier = 70;
+    allPersonalities[4].BaseElementalAcurracyModifier = 100;
+    allPersonalities[4].BaseMagicAttackModifier = 130;
+    allPersonalities[4].BaseSpeedModifier = 100;
+
+    strcpy(allPersonalities[5].Name, "Hercúleo");
+    allPersonalities[5].rarity = 6;
+    allPersonalities[5].BaseHPModifier = 100;
+    allPersonalities[5].BaseDefenseModifier = 110;
+    allPersonalities[5].BaseMagicDefenseModifier = 90;
+    allPersonalities[5].BaseAcurracyModifier = 100;
+    allPersonalities[5].BaseAttackModifier = 130;
+    allPersonalities[5].BaseElementalAcurracyModifier = 100;
+    allPersonalities[5].BaseMagicAttackModifier = 70;
+    allPersonalities[5].BaseSpeedModifier = 100;
+
+    strcpy(allPersonalities[6].Name, "Assustado");
+    allPersonalities[6].rarity = 5;
+    allPersonalities[6].BaseHPModifier = 100;
+    allPersonalities[6].BaseDefenseModifier = 80;
+    allPersonalities[6].BaseMagicDefenseModifier = 80;
+    allPersonalities[6].BaseAcurracyModifier = 100;
+    allPersonalities[6].BaseAttackModifier = 100;
+    allPersonalities[6].BaseElementalAcurracyModifier = 100;
+    allPersonalities[6].BaseMagicAttackModifier = 100;
+    allPersonalities[6].BaseSpeedModifier = 130;
+
+    strcpy(allPersonalities[7].Name, "Jovial");
+    allPersonalities[7].rarity = 1;
+    allPersonalities[7].BaseHPModifier = 100;
+    allPersonalities[7].BaseDefenseModifier = 110;
+    allPersonalities[7].BaseMagicDefenseModifier = 110;
+    allPersonalities[7].BaseAcurracyModifier = 110;
+    allPersonalities[7].BaseAttackModifier = 110;
+    allPersonalities[7].BaseMagicAttackModifier = 110;
+    allPersonalities[7].BaseSpeedModifier = 110;
+
+    strcpy(allPersonalities[8].Name, "Afobado");
+    allPersonalities[8].rarity = 5;
+    allPersonalities[8].BaseHPModifier = 100;
+    allPersonalities[8].BaseDefenseModifier = 100;
+    allPersonalities[8].BaseMagicDefenseModifier = 100;
+    allPersonalities[8].BaseAcurracyModifier = 80;
+    allPersonalities[8].BaseAttackModifier = 100;
+    allPersonalities[8].BaseElementalAcurracyModifier = 80;
+    allPersonalities[8].BaseMagicAttackModifier = 100;
+    allPersonalities[8].BaseSpeedModifier = 120;
+
+    strcpy(allPersonalities[9].Name, "Teimoso");
+    allPersonalities[9].rarity = 10;
+    allPersonalities[9].BaseHPModifier = 100;
+    allPersonalities[9].BaseDefenseModifier = 85;
+    allPersonalities[9].BaseMagicDefenseModifier = 85;
+    allPersonalities[9].BaseAcurracyModifier = 130;
+    allPersonalities[9].BaseAttackModifier = 100;
+    allPersonalities[9].BaseElementalAcurracyModifier = 130;
+    allPersonalities[9].BaseMagicAttackModifier = 100;
+    allPersonalities[9].BaseSpeedModifier = 100;
+
+    strcpy(allPersonalities[10].Name, "Invejoso");
+    allPersonalities[10].rarity = 11;
+    allPersonalities[10].BaseHPModifier = 100;
+    allPersonalities[10].BaseDefenseModifier = 100;
+    allPersonalities[10].BaseMagicDefenseModifier = 120;
+    allPersonalities[10].BaseAcurracyModifier = 100;
+    allPersonalities[10].BaseAttackModifier = 100;
+    allPersonalities[10].BaseElementalAcurracyModifier = 100;
+    allPersonalities[10].BaseMagicAttackModifier = 120;
+    allPersonalities[10].BaseSpeedModifier = 80;
+
+    strcpy(allPersonalities[11].Name, "Resistente");
+    allPersonalities[11].rarity = 11;
+    allPersonalities[11].BaseHPModifier = 100;
+    allPersonalities[11].BaseDefenseModifier = 130;
+    allPersonalities[11].BaseMagicDefenseModifier = 100;
+    allPersonalities[11].BaseAcurracyModifier = 100;
+    allPersonalities[11].BaseElementalAcurracyModifier = 100;
+    allPersonalities[11].BaseAttackModifier = 100;
+    allPersonalities[11].BaseMagicAttackModifier = 100;
+    allPersonalities[11].BaseSpeedModifier = 70;
+
+    strcpy(allPersonalities[12].Name, "Decidido");
+    allPersonalities[12].rarity = 11;
+    allPersonalities[12].BaseHPModifier = 100;
+    allPersonalities[12].BaseDefenseModifier = 120;
+    allPersonalities[12].BaseMagicDefenseModifier = 100;
+    allPersonalities[12].BaseAcurracyModifier = 100;
+    allPersonalities[12].BaseAttackModifier = 120;
+    allPersonalities[12].BaseElementalAcurracyModifier = 100;
+    allPersonalities[12].BaseMagicAttackModifier = 100;
+    allPersonalities[12].BaseSpeedModifier = 80;
     
+    SavePersonalities(allPersonalities, personalities);
+
     dBPersonalities = fopen(personalities, "rb");
     if(dBPersonalities == NULL){
         perror("Falha ao abrir \"personalities\"");
@@ -664,7 +807,7 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
 
 /**Manage Memory Functions**/
 //------------------------------------------------------------------------------//
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], double elementEffectChance, Element element, int  attackBase, double attackScale, int magicBase, double magicAttackScale, double critChance, char effectTarget, double enemyEffectChance, Effect enemyEffect[8], double selfEffectChance, Effect selfEffect[8]){
+bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pSkills == NULL){
         perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
@@ -1193,7 +1336,7 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
 
 
     if(((rand() % 100)+1) <= (double)(*atacker)[0].Atributes[3].Total * (double)usedSkill[0].hitChance / 100.0){
-        skillHit = true;
+        *skillHit = true;
         int magicDamage, physicalDamage;
         if((rand() % 100 +1) <= usedSkill[0].CritChance) critHit = true;
 
@@ -1241,7 +1384,7 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
 
 
     if((rand() % 100 +1 <= usedSkill[0].SelfEffectHitChance)){
-        selfEffectHit = true;
+        *selfEffectHit = true;
         for (I = 0; I < 8; I++){
             if(usedSkill[0].Element.StatusEffect[I].Timer > 0){
                 (*atacker)[0].Atributes[I].BonusQuantity++;
@@ -1261,7 +1404,7 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
 
 
     if((rand() % 100 +1 <= usedSkill[0].EnemyEffectHitChance)){
-        enemyEffectHit = true;
+        *enemyEffectHit = true;
         for (I = 0; I < 8; I++){
             if(usedSkill[0].Element.StatusEffect[I].Timer > 0){
                 (*defenser)[0].Atributes[I].BonusQuantity++;
@@ -1281,17 +1424,6 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
 }
 
 void UseItem(PlPointer *selfPlayer, PlPointer *enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit){
-    /*
-    bool CurrentHPDamageIsPhysic;
-    char EffectCurrentHPTarget;
-    //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
-    Effect EffectCurrentHP;
-    //Esse valor é usado pra definir o quanto uma poção de cura cura e em quanto tempo, ou um veneno. O outro serve para alterar os status da vida maxima 
-    
-    char EffectTarget;
-    //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
-    int StatusEffectChance;
-    Effect StatusEffect[8];*/
     int I, bonusQuantity;
     double pikomonDamageReduction, otherpikomonDamageReduction;
     ItPointer usedItem;
@@ -1343,13 +1475,92 @@ void UseItem(PlPointer *selfPlayer, PlPointer *enemyPlayer, int itemUsedIndex, b
     else if(usedItem[0].EffectCurrentHPTarget == 'E'){
         if(rand() % 100 +1 <= usedItem[0].StatusEffectChance){
             *usedItemStatusHit = true;
-
+            if(usedItem[0].EffectCurrentHP.Timer > 0){
+                otherPikomon[0].CurrentHP.BonusQuantity++;
+                bonusQuantity = otherPikomon[0].CurrentHP.BonusQuantity;
+                otherPikomon[0].CurrentHP.acronym = (char**)realloc(otherPikomon[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
+                otherPikomon[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
+                otherPikomon[0].CurrentHP.Bonus = (int*)realloc(otherPikomon[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
+                otherPikomon[0].CurrentHP.BonusTimer = (int*)realloc(otherPikomon[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
+                strcpy(otherPikomon[0].CurrentHP.acronym[bonusQuantity-1], usedItem[0].EffectCurrentHP.Acronym);
+                otherPikomon[0].CurrentHP.Bonus[bonusQuantity-1] = (int)( usedItem[0].EffectCurrentHP.Quantity * pikomonDamageReduction);
+                otherPikomon[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedItem[0].EffectCurrentHP.Timer;
+            }
+            
+            for (I = 0; I < 8; I++){
+                if(usedItem[0].StatusEffect[I].Timer > 0){
+                    otherPikomon[0].Atributes[I].BonusQuantity++;
+                    bonusQuantity = otherPikomon[0].Atributes[I].BonusQuantity;
+                    otherPikomon[0].Atributes[I].acronym = (char**)realloc(otherPikomon[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                    otherPikomon[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                    otherPikomon[0].Atributes[I].Bonus = (int*)realloc(otherPikomon[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                    otherPikomon[0].Atributes[I].BonusTimer = (int*)realloc(otherPikomon[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                    strcpy(otherPikomon[0].Atributes[I].acronym[bonusQuantity-1], usedItem[0].StatusEffect[I].Acronym);
+                    otherPikomon[0].Atributes[I].Bonus[bonusQuantity-1] = usedItem[0].StatusEffect[I].Quantity;
+                    otherPikomon[0].Atributes[I].Total += otherPikomon[0].Atributes[I].Bonus[bonusQuantity-1];
+                    otherPikomon[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedItem[0].StatusEffect[I].Timer;
+                }
+            }
         }
         else *usedItemStatusHit = false;
     }
     else if(usedItem[0].EffectCurrentHPTarget == 'B'){
         if(rand() % 100 +1 <= usedItem[0].StatusEffectChance){
             *usedItemStatusHit = true;
+
+            if(usedItem[0].EffectCurrentHP.Timer > 0){
+                pikomon[0].CurrentHP.BonusQuantity++;
+                bonusQuantity = pikomon[0].CurrentHP.BonusQuantity;
+                pikomon[0].CurrentHP.acronym = (char**)realloc(pikomon[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
+                pikomon[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
+                pikomon[0].CurrentHP.Bonus = (int*)realloc(pikomon[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
+                pikomon[0].CurrentHP.BonusTimer = (int*)realloc(pikomon[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
+                strcpy(pikomon[0].CurrentHP.acronym[bonusQuantity-1], usedItem[0].EffectCurrentHP.Acronym);
+                pikomon[0].CurrentHP.Bonus[bonusQuantity-1] = (int)( usedItem[0].EffectCurrentHP.Quantity * pikomonDamageReduction);
+                pikomon[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedItem[0].EffectCurrentHP.Timer;
+            }
+            
+            for (I = 0; I < 8; I++){
+                if(usedItem[0].StatusEffect[I].Timer > 0){
+                    pikomon[0].Atributes[I].BonusQuantity++;
+                    bonusQuantity = pikomon[0].Atributes[I].BonusQuantity;
+                    pikomon[0].Atributes[I].acronym = (char**)realloc(pikomon[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                    pikomon[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                    pikomon[0].Atributes[I].Bonus = (int*)realloc(pikomon[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                    pikomon[0].Atributes[I].BonusTimer = (int*)realloc(pikomon[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                    strcpy(pikomon[0].Atributes[I].acronym[bonusQuantity-1], usedItem[0].StatusEffect[I].Acronym);
+                    pikomon[0].Atributes[I].Bonus[bonusQuantity-1] = usedItem[0].StatusEffect[I].Quantity;
+                    pikomon[0].Atributes[I].Total += pikomon[0].Atributes[I].Bonus[bonusQuantity-1];
+                    pikomon[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedItem[0].StatusEffect[I].Timer;
+                }
+            }
+
+            if(usedItem[0].EffectCurrentHP.Timer > 0){
+                otherPikomon[0].CurrentHP.BonusQuantity++;
+                bonusQuantity = otherPikomon[0].CurrentHP.BonusQuantity;
+                otherPikomon[0].CurrentHP.acronym = (char**)realloc(otherPikomon[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
+                otherPikomon[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
+                otherPikomon[0].CurrentHP.Bonus = (int*)realloc(otherPikomon[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
+                otherPikomon[0].CurrentHP.BonusTimer = (int*)realloc(otherPikomon[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
+                strcpy(otherPikomon[0].CurrentHP.acronym[bonusQuantity-1], usedItem[0].EffectCurrentHP.Acronym);
+                otherPikomon[0].CurrentHP.Bonus[bonusQuantity-1] = (int)( usedItem[0].EffectCurrentHP.Quantity * pikomonDamageReduction);
+                otherPikomon[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedItem[0].EffectCurrentHP.Timer;
+            }
+            
+            for (I = 0; I < 8; I++){
+                if(usedItem[0].StatusEffect[I].Timer > 0){
+                    otherPikomon[0].Atributes[I].BonusQuantity++;
+                    bonusQuantity = otherPikomon[0].Atributes[I].BonusQuantity;
+                    otherPikomon[0].Atributes[I].acronym = (char**)realloc(otherPikomon[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                    otherPikomon[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                    otherPikomon[0].Atributes[I].Bonus = (int*)realloc(otherPikomon[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                    otherPikomon[0].Atributes[I].BonusTimer = (int*)realloc(otherPikomon[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                    strcpy(otherPikomon[0].Atributes[I].acronym[bonusQuantity-1], usedItem[0].StatusEffect[I].Acronym);
+                    otherPikomon[0].Atributes[I].Bonus[bonusQuantity-1] = usedItem[0].StatusEffect[I].Quantity;
+                    otherPikomon[0].Atributes[I].Total += otherPikomon[0].Atributes[I].Bonus[bonusQuantity-1];
+                    otherPikomon[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedItem[0].StatusEffect[I].Timer;
+                }
+            }
 
         }
         else *usedItemStatusHit = false;
@@ -1359,7 +1570,84 @@ void UseItem(PlPointer *selfPlayer, PlPointer *enemyPlayer, int itemUsedIndex, b
     }
 }
 
-void PassPikomonTurnTime(){
+void PassPikomonTurnTime(PiPointer *pikomon){
     //vai ter problema com o CurrentHp.acronym e os atribute.acronym. neles não se podem usar o realloc porque não libera os ponteiros individuais
+    int I, J, K, indexToRemove;
+    Effect *tempEffect;
+    PiPointer pik;
+    pik = &(*pikomon);
+    
+    for(J = 0; J < pik[0].CurrentHP.BonusQuantity; J++){
+        pik[0].CurrentHP.BonusTimer[J]--;
+        if(pik[0].CurrentHP.BonusTimer[J] < 0){
+            tempEffect = calloc(pik[0].CurrentHP.BonusQuantity-1, sizeof(Effect));
+                for(K = 0; K < pik[0].CurrentHP.BonusQuantity; K++){
+                    if(K != J){
+                        strcpy(tempEffect[K].Acronym, pik[0].CurrentHP.acronym[K]);
+                        tempEffect[K].Quantity = pik[0].CurrentHP.Bonus[K];
+                        tempEffect[K].Timer = pik[0].CurrentHP.BonusTimer[K];
+                    }
+                }
+                for(K = 0; K < pik[0].CurrentHP.BonusQuantity; K++){
+                    free(pik[0].CurrentHP.acronym[K]);
+                }
+                pik[0].CurrentHP.BonusQuantity--;
+                pik[0].CurrentHP.acronym = (char**)realloc(pik[0].CurrentHP.acronym, pik[0].CurrentHP.BonusQuantity * sizeof(char*));
+                for(K = 0; K < pik[0].CurrentHP.BonusQuantity; K++){
+                    pik[0].CurrentHP.acronym[K] = (char*)calloc(4, sizeof(char));
+                }
+                pik[0].CurrentHP.Bonus = (int*)realloc(pik[0].CurrentHP.Bonus, pik[0].CurrentHP.BonusQuantity * sizeof(int));
+                pik[0].CurrentHP.BonusTimer = (int*)realloc(pik[0].CurrentHP.BonusTimer, pik[0].CurrentHP.BonusQuantity * sizeof(int));
+                for(K = 0; K < pik[0].CurrentHP.BonusQuantity; K++){
+                    strcpy(pik[0].CurrentHP.acronym[K], tempEffect[K].Acronym);
+                    pik[0].CurrentHP.Bonus[K] = tempEffect[K].Quantity;
+                    pik[0].CurrentHP.BonusTimer[K] = tempEffect[K].Timer;
+                }
+            free(tempEffect);
+        }
+    }
+
+    for(I = 0; I < 8; I++){
+        for(J = 0; J < pik[0].Atributes[I].BonusQuantity; J++){
+            pik[0].Atributes[I].BonusTimer[J]--;
+            if(pik[0].Atributes[I].BonusTimer[J] < 0){
+                tempEffect = calloc(pik[0].Atributes[I].BonusQuantity-1, sizeof(Effect));
+                for(K = 0; K < pik[0].Atributes[I].BonusQuantity; K++){
+                    if(K != J){
+                        strcpy(tempEffect[K].Acronym, pik[0].Atributes[I].acronym[K]);
+                        tempEffect[K].Quantity = pik[0].Atributes[I].Bonus[K];
+                        tempEffect[K].Timer = pik[0].Atributes[I].BonusTimer[K];
+                    }
+                }
+                for(K = 0; K < pik[0].Atributes[I].BonusQuantity; K++){
+                    free(pik[0].Atributes[I].acronym[K]);
+                }
+                pik[0].Atributes[I].BonusQuantity--;
+                pik[0].Atributes[I].acronym = (char**)realloc(pik[0].Atributes[I].acronym, pik[0].Atributes[I].BonusQuantity * sizeof(char*));
+                for(K = 0; K < pik[0].Atributes[I].BonusQuantity; K++){
+                    pik[0].Atributes[I].acronym[K] = (char*)calloc(4, sizeof(char));
+                }
+                pik[0].Atributes[I].Bonus = (int*)realloc(pik[0].Atributes[I].Bonus, pik[0].Atributes[I].BonusQuantity * sizeof(int));
+                pik[0].Atributes[I].BonusTimer = (int*)realloc(pik[0].Atributes[I].BonusTimer, pik[0].Atributes[I].BonusQuantity * sizeof(int));
+                for(K = 0; K < pik[0].Atributes[I].BonusQuantity; K++){
+                    strcpy(pik[0].Atributes[I].acronym[K], tempEffect[K].Acronym);
+                    pik[0].Atributes[I].Bonus[K] = tempEffect[K].Quantity;
+                    pik[0].Atributes[I].BonusTimer[K] = tempEffect[K].Timer;
+                }
+            free(tempEffect);
+            }
+        }
+    }
+
+    for(J = 0; J < pik[0].CurrentHP.BonusQuantity; J++){
+        pik[0].CurrentHP.Total += pik[0].CurrentHP.Bonus[J];
+    }
+
+    for(I = 0; I < 8; I++){
+        pik[0].Atributes[I].Total = 0;
+        for(J = 0; J < pik[0].Atributes[I].BonusQuantity; J++){
+            pik[0].Atributes[I].Total += pik[0].Atributes[I].Bonus[J];
+        }
+    }
 }
 //------------------------------------------------------------------------------//
