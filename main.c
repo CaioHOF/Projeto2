@@ -208,7 +208,7 @@ void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex);
 
 
 int main(){ 
-    /**Declarações**/
+    //Declarações
     //------------------------------------------------------------------------------------------------------------------//
     setlocale(LC_ALL, "portuguese");
     setenv("TZ","America/Sao_Paulo",1);
@@ -244,9 +244,10 @@ int main(){
     PlPointer pPlayers = NULL;
     //------------------------------------------------------------------------------------------------------------------//
 
-    /**Loads**/
+    //Loads
     //------------------------------------------------------------------------------------------------------------------//
-    strcpy(allPersonalities[0].Name, "Cabeça-Quente");
+    //Define Personalities
+    /*strcpy(allPersonalities[0].Name, "Cabeça-Quente");
     allPersonalities[0].rarity = 8;
     allPersonalities[0].BaseHPModifier = 100;
     allPersonalities[0].BaseDefenseModifier = 100;
@@ -388,7 +389,12 @@ int main(){
     allPersonalities[12].BaseMagicAttackModifier = 100;
     allPersonalities[12].BaseSpeedModifier = 80;
     
-    SavePersonalities(allPersonalities, personalities);
+    SavePersonalities(allPersonalities, personalities);*/
+
+    //Define Elements
+    /*
+    
+    */
 
     dBPersonalities = fopen(personalities, "rb");
     if(dBPersonalities == NULL){
@@ -401,6 +407,18 @@ int main(){
         return 2;
     }
     fclose(dBPersonalities);
+
+    dBElements = fopen(elements, "rb");
+    if(dBElements == NULL){
+        perror("Falha ao abrir \"elements\"");
+        return 1;
+    }
+    fread(allElements, sizeof(Element), 10, dBElements);
+    if(allElements == NULL){
+        perror("Falha ao ler os Elementos!");
+        return 2;
+    }
+    fclose(dBElements);
 
     dBDataQuantity = fopen(dataQuantity, "r");
     if(dBDataQuantity == NULL){
@@ -486,7 +504,7 @@ int main(){
     //------------------------------------------------------------------------------------------------------------------//
 
 
-    /**Principal Do Usuário**/
+    //Principal Do Usuário
     //------------------------------------------------------------------------------------------------------------------//
     //login
     //menu
@@ -528,9 +546,9 @@ int main(){
                 while(selectedPlayerOnePicomon[0].ChargedSpeed - turnCost >= 0){
                     selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
 
-                    /* 
-                        ações do player1
-                    */
+                    
+                        //ações do player1
+                    
 
                 }
                 playerOneTurn = false;
@@ -540,9 +558,9 @@ int main(){
                 while(selectedPlayerTwoPicomon[0].ChargedSpeed - turnCost >= 0){
                     selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
 
-                    /* 
-                        ações do player2
-                    */
+                     
+                        //ações do player2
+                    
 
                 }
                 playerOneTurn = true;
@@ -557,111 +575,28 @@ int main(){
 
 
 
-/**Debug/Print/Base Functions**/
+//Debug/Print/Base Functions
 //------------------------------------------------------------------------------//
 bool DebugPlayers(PlPointer pPlayers, int index, int playersQuantity){
-    /*if(index == -1){
-        int j, k;
-        for(index = 0; index < playersQuantity; index++){
-            printf("| Name:| %20s | |,| Pass:| %s | |,| Pikocoins:| %3d | |,| BagCurrentSize:| %2d | |,| BagMaxSize| %2d | |;\n", pPlayers[index].Name, pPlayers[index].Pass, pPlayers[index].Pikocoins, pPlayers[index].BagCurrentSize, pPlayers[index].BagMaxSize);
-            printf("\nBag:\n");
-            for (j = 0; j < pPlayers[index].Bagcurrentsize; j++){
-                printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pPlayers[index].Bag[j].Name, pPlayers[index].Bag[j].Type, pPlayers[index].Bag[j].Target);
-            }
-            printf("\nPikomons:\n");
-            for (j = 0; j < 6; j++){
-                printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPlayers[index].Pikomons[j].Name, pPlayers[index].Pikomons[j].Element, pPlayers[index].Pikomons[j].HPCurrent, pPlayers[index].Pikomons[j].HPMax, pPlayers[index].Pikomons[j].Defense, pPlayers[index].Pikomons[j].MagicDefense, pPlayers[index].Pikomons[j].Attack, pPlayers[index].Pikomons[j].MagicAttack, pPlayers[index].Pikomons[j].Speed);
-                printf("\nPikomonSkills:\n");
-                for(k = 0; k < 4; k++){
-                    pPlayers[index].Pikomons[j].Skills[k];
-                    printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", pPlayers[index].Pikomons[j].Skills.Name, pPlayers[index].Pikomons[j].Skills[k].Target, pPlayers[index].Pikomons[j].Skills[k].AttackScale, pPlayers[index].Pikomons[j].Skills[k].MagicAttackScale);
-                    printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n",pPlayers[index].Pikomons[j].Skills[k].Element[0],pPlayers[index].Pikomons[j].Skills[k].Element[1],pPlayers[index].Pikomons[j].Skills[k].Element[2],pPlayers[index].Pikomons[j].Skills[k].Element[3],pPlayers[index].Pikomons[j].Skills[k].Element[4],pPlayers[index].Pikomons[j].Skills[k].Element[5],pPlayers[index].Pikomons[j].Skills[k].Element[6],pPlayers[index].Pikomons[j].Skills[k].Element[7],pPlayers[index].Pikomons[j].Skills[k].Element[8],pPlayers[index].Pikomons[j].Skills[k].Element[9]);
-                }    
-            }
-            printf("\n");
-        }
-    }
-    else if(index > -1 && index < playersQuantity){
-        int j, k;
-        printf("| Name:| %20s | |,| Pass:| %s | |,| Pikocoins:| %3d | |,| BagCurrentSize:| %2d | |,| BagMaxSize| %2d | |;\n", pPlayers[index].Name, pPlayers[index].Pass, pPlayers[index].Pikocoins, pPlayers[index].BagCurrentSize, pPlayers[index].BagMaxSize);
-        printf("\nBag:\n");
-        for (j = 0; j < pPlayers[index].BagMaxSize; j++){
-            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pPlayers[index].Bag[j].Name, pPlayers[index].Bag[j].Type, pPlayers[index].Bag[j].Target);
-        }
-        printf("\nPikomons:\n");
-        for (j = 0; j < 6; j++){
-            printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPlayers[index].Pikomons[j].Name, pPlayers[index].Pikomons[j].Element, pPlayers[index].Pikomons[j].HPCurrent, pPlayers[index].Pikomons[j].HPMax, pPlayers[index].Pikomons[j].Defense, pPlayers[index].Pikomons[j].MagicDefense, pPlayers[index].Pikomons[j].Attack, pPlayers[index].Pikomons[j].MagicAttack, pPlayers[index].Pikomons[j].Speed);
-            printf("\nPikomonSkills:\n");
-            for(k = 0; k < 4; k++){
-                printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", pPlayers[index].Pikomons[j].Skills[k].Name, pPlayers[index].Pikomons[j].Skills[k].Target, pPlayers[index].Pikomons[j].Skills[k].AttackScale, pPlayers[index].Pikomons[j].Skills[k].MagicAttackScale);
-                printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n",pPlayers[index].Pikomons[j].Skills[k].Element[0],pPlayers[index].Pikomons[j].Skills[k].Element[1],pPlayers[index].Pikomons[j].Skills[k].Element[2],pPlayers[index].Pikomons[j].Skills[k].Element[3],pPlayers[index].Pikomons[j].Skills[k].Element[4],pPlayers[index].Pikomons[j].Skills[k].Element[5],pPlayers[index].Pikomons[j].Skills[k].Element[6],pPlayers[index].Pikomons[j].Skills[k].Element[7],pPlayers[index].Pikomons[j].Skills[k].Element[8],pPlayers[index].Pikomons[j].Skills[k].Element[9]);
-            }    
-        }
-        printf("\n");
-    }
-    else{
-        perror("index usado na função \"DegubPlayers\" não permitido");
-        return false;
-    }
-    return true;*/
+    return false;
 }
 
 bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
-    /*if(index == -1){
-        int j;
-        for(index = 0; index < pikomonsQuantity; index++){
-            printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPikomon[index].Name, pPikomon[index].Element, pPikomon[index].HPCurrent, pPikomon[index].HPMax, pPikomon[index].Defense, pPikomon[index].MagicDefense, pPikomon[index].Attack, pPikomon[index].MagicAttack, pPikomon[index].Speed);
-        }
-    }
-    else if(index > -1 && index < pikomonsQuantity){
-        printf("| Nome:| %10s | |,| Element:| %10s | |,| CurrentHP:| %3d | |,| MaxHP:| %3d | |,| Defense:| %d | |,| MagicDefense:| %d | |,| Attack:| %d | |,| MagicAttack:| %d | |,| Speed:| %d | |\n", pPikomon[index].Name, pPikomon[index].Element, pPikomon[index].HPCurrent, pPikomon[index].HPMax, pPikomon[index].Defense, pPikomon[index].MagicDefense, pPikomon[index].Attack, pPikomon[index].MagicAttack, pPikomon[index].Speed);
-    }
-    else{
-        perror("index usado na função \"DebugPikomons\" não permitido");
-        return false;
-    }
-    return true;*/
+    return false;
 }
 
 bool DebugItems(ItPointer pItems, int index, int ItemsQuantity){
-    /*if(index == -1){
-        for(index = 0; index < ItemsQuantity; index++){
-            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pItems[index].Name, pItems[index].Type, pItems[index].Target);
-        }
-    }
-    else if(index > -1 && index < ItemsQuantity){
-            printf("| Name:| %10s | |,| Type:| %10s | |,| Target:| %c | |;\n", pItems[index].Name, pItems[index].Type, pItems[index].Target);
-    }
-    else{
-        perror("index usado na função \"DebugItems\" não permitido");
-        return false;
-    }
-    return true;*/
+    return false;
 }
 
 bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity){
-    /*if(index == -1){
-        int i;
-        for(i = 0; i < skillsQuantity; i++){
-            printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", pSkills[index].Name, pSkills[index].Target, pSkills[index].AttackScale, pSkills[index].MagicAttackScale);
-            printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n\n",pSkills[index].Element[0],pSkills[index].Element[1],pSkills[index].Element[2],pSkills[index].Element[3],pSkills[index].Element[4],pSkills[index].Element[5],pSkills[index].Element[6],pSkills[index].Element[7],pSkills[index].Element[8],pSkills[index].Element[9]);
-        }
-    }
-    else if(index > -1 && index < skillsQuantity){
-        printf("| Nome:| %20s | |,| Target:| %c | |,| AttackScale:| %1.2lf | |,| MagicAttackScale:| %1.2lf | |;\n", pSkills[index].Name, pSkills[index].Target, pSkills[index].AttackScale, pSkills[index].MagicAttackScale);
-        printf("| Element[0]:| %d | |,| Element[1]:| %d | |,| Element[2]:| %d | |,| Element[3]:| %d | |,| Element[4]:| %d | |;\n| Element[5]:| %d | |,| Element[6]:| %d | |,| Element[7]:| %d | |,| Element[8]:| %d | |,| Element[9]:| %d | |;\n\n",pSkills[index].Element[0],pSkills[index].Element[1],pSkills[index].Element[2],pSkills[index].Element[3],pSkills[index].Element[4],pSkills[index].Element[5],pSkills[index].Element[6],pSkills[index].Element[7],pSkills[index].Element[8],pSkills[index].Element[9]);
-    }
-    else{
-        perror("index usado na função \"DebugSkills\" não permitido");
-        return false;
-    }
-    return true;*/
+    return false;
 }
 //------------------------------------------------------------------------------//
 
 
 
-/**Save Functions**/
+//Save Functions
 //------------------------------------------------------------------------------//
 bool SavePersonalities(Personality allPersonalities[13], const char *destino){
     FILE* dBPersonalities;
@@ -805,7 +740,7 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
 
 
 
-/**Manage Memory Functions**/
+//Manage Memory Functions
 //------------------------------------------------------------------------------//
 bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
@@ -1252,7 +1187,7 @@ bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex){
 
 
 
-/**Battle functions**/
+//Battle functions
 //------------------------------------------------------------------------------//
 void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn){ 
     //calcNextTurn vai ser a resposta a ser gerada
@@ -1301,8 +1236,8 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
 
     if(((rand() % 100)+1) <= ((double)usedSkill[0].ElementEffectHitChance) * ((double)(*atacker)[0].Atributes[5].Total)/100.0){
         *elementalEffectHit = true;
-        physicalDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[1].Total)/log10(2)) * 0.11);
-        magicDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[2].Total)/log10(2)) * 0.11);
+        physicalDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[1].Total) * 0.11);
+        magicDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[2].Total) * 0.11);
         elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
 
         if(usedSkill[0].Element.CurrentHPEffect.Timer > 0){
@@ -1344,8 +1279,8 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
         physicalDamage = (int)(((double)(*atacker)[0].Atributes[4].Total * (double)usedSkill[0].AttackScale / 100.0) + usedSkill[0].AttackBase) * (*critHit) ? 2 : 1;
         if(usedSkill[0].Target == 'S'){
             elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*atacker)[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - ((log10((*atacker)[0].Atributes[1].Total)/log10(2)) * 0.11);
-            magicDamageReduction = 1.0 - ((log10((*atacker)[0].Atributes[2].Total)/log10(2)) * 0.11);
+            physicalDamageReduction = 1.0 - (DefenseReductionCalc((*atacker)[0].Atributes[1].Total) * 0.11);
+            magicDamageReduction = 1.0 - (DefenseReductionCalc((*atacker)[0].Atributes[2].Total) * 0.11);
             *selfDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
             (*atacker)[0].CurrentHP.Total -= *selfDamage;
@@ -1353,8 +1288,8 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
         }
         else if(usedSkill[0].Target == 'E'){
             elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[1].Total)/log10(2)) * 0.11);
-            magicDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[2].Total)/log10(2)) * 0.11);
+            physicalDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[1].Total) * 0.11);
+            magicDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[2].Total) * 0.11);
             *enemyDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
             (*defenser)[0].CurrentHP.Total -= *enemyDamage;
@@ -1362,16 +1297,16 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
         }
         else if(usedSkill[0].Target == 'B'){
             elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*atacker)[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - ((log10((*atacker)[0].Atributes[1].Total)/log10(2)) * 0.11);
-            magicDamageReduction = 1.0 - ((log10((*atacker)[0].Atributes[2].Total)/log10(2)) * 0.11);
+            physicalDamageReduction = 1.0 - (DefenseReductionCalc((*atacker)[0].Atributes[1].Total) * 0.11);
+            magicDamageReduction = 1.0 - (DefenseReductionCalc((*atacker)[0].Atributes[2].Total) * 0.11);
             *selfDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
             (*atacker)[0].CurrentHP.Total -= *selfDamage;
 
 
             elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[1].Total)/log10(2)) * 0.11);
-            magicDamageReduction = 1.0 - ((log10((*defenser)[0].Atributes[2].Total)/log10(2)) * 0.11);
+            physicalDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[1].Total) * 0.11);
+            magicDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[2].Total) * 0.11);
             *enemyDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
             (*defenser)[0].CurrentHP.Total -= *enemyDamage;
@@ -1432,12 +1367,12 @@ void UseItem(PlPointer *selfPlayer, PlPointer *enemyPlayer, int itemUsedIndex, b
     pikomon = &(*selfPlayer)[0].BatlePikomons[(*selfPlayer)[0].SelectedPikomonIndex];
     otherPikomon = &(*enemyPlayer)[0].BatlePikomons[(*enemyPlayer)[0].SelectedPikomonIndex];
     if(usedItem[0].CurrentHPDamageIsPhysic){
-        pikomonDamageReduction = 1.0 - ((log10(pikomon[0].Atributes[1].Total)/log10(2)) * 0.11);
-        otherpikomonDamageReduction = 1.0 - ((log10(otherPikomon[0].Atributes[1].Total)/log10(2)) * 0.11); 
+        pikomonDamageReduction = 1.0 - (DefenseReductionCalc(pikomon[0].Atributes[1].Total) * 0.11);
+        otherpikomonDamageReduction = 1.0 - (DefenseReductionCalc(otherPikomon[0].Atributes[1].Total) * 0.11); 
     }
     else{
-        pikomonDamageReduction = 1.0 - ((log10(pikomon[0].Atributes[2].Total)/log10(2)) * 0.11);
-        otherpikomonDamageReduction = 1.0 - ((log10(otherPikomon[0].Atributes[2].Total)/log10(2)) * 0.11);
+        pikomonDamageReduction = 1.0 - (DefenseReductionCalc(pikomon[0].Atributes[2].Total) * 0.11);
+        otherpikomonDamageReduction = 1.0 - (DefenseReductionCalc(otherPikomon[0].Atributes[2].Total) * 0.11);
     }
 
     if(usedItem[0].EffectCurrentHPTarget == 'S'){
@@ -1649,5 +1584,15 @@ void PassPikomonTurnTime(PiPointer *pikomon){
             pik[0].Atributes[I].Total += pik[0].Atributes[I].Bonus[J];
         }
     }
+}
+//------------------------------------------------------------------------------//
+
+
+//Log function
+//------------------------------------------------------------------------------//
+//a função log do math.h estava dando um conflito muito estranho toda a vez que chamava com alguma variavel dentro
+double DefenseReductionCalc(double value){
+    int base = 2;
+    return Ln(value) / Ln(base);
 }
 //------------------------------------------------------------------------------//
