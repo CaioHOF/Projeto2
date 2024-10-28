@@ -1090,7 +1090,10 @@ int main()
             }
         if (respostaUserMP == 3)
         {
-            printf(":)");
+            DebugPikomons(pPikomons, -1, dataQuantities.Pikomon);
+            printf("Press Enter");
+            getchar();  
+            getchar();  
         }
         if (respostaUserMP == 4)
         {
