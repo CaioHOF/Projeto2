@@ -1307,14 +1307,14 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
                 printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
                        pPikomon[index].Name,
                        pPikomon[index].Element.Name,
-                       pPikomon[index].Atributes[0].Total,
-                       pPikomon[index].Atributes[4].Total,
-                       pPikomon[index].Atributes[1].Total,
-                       pPikomon[index].Atributes[6].Total,
-                       pPikomon[index].Atributes[2].Total,
-                       pPikomon[index].Atributes[7].Total,
-                       pPikomon[index].Atributes[3].Total,
-                       pPikomon[index].Atributes[5].Total);
+                       pPikomon[index].Atributes[0].Base,
+                       pPikomon[index].Atributes[4].Base,
+                       pPikomon[index].Atributes[1].Base,
+                       pPikomon[index].Atributes[6].Base,
+                       pPikomon[index].Atributes[2].Base,
+                       pPikomon[index].Atributes[7].Base,
+                       pPikomon[index].Atributes[3].Base,
+                       pPikomon[index].Atributes[5].Base);
 
                 // Exibir IconImg do Pikomon
                 printf("IconImg:\n");
@@ -1347,14 +1347,14 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
             printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
                    pPikomon[index].Name,
                    pPikomon[index].Element.Name,
-                   pPikomon[index].Atributes[0].Total,
-                   pPikomon[index].Atributes[4].Total,
-                   pPikomon[index].Atributes[1].Total,
-                   pPikomon[index].Atributes[6].Total,
-                   pPikomon[index].Atributes[2].Total,
-                   pPikomon[index].Atributes[7].Total,
-                   pPikomon[index].Atributes[3].Total,
-                   pPikomon[index].Atributes[5].Total);
+                   pPikomon[index].Atributes[0].Base,
+                   pPikomon[index].Atributes[4].Base,
+                   pPikomon[index].Atributes[1].Base,
+                   pPikomon[index].Atributes[6].Base,
+                   pPikomon[index].Atributes[2].Base,
+                   pPikomon[index].Atributes[7].Base,
+                   pPikomon[index].Atributes[3].Base,
+                   pPikomon[index].Atributes[5].Base);
 
             printf("IconImg:\n");
             for (j = 0; j < 7; j++)
