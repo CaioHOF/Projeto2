@@ -133,7 +133,7 @@ typedef struct Pikomon
 {
 
     char Name[10];
-    char IconImg[7][20];
+    char IconImg[7][25];
     char Passive[20];
     char PassiveDescription[3][255];
     int Value;
@@ -196,7 +196,7 @@ bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino);
 void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer *pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players);
 bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]);
 bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], int value, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, double StatusEffectChance, Effect StatusEffect[8]);
-bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], char passive[20], char passiveDescription[3][255], int value, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
+bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][25], char passive[20], char passiveDescription[3][255], int value, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
 bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, char *pass);
 bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, int itemIndex);;
 bool StorePikomonPlayer(PlPointer *pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities);
@@ -400,8 +400,8 @@ int main(){
     SavePersonalities(allPersonalities, personalities);*/
 
     //Define Elements
-    /*
-        Comum
+    
+/*    
     strcpy(allElements[0].Name, "Comum"); 
     strcpy(allElements[0].Acronym, "Drm");
     allElements[0].Effectiveness[0] = 100; 
@@ -442,8 +442,8 @@ int main(){
     allElements[0].StatusEffect[5].Timer = 0;
     strcpy(allElements[0].StatusEffect[6].Acronym, "Spd");
     allElements[0].StatusEffect[6].Quantity = -100;
-    allElements[0].StatusEffect[6].Timer 
-        Flamejante
+    allElements[0].StatusEffect[6].Timer = 3;
+
     strcpy(allElements[1].Name, "Flamejante"); 
     strcpy(allElements[1].Acronym, "Qmd");
     allElements[1].Effectiveness[0] = 100; //Comum
@@ -484,8 +484,8 @@ int main(){
     allElements[1].StatusEffect[5].Timer = 0;
     strcpy(allElements[1].StatusEffect[6].Acronym, "Spd");
     allElements[1].StatusEffect[6].Quantity = 0;
-    allElements[1].StatusEffect[6].Timer = 
-        Aquático    
+    allElements[1].StatusEffect[6].Timer = 0;
+
     strcpy(allElements[2].Name, "Aquático"); 
     strcpy(allElements[2].Acronym, "Mol");
     allElements[2].Effectiveness[0] = 100; //Comum
@@ -526,8 +526,8 @@ int main(){
     allElements[2].StatusEffect[5].Timer = 0;
     strcpy(allElements[2].StatusEffect[6].Acronym, "Spd");
     allElements[2].StatusEffect[6].Quantity = 0;
-    allElements[2].StatusEffect[6].Timer 
-        Natural    
+    allElements[2].StatusEffect[6].Timer = 0;
+ 
     strcpy(allElements[3].Name, "Natural"); 
     strcpy(allElements[3].Acronym, "Erz");
     allElements[3].Effectiveness[0] = 100; //Comum
@@ -568,8 +568,8 @@ int main(){
     allElements[3].StatusEffect[5].Timer = 0;
     strcpy(allElements[3].StatusEffect[6].Acronym, "Spd");
     allElements[3].StatusEffect[6].Quantity = -15;
-    allElements[3].StatusEffect[6].Timer 
-        Elétrico    
+    allElements[3].StatusEffect[6].Timer = 3;
+
     strcpy(allElements[4].Name, "Elétrico"); 
     strcpy(allElements[4].Acronym, "Prz");
     allElements[4].Effectiveness[0] = 100; //Comum
@@ -610,8 +610,8 @@ int main(){
     allElements[4].StatusEffect[5].Timer = 0;
     strcpy(allElements[4].StatusEffect[6].Acronym, "Spd");
     allElements[4].StatusEffect[6].Quantity = -15;
-    allElements[4].StatusEffect[6].Timer 
-        Misterioso    
+    allElements[4].StatusEffect[6].Timer = 3;
+
     strcpy(allElements[5].Name, "Misterioso"); 
     strcpy(allElements[5].Acronym, "Asb");
     allElements[5].Effectiveness[0] = 50; //Comum
@@ -652,8 +652,8 @@ int main(){
     allElements[5].StatusEffect[5].Timer = 5;
     strcpy(allElements[5].StatusEffect[6].Acronym, "Spd");
     allElements[5].StatusEffect[6].Quantity = 0;
-    allElements[5].StatusEffect[6].Timer 
-        Luminoso    
+    allElements[5].StatusEffect[6].Timer = 0;
+
     strcpy(allElements[6].Name, "Luminoso"); 
     strcpy(allElements[6].Acronym, "Clr");
     allElements[6].Effectiveness[0] = 100; //Comum
@@ -694,8 +694,8 @@ int main(){
     allElements[6].StatusEffect[5].Timer = 5;
     strcpy(allElements[6].StatusEffect[6].Acronym, "Spd");
     allElements[6].StatusEffect[6].Quantity = 0;
-    allElements[6].StatusEffect[6].Timer 
-        Gélido    
+    allElements[6].StatusEffect[6].Timer = 0;
+
     strcpy(allElements[7].Name, "Gélido"); 
     strcpy(allElements[7].Acronym, "Cal");
     allElements[7].Effectiveness[0] = 100; //Comum
@@ -736,8 +736,8 @@ int main(){
     allElements[7].StatusEffect[5].Timer = 0;
     strcpy(allElements[7].StatusEffect[6].Acronym, "Spd");
     allElements[7].StatusEffect[6].Quantity = -30;
-    allElements[7].StatusEffect[6].Timer 
-        Mineral    
+    allElements[7].StatusEffect[6].Timer = 3;
+
     strcpy(allElements[8].Name, "Mineral"); 
     strcpy(allElements[8].Acronym, "Sot");
     allElements[8].Effectiveness[0] = 100; //Comum
@@ -778,8 +778,8 @@ int main(){
     allElements[8].StatusEffect[5].Timer = 0;
     strcpy(allElements[8].StatusEffect[6].Acronym, "Spd");
     allElements[8].StatusEffect[6].Quantity = -30;
-    allElements[8].StatusEffect[6].Timer 
-        Venenoso    
+    allElements[8].StatusEffect[6].Timer = 2;
+
     strcpy(allElements[9].Name, "Venenoso"); 
     strcpy(allElements[9].Acronym, "Ven");
     allElements[9].Effectiveness[0] = 100; //Comum
@@ -821,7 +821,9 @@ int main(){
     strcpy(allElements[9].StatusEffect[6].Acronym, "Spd");
     allElements[9].StatusEffect[6].Quantity = 0;
     allElements[9].StatusEffect[6].Timer = 0;
-    */
+    SaveElements(allElements, elements);
+*/
+
 
     dBPersonalities = fopen(personalities, "rb");
     if(dBPersonalities == NULL){
@@ -891,7 +893,6 @@ int main(){
     fread(pItems,sizeof(Item), dataQuantities.Item, dBItens);
     fclose(dBItens);
 
-
     pPikomons = (PiPointer)calloc(dataQuantities.Pikomon, sizeof(Pikomon));
     if(pPikomons == NULL){
         perror("Falha ao allocar \"pPikomons\"");
@@ -908,6 +909,7 @@ int main(){
     }
     fread(pPikomons, sizeof(Pikomon), dataQuantities.Pikomon, dBPikomons);
     fclose(dBPikomons);
+
 
     
     pPlayers = (PlPointer)calloc(dataQuantities.Player, sizeof(Player));
@@ -928,6 +930,170 @@ int main(){
     }
     fread(pPlayers, sizeof(Player), dataQuantities.Player, dBPlayers);
     fclose(dBPlayers);
+
+
+//:oco:
+
+/*
+        char descfds[3][255];
+        strcpy(descfds[0], "");
+        strcpy(descfds[1], "");
+        strcpy(descfds[2], "");
+        char icoImg[7][25];
+strcpy(icoImg[0], "####__________####");
+strcpy(icoImg[1], "###|          |###");
+strcpy(icoImg[2], "###| .      . |###");
+strcpy(icoImg[3], "###|   -__-   |###");
+strcpy(icoImg[4], "###|          |###");
+strcpy(icoImg[5], "###|          |###");
+strcpy(icoImg[6], "###|__________|###");
+
+AddPikomon(&pPikomons, &dataQuantities, "Moldew", allElements[0], icoImg, "", descfds, 5, 25,25,25,100,25,100,25,35);
+
+char icoImg1[7][25];
+strcpy(icoImg1[0], "   ===      ===   ");
+strcpy(icoImg1[1], "  [###]    [###]  ");
+strcpy(icoImg1[2], " |#####====#####| ");
+strcpy(icoImg1[3], "  [##0######0##]  ");
+strcpy(icoImg1[4], "   \\__\\####/__/   ");
+strcpy(icoImg1[5], "       \\##/       ");
+strcpy(icoImg1[6], "        \\/        ");
+
+AddPikomon(&pPikomons, &dataQuantities, "Ratton", allElements[0], icoImg1, "", descfds, 5, 50,20,35,100,30,100,20,65);
+
+char icoImg2[7][25];
+strcpy(icoImg2[0], "   /\\        /\\  ");
+strcpy(icoImg2[1], "  /##\\      /##\\  ");
+strcpy(icoImg2[2], " [#####======###\\ ");
+strcpy(icoImg2[3], "[######O######O##]");
+strcpy(icoImg2[4], "[|\\|\\|\\(___/\\_)##|");
+strcpy(icoImg2[5], "/====/##########| ");
+strcpy(icoImg2[6], "====/##########|  ");
+
+AddPikomon(&pPikomons, &dataQuantities, "Bichano", allElements[0], icoImg2, "", descfds, 5, 50,50,35,100,50,100,20,60);
+
+char icoImg3[7][25];
+strcpy(icoImg3[0], "        /\\        ");
+strcpy(icoImg3[1], "       /##\\       ");
+strcpy(icoImg3[2], "      /####\\      ");
+strcpy(icoImg3[3], "==================");
+strcpy(icoImg3[4], "     |*####*|     ");
+strcpy(icoImg3[5], "     v^^ww^^v     ");
+strcpy(icoImg3[6], "      wwvvww      ");
+
+AddPikomon(&pPikomons, &dataQuantities, "Mago", allElements[5], icoImg3, "", descfds, 5, 60,45,50,100,15,100,75,35);
+
+char icoImg4[7][25];
+strcpy(icoImg4[0], "   ___=====__     ");
+strcpy(icoImg4[1], " </##########\\__  ");
+strcpy(icoImg4[2], "</#######ò####*#} ");
+strcpy(icoImg4[3], "<#########/vvvvv  ");
+strcpy(icoImg4[4], "/#########\\^^^^^} ");
+strcpy(icoImg4[5], "#########/‾‾‾‾‾‾  ");
+strcpy(icoImg4[6], "########|         ");
+
+AddPikomon(&pPikomons, &dataQuantities, "Calangora", allElements[9], icoImg4, "", descfds, 5, 60,45,20,100,75,100,10,45);
+
+char icoImg5[7][25];
+strcpy(icoImg5[0], "######__/\\__######");
+strcpy(icoImg5[1], "#####[      ]#####");
+strcpy(icoImg5[2], "####|<>    <>|####");
+strcpy(icoImg5[3], "####| |====| |####");
+strcpy(icoImg5[4], "#####[______]#####");
+strcpy(icoImg5[5], "####/|010101|\\####");
+strcpy(icoImg5[6], "###| |101010| |###");
+
+AddPikomon(&pPikomons, &dataQuantities, "Roboto", allElements[4], icoImg5, "", descfds, 5, 60,80,80,100,20,100,20,35);
+
+char icoImg6[7][25];
+strcpy(icoImg6[0], "########^#######/|");
+strcpy(icoImg6[1], "#####__/#\\#####/ }");
+strcpy(icoImg6[2], "###==o    ==__/ }#");
+strcpy(icoImg6[3], "##>           <###");
+strcpy(icoImg6[4], "###===\\|__==‾‾\\##");
+strcpy(icoImg6[5], "###############‾##");
+strcpy(icoImg6[6], "##################");
+
+AddPikomon(&pPikomons, &dataQuantities, "Peixe Secreto", allElements[2], icoImg6, "", descfds, 5, 50,45,45,100,45,100,45,45);
+
+char icoImg7[7][25];
+strcpy(icoImg7[0], "##__##_===_##__###");
+strcpy(icoImg7[1], "#{  }{ o o }{  }##");
+strcpy(icoImg7[2], "#[. \\|  ^  |/; ]>#");
+strcpy(icoImg7[3], "#<\\__    .  __/###");
+strcpy(icoImg7[4], "###v#|v    |#,####");
+strcpy(icoImg7[5], "####,|   <>|######");
+strcpy(icoImg7[6], "#####|,    |>#####");
+
+AddPikomon(&pPikomons, &dataQuantities, "Cacto", allElements[3], icoImg7, "", descfds, 5, 70,75,60,100,10,100,65,35);
+
+char icoImg8[7][25];
+strcpy(icoImg8[0], " ==_   ^==^   _== ");
+strcpy(icoImg8[1], "{WVW{ {*\\/*} }WVW}");
+strcpy(icoImg8[2], "|{\\|v\\_/##\\_/v|/}|");
+strcpy(icoImg8[3], " [v\\V\\{####}/V/v] ");
+strcpy(icoImg8[4], "  \\V\v\\{##}/v/V/  ");
+strcpy(icoImg8[5], "      /WwwW\\      ");
+strcpy(icoImg8[6], "    <v/V/\\V\v>    ");
+
+AddPikomon(&pPikomons, &dataQuantities, "Fênix", allElements[1], icoImg8, "", descfds, 5, 50,20,20,100,70,100,75,65);
+
+char icoImg9[7][25];
+strcpy(icoImg9[0], "#######====#######");
+strcpy(icoImg9[1], "######{wVVw}######");
+strcpy(icoImg9[2], "#####[o ^^ o]#####");
+strcpy(icoImg9[3], "####[ T{  }T ]####");
+strcpy(icoImg9[4], "###{  J || L  }###");
+strcpy(icoImg9[5], "####{  /LJ\\  }####");
+strcpy(icoImg9[6], "####{m}u##u{m}####");
+
+AddPikomon(&pPikomons, &dataQuantities, "Mamute", allElements[7], icoImg9, "", descfds, 5, 80,20,20,100,60,100,20,45);
+
+char icoImg10[7][25];
+strcpy(icoImg10[0], "######_===_#######");
+strcpy(icoImg10[1], "#####/0 o /#######");
+strcpy(icoImg10[2], "####[ ^ _[######oO");
+strcpy(icoImg10[3], "#{‾‾ {__|#########");
+strcpy(icoImg10[4], "##‾‾{   {######O##");
+strcpy(icoImg10[5], "#####=_  \\###o####");
+strcpy(icoImg10[6], "########\\_\\~######");
+
+AddPikomon(&pPikomons, &dataQuantities, "Vulto", allElements[5], icoImg10, "", descfds, 5, 50,80,10,100,80,100,10,45);
+
+char icoImg11[7][25];
+strcpy(icoImg11[0], "  \\\\          //  ");
+strcpy(icoImg11[1], "   \\\\ _====_ //   ");
+strcpy(icoImg11[2], "    \\{O=O=O=}/    ");
+strcpy(icoImg11[3], "===={O=O=O=O=}====");
+strcpy(icoImg11[4], "    /{O=O=O=}\\    ");
+strcpy(icoImg11[5], "   // ‾====‾ \\\\   ");
+strcpy(icoImg11[6], "  //          \\\\  ");
+
+AddPikomon(&pPikomons, &dataQuantities, "AlienSolar", allElements[6], icoImg11, "", descfds, 5, 70,40,80,100,10,100,75,35);
+
+char icoImg12[7][25];
+strcpy(icoImg12[0], "#######/\\#########");
+strcpy(icoImg12[1], "######/__\\########");
+strcpy(icoImg12[2], "#####[T T ]#######");
+strcpy(icoImg12[3], "####|  ^  o|######");
+strcpy(icoImg12[4], "###|.   <>  |#####");
+strcpy(icoImg12[5], "#.[  ^    *  ]#.##");
+strcpy(icoImg12[6], "==================");
+
+AddPikomon(&pPikomons, &dataQuantities, "Speleotema", allElements[8], icoImg12, "", descfds, 5, 50,100,30,100,40,100,35,35);
+
+SavePikomons(pPikomons, dataQuantities.Pikomon, pikomoms);
+SaveDataQuantity(dataQuantities, dataQuantity);
+*/
+
+/*
+    int I;
+    for(I = 0; I < 7; I ++){
+        printf("%s\n", pPikomons[8].IconImg[I]);
+    }//dobra pra 38?
+
+    DebugPikomons(pPikomons, -1, dataQuantities.Pikomon);
+*/   
     //------------------------------------------------------------------------------------------------------------------//
 
 
@@ -1800,7 +1966,7 @@ bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *
 
 }
 
-bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], char passive[20], char passiveDescription[3][255], int value, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed){
+bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][25], char passive[20], char passiveDescription[3][255], int value, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed){
     if(pPikomons == NULL){
         perror("ERRO, \"pPikomons\" não pode ser NULL em \"AddPikomon\"");
         return false;
