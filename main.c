@@ -217,6 +217,7 @@ double DefenseReductionCalc(double value);
 double LNfalso(double x);
 bool ShopItems(PlPointer *players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade);
 void PrintPikomonEffects(PiPointer pikomon);
+void EscolherPikomon(Player *player);
 
 int main(){ 
     //Declaracoes
