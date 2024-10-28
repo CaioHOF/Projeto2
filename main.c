@@ -213,7 +213,7 @@ void MenuLogin(int userNumero);
 void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos);
 bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, int *indexUs1, int *indexUs2);
 bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality* personalities);
-
+void MenuShopMP();
 
 
 int main(){ 
@@ -404,6 +404,15 @@ int main(){
         if(respostaUserMP == 1){
             LimparTerminal();
             Login(pPlayers, dataQuantities.Player, &login1, &login2, &indexUs1, &indexUs2);
+            while(true){
+                MenuShopMP();
+                scanf(" %d", &respostaUserMP);
+                //if(respostaUserMP == 1){
+                    //ShopPikomon();
+                //}
+            }
+
+
         }
         if(respostaUserMP == 2){
                 printf(":)");
@@ -1988,3 +1997,14 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
     return true;
 }
 
+void MenuShopMP() {
+    printf("                 _____________________________________\n");
+    printf("                |                                     |\n");
+    printf("                |                MENU DA LOJA         |\n");
+    printf("                |                                     |\n");
+    printf("                |    1. Pikomons                      |\n");
+    printf("                |    2. Itens                         |\n");
+    printf("                |_____________________________________|\n");
+    printf("                | Escolha uma opção (3 para passar)   |\n");
+    printf("                |_____________________________________|\n");
+}
