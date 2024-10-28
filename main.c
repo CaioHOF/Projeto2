@@ -224,7 +224,7 @@ void CalcSkill(Element allElements[10], PiPointer atacker, int skillIndex, PiPoi
 bool ShowItems(ItPointer pItem);
 void UseItem(PlPointer selfPlayer, PlPointer enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit);
 bool ShowPikomon(PiPointer pPikomon);
-
+void EscolherSkills(Player *player);
 
 int main(){ 
     //Declaracoes
@@ -1217,6 +1217,13 @@ int main(){
             getchar();
             getchar();
             SelectBattlePikomons(&pPlayers[playerTwoIndex]);
+
+            EscolherSkills(&pPlayers[playerOneIndex]);
+            getchar();
+            getchar();
+            EscolherSkills(&pPlayers[playerTwoIndex]);
+            getchar();
+            getchar();
             //Variaveis calcSkill
             bool SkillWasUsed = false;
             bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit, usedItemStatusHit;
@@ -3740,11 +3747,15 @@ bool ShopPikomon(PlPointer *players, int playerAtualIndex, PiPointer pPikomon, D
 
     if (playerEscolha < 0 || playerEscolha >= pikomonQuantidade.Pikomon) {
         printf("Escolha inválida. Tente novamente.\n");
+        getchar();
+        getchar();
         return false;
     }
 
     if (playerAtual->Pikocoins < 10) {
         printf("Você não tem Pikocoins suficientes para comprar este Pikomon.\n");
+        getchar();
+        getchar();
         return false;
     }
 
@@ -3767,10 +3778,11 @@ bool ShopPikomon(PlPointer *players, int playerAtualIndex, PiPointer pPikomon, D
     }
 
     playerAtual->PikomonsStorage[quantidadePikomonArmazenado] = novoPikomon;
-    playerAtual->Pikocoins -= 10;
+    playerAtual[0].Pikocoins -= 10;
 
     printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", novoPikomon.Name, playerAtual->Pikocoins);
-    
+    getchar();
+    getchar();
     return true;
 }
 
@@ -3810,24 +3822,32 @@ bool ShopItems(PlPointer players, int playerAtualIndex, ItPointer pItems, DataQu
     if (itemEscolha < 0 || itemEscolha >= itemQuantidade.Item)
     {
         printf("Escolha inválida. Tente novamente.\n");
+        getchar();
+        getchar();
         return false;
     }
 
     if (playerAtual->Pikocoins < pItems[itemEscolha].Value)
     {
         printf("Você não tem Pikocoins suficientes para comprar este item.\n");
+        getchar();
+        getchar();
         return false;
     }
 
     if (!AddItemPlayerBag(players, playerAtualIndex, pItems, itemEscolha))
     {
         printf("Falha ao adicionar o item ao inventário. Tente novamente.\n");
+        getchar();
+        getchar();
         return false;
     }
 
     playerAtual->Pikocoins -= pItems[itemEscolha].Value;
 
     printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", pItems[itemEscolha].Name, playerAtual->Pikocoins);
+    getchar();
+    getchar();
 
     return true;
 }
@@ -3855,6 +3875,53 @@ void PrintPikomonEffects(PiPointer pikomon){
                    pik[0].Atributes[i].acronym[j],
                    pik[0].Atributes[i].Bonus[j],
                    pik[0].Atributes[i].BonusTimer[j]);
+        }
+    }
+}
+
+void EscolherSkills(Player *player) {
+    for (int k = 0; k < 6; k++) {
+        printf("%s, escolha as habilidades para %s:\n", player[0].Name, player[0].BatlePikomons[k].Name);
+
+        int skillCount = 0;
+
+        for (int i = 0; i < 4; i++) {
+            Skill currentSkill = player[0].BatlePikomons[k].Skills[i];
+            bool canLearn = currentSkill.LearnablePersonalities[player[0].BatlePikomons[k].Personality.rarity] &&
+                            currentSkill.LearnableElements[player[0].BatlePikomons[k].Element.SelfElementIndex];
+            
+            if (strlen(currentSkill.Name) > 0 && canLearn) {
+                printf("%d. %s - Tipo: %s\n", i + 1, currentSkill.Name, currentSkill.Type);
+                skillCount++;
+            }
+        }
+
+        if (skillCount == 0) {
+            printf("Nenhuma habilidade disponível para %s.\n", player[0].BatlePikomons[k].Name);
+            continue; 
+        }
+
+        for (int j = 0; j < 4; j++) {
+            printf("Digite o número da habilidade %d para %s: ", j + 1, player[0].BatlePikomons[k].Name);
+            int escolha;
+            scanf("%d", &escolha);
+
+            if (escolha < 1 || escolha > 4) {
+                printf("Escolha inválida. Tente novamente.\n");
+                j--; 
+            } else {
+                Skill chosenSkill = player[0].BatlePikomons[k].Skills[escolha - 1];
+                bool isValidSkill = chosenSkill.LearnablePersonalities[player[0].BatlePikomons[k].Personality.rarity] &&
+                                    chosenSkill.LearnableElements[player[0].BatlePikomons[k].Element.SelfElementIndex];
+
+                if (!isValidSkill) {
+                    printf("Habilidade não aprendível por este Pikomon. Tente novamente.\n");
+                    j--; 
+                } else {
+                    player[0].BatlePikomons[k].Skills[j] = chosenSkill; 
+                    printf("Habilidade %s selecionada para %s!\n", chosenSkill.Name, player[0].BatlePikomons[k].Name);
+                }
+            }
         }
     }
 }
