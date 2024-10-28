@@ -2780,7 +2780,7 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
         return false;
     }
 
-    if (playerAtual->Pikocoins < 10) {
+    if (playerAtual->Pikocoins < pPikomon[playerEscolha].Value) {
         printf("Você não tem Pikocoins suficientes para comprar este Pikomon.\n");
         return false;
     }
@@ -2822,6 +2822,49 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
     
     return true;
 }
+
+bool ShopItems(PlPointer players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade) {
+    Player* playerAtual = &players[playerAtualIndex];
+
+    printf("_____________________________________\n");
+    printf("|                                   |\n");
+    printf("|       !Você tem %d pikocoins!      |\n", playerAtual->Pikocoins);
+    printf("|                                   |\n");
+    printf("_____________________________________\n");
+
+    printf("Itens disponíveis para compra:\n");
+    DebugItems(pItems, -1, itemQuantidade.Item);
+    printf("Escolha um item para comprar (ou -1 para sair): ");
+
+    int itemEscolha;
+    scanf("%d", &itemEscolha);
+
+    if (itemEscolha == -1) {
+        return true;
+    }
+
+    if (itemEscolha < 0 || itemEscolha >= itemQuantidade.Item) {
+        printf("Escolha inválida. Tente novamente.\n");
+        return false;
+    }
+
+    if (playerAtual->Pikocoins < pItems[itemEscolha].Value) {
+        printf("Você não tem Pikocoins suficientes para comprar este item.\n");
+        return false;
+    }
+
+    if (!AddItemPlayerBag(&players, playerAtualIndex, pItems, itemEscolha)) {
+        printf("Falha ao adicionar o item ao inventário. Tente novamente.\n");
+        return false;
+    }
+
+    playerAtual->Pikocoins -= pItems[itemEscolha].Value;
+
+    printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", pItems[itemEscolha].Name, playerAtual->Pikocoins);
+    
+    return true;
+}
+
 
 void MenuShopMP() {
     printf("                 _____________________________________\n");
