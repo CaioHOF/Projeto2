@@ -218,6 +218,11 @@ double LNfalso(double x);
 bool ShopItems(PlPointer *players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade);
 void PrintPikomonEffects(PiPointer pikomon);
 void EscolherPikomon(Player *player);
+void PassPikomonTurnTime(PiPointer *pikomon);
+bool ShowSkill(SkPointer skill);
+void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPointer *defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage);
+bool ShowItems(ItPointer pItem);
+void UseItem(PlPointer *selfPlayer, PlPointer *enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit);
 
 int main(){ 
     //Declaracoes
@@ -1210,7 +1215,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
             int selfDamage, enemyDamage, usedSkillIndex;
             //useitem
             bool ItemWasUsed = false;
-            bool selfEffectHit;
+            //bool selfEffectHit;
             //Variaveis Battle
             char calcNextTurn[7], userResponse;
             bool playerOneTurn, reset, nextTurnReset = false, battleIsOver, playerOneVictory, respostaValida, respostaValida2;
@@ -1302,12 +1307,12 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                         }
                         //acoes do player1
                         if(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex].CurrentHP.Total > 0){
-                            PassPikomonTurnTime(&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex]);
+                            PassPikomonTurnTime((PiPointer *)&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex]);
                             CalcNextTurn(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], calcNextTurn);
                             MenuBattle(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], calcNextTurn);
                             respostaValida = false;
                             while (!respostaValida){
-                                sscanf(" %c", &userResponse);
+                                scanf(" %c", &userResponse);
                                 if(/*escolheu usa skill*/userResponse == '1'){
                                     respostaValida = true;
                                     printf("Skill(1):\n");
@@ -1321,28 +1326,28 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while(!respostaValida2){
                                         printf("Escolha uma skill\n");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if(userResponse == '1'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 0, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, (PiPointer *)&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 0, (PiPointer *)&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
                                         }
                                         else if(userResponse == '2'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 1, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, (PiPointer *)&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 1, (PiPointer *)&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
                                         }
                                         else if(userResponse == '3'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 2, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, (PiPointer *)&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 2, (PiPointer *)&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
                                         }
                                         else if(userResponse == '4'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 3, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, (PiPointer *)&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 3, (PiPointer *)&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
                                         }
                                         else{
@@ -1361,7 +1366,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while (!respostaValida2){
                                         printf("Selecione um item");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < pPlayers[playerOneIndex].BagCurrentSize){
                                             ItemWasUsed = true;
                                             UseItem(&pPlayers[playerOneIndex], &pPlayers[playerTwoIndex], (int)userResponse - (int)'0', &usedItemStatusHit);
@@ -1520,7 +1525,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                         
                         //acoes do player2
                         if(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex].CurrentHP.Total > 0){
-                            PassPikomonTurnTime(&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex]);
+                            PassPikomonTurnTime((PiPointer *)&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex]);
                             CalcNextTurn(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], calcNextTurn);
                             MenuBattle(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], calcNextTurn);
                             respostaValida = false;
