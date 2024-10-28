@@ -1067,7 +1067,21 @@ int main()
         }
         if (respostaUserMP == 2)
         {
-            printf(":)");
+            char EntradaPlayerDebug[20];
+            int indexPlayerLoop;
+            printf("Qual o username do jogador: ");
+            scanf(" %19s", EntradaPlayerDebug);
+            for (indexPlayerLoop = 0; indexPlayerLoop < dataQuantities.Player; indexPlayerLoop++)
+            {
+                if (strcmp(pPlayers[indexPlayerLoop].Name, EntradaPlayerDebug) == 0)
+                {
+                    break;
+                }
+            }
+            DebugPlayers(pPlayers,indexPlayerLoop,dataQuantities.Player);
+            printf("Press Enter");
+            getchar();
+            getchar();
         }
         if (respostaUserMP == 3)
         {
