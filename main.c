@@ -225,6 +225,7 @@ bool ShowItems(ItPointer pItem);
 void UseItem(PlPointer selfPlayer, PlPointer enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit);
 bool ShowPikomon(PiPointer pPikomon);
 void EscolherSkills(Player *player);
+Pikomon GerarPikomon(PiPointer pPikomons, int indexPikomon, Personality *personalities);
 
 int main(){ 
     //Declaracoes
@@ -1105,6 +1106,11 @@ int main(){
     char respostaCadastro;
     int indexUs1, indexUs2;
 
+    Pikomon josias;
+    josias = GerarPikomon(pPikomons, 8, allPersonalities);
+    AddPlayer();
+    SaveDataQuantity
+
     //DebugPersonality(allPersonalities, -1);
 
     printf("Gostaria de cadastrar-se?(S/n): ");
@@ -1209,14 +1215,20 @@ int main(){
                     break;
                 }
             }
-            printf("Player One Selecione seus picomons de batalha");
-            getchar();
-            getchar();
             SelectBattlePikomons(&pPlayers[playerOneIndex]);
-            printf("Player Two Selecione seus picomons de batalha");
-            getchar();
-            getchar();
+            for(int x = 0; x < 6; x++){
+                for(int k = 0; k < 8; k++){
+                    pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[k].Total = pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[k].Base;
+                }
+                pPlayers[playerOneIndex].PikomonsStorage[x].CurrentHP.Total = pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[0].Total;
+            }
             SelectBattlePikomons(&pPlayers[playerTwoIndex]);
+            for(int x = 0; x < 6; x++){
+                for(int k = 0; k < 8; k++){
+                    pPlayers[playerTwoIndex].PikomonsStorage[x].Atributes[k].Total = pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[k].Base;
+                }
+                pPlayers[playerTwoIndex].PikomonsStorage[x].CurrentHP.Total = pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[0].Total;
+            }
 
             EscolherSkills(&pPlayers[playerOneIndex]);
             getchar();
@@ -1547,6 +1559,7 @@ int main(){
                         getchar();
                         getchar();
                         //acoes do player2
+                        
                         if(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex].CurrentHP.Total > 0){
                             PassPikomonTurnTime(&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex]);
                             CalcNextTurn(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], calcNextTurn);
@@ -1760,17 +1773,20 @@ int main(){
         }
         if (respostaUserMP == 3)
         {
-            printf(":)");
+            DebugPikomons(pPikomons, -1, dataQuantities.Pikomon);
+            printf("Press Enter");
+            getchar();  
+            getchar();  
         }
         if (respostaUserMP == 4)
         {
+            FreeAllHeapMemoryAndSaveEverything(pSkills,pItems,pPikomons,&pPlayers,dataQuantities,dataQuantity,skills,items,pikomoms,players);
             printf(":)");
             break;
         }
     }
     //------------------------------------------------------------------------------------------------------------------//
     //toda a vez que acaba uma batalha tem que usar essa funcao
-    FreeAllHeapMemoryAndSaveEverything(pSkills,pItems,pPikomons,&pPlayers,dataQuantities,dataQuantity,skills,items,pikomoms,players);
 }
 
 
@@ -2422,14 +2438,14 @@ bool ShowPikomon(PiPointer pPikomon){
     printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
            pPikomon[0].Name,
            pPikomon[0].Element.Name,
-           pPikomon[0].Atributes[0].Base,
-           pPikomon[0].Atributes[4].Base,
-           pPikomon[0].Atributes[1].Base,
-           pPikomon[0].Atributes[6].Base,
-           pPikomon[0].Atributes[2].Base,
-           pPikomon[0].Atributes[7].Base,
-           pPikomon[0].Atributes[3].Base,
-           pPikomon[0].Atributes[5].Base);
+           pPikomon[0].Atributes[0].Total,
+           pPikomon[0].Atributes[4].Total,
+           pPikomon[0].Atributes[1].Total,
+           pPikomon[0].Atributes[6].Total,
+           pPikomon[0].Atributes[2].Total,
+           pPikomon[0].Atributes[7].Total,
+           pPikomon[0].Atributes[3].Total,
+           pPikomon[0].Atributes[5].Total);
 
     printf("IconImg:\n");
     for (j = 0; j < 7; j++)
@@ -2880,11 +2896,6 @@ bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, ch
     
     dataQuantities[0].Player++;
     (*pPlayers) = (PlPointer)realloc((*pPlayers), dataQuantities[0].Player * sizeof(Player));
-    if(pPlayers == NULL){
-        perror("ERRO na realocacao de memoria em \"AddPlayers\"");
-    }
-    dataQuantities[0].Player++;
-    (*pPlayers) = (PlPointer)realloc((*pPlayers), dataQuantities[0].Player * sizeof(Player));
     if (*pPlayers == NULL) {
         perror("ERRO na realocação de memória em \"AddPlayers\"");
         return false;
@@ -3082,27 +3093,49 @@ bool SellItemPlayerBag(PlPointer *pPlayers, int playerIndex, int bagSellIndex){
 }
 
 void SelectBattlePikomons(Player *player){
-    for(int k = 0; k <6; k++){
+    LimparTerminal();
+    int escolhidos[6] = {0}; 
+    int countEscolhidos = 0;
+
+    for (int k = 0; k < 6; k++) {
+        LimparTerminal();
         printf("Escolha seu Pikomon para a batalha:\n");
+
         for (int i = 0; i < 12; i++) {
-            if (strlen(player[0].PikomonsStorage[i].Name) > 0) {
+            bool jaSelecionado = false;
+            for (int j = 0; j < countEscolhidos; j++) {
+                if (escolhidos[j] == i) {
+                    jaSelecionado = true;
+                    break;
+                }
+            }
+            if (strlen(player[0].PikomonsStorage[i].Name) > 0 && !jaSelecionado) {
                 printf("%d. %s\n", i + 1, player[0].PikomonsStorage[i].Name);
             }
         }
-        printf("Digite o número do Pikomon que deseja escolher: ");
+
+        printf("Digite o número do Pikomon que deseja escolher (1 à 12, -1 para sair): ");
         int escolha;
         scanf("%d", &escolha);
+        if (escolha == -1) {
+            return;
+        }
 
-
-        if (escolha < 1 ||  escolha > 6  || strlen(player[0].PikomonsStorage[escolha - 1].Name) == 0) {
-            printf("Escolha inválida. Tente novamente.\n");
-            k--;
-        } else {
-            player[0].BatlePikomons[k] = player[0].PikomonsStorage[escolha - 1]; 
-            printf("Você escolheu %s para a batalha!\n", player[0].PikomonsStorage[player[0].SelectedPikomonIndex].Name);
+        if (escolha < 1 || escolha > 12 || strlen(player[0].PikomonsStorage[escolha - 1].Name) == 0) {
+                printf("Escolha inválida. Tente novamente.\n");
+                getchar(); 
+                getchar();
+                k--; 
+            } else {
+                player[0].BatlePikomons[k] = player[0].PikomonsStorage[escolha - 1];
+                escolhidos[countEscolhidos++] = escolha - 1; 
+                printf("Você escolheu %s para a batalha!\n", player[0].PikomonsStorage[escolha - 1].Name);
+                getchar(); 
+                getchar();
+            }
         }
     }
-} 
+
 //------------------------------------------------------------------------------//
 
 
@@ -3689,10 +3722,11 @@ void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos) {
     printf("|___________________|____________________|_________________________________________________________________________________________________|\n\n");
 }
 
-Pikomon GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed) {
+Pikomon GerarPikomon(PiPointer pPikomons, int indexPikomon, Personality *personalities){
     // Isso aq inicializa o gerador de numeros
     srand(time(NULL));
-
+    Pikomon novo;
+    novo = pPikomons[indexPikomon];
     int totalRaridades = 0;
     for (int i = 0; i < 13; i++) {
         totalRaridades += personalities[i].rarity;
@@ -3703,25 +3737,23 @@ Pikomon GerarPikomon(Pikomon pPikomon, Personality *personalities, Element eleme
     for (int i = 0; i < 13; i++) {
         raridadeSum += personalities[i].rarity;
         if (valorAleatorio < raridadeSum) {
-            pPikomon.Personality = personalities[i];
+            novo.Personality = personalities[i];
             break;
         }
     }
 
-    pPikomon.Atributes[0].Base = (int)(BaseHP * (double)pPikomon.Personality.BaseHPModifier / 100.0);
-    pPikomon.Atributes[1].Base = (int)(BaseDefense * (double)pPikomon.Personality.BaseDefenseModifier / 100.0);
-    pPikomon.Atributes[2].Base = (int)(BaseMagicDefense * (double)pPikomon.Personality.BaseMagicDefenseModifier / 100.0);
-    pPikomon.Atributes[3].Base = (int)(BaseAccuracy * (double)pPikomon.Personality.BaseAccuracyModifier / 100.0);
-    pPikomon.Atributes[4].Base = (int)(BaseAttack * (double)pPikomon.Personality.BaseAttackModifier / 100.0);
-    pPikomon.Atributes[5].Base = (int)(BaseElementalAccuracy * (double)pPikomon.Personality.BaseElementalAccuracyModifier / 100.0);
-    pPikomon.Atributes[6].Base = (int)(BaseMagicAttack * (double)pPikomon.Personality.BaseMagicAttackModifier / 100.0);
-    pPikomon.Atributes[7].Base = (int)(BaseSpeed * (double)pPikomon.Personality.BaseSpeedModifier / 100.0);
-
-    pPikomon.Element = element;
+    novo.Atributes[0].Base = (int)(pPikomons[indexPikomon].Atributes[0].Base * (double)novo.Personality.BaseHPModifier / 100.0);
+    novo.Atributes[1].Base = (int)(pPikomons[indexPikomon].Atributes[1].Base * (double)novo.Personality.BaseDefenseModifier / 100.0);
+    novo.Atributes[2].Base = (int)(pPikomons[indexPikomon].Atributes[2].Base * (double)novo.Personality.BaseMagicDefenseModifier / 100.0);
+    novo.Atributes[3].Base = (int)(pPikomons[indexPikomon].Atributes[3].Base * (double)novo.Personality.BaseAccuracyModifier / 100.0);
+    novo.Atributes[4].Base = (int)(pPikomons[indexPikomon].Atributes[4].Base * (double)novo.Personality.BaseAttackModifier / 100.0);
+    novo.Atributes[5].Base = (int)(pPikomons[indexPikomon].Atributes[5].Base * (double)novo.Personality.BaseElementalAccuracyModifier / 100.0);
+    novo.Atributes[6].Base = (int)(pPikomons[indexPikomon].Atributes[6].Base * (double)novo.Personality.BaseMagicAttackModifier / 100.0);
+    novo.Atributes[7].Base = (int)(pPikomons[indexPikomon].Atributes[7].Base * (double)novo.Personality.BaseSpeedModifier / 100.0);
 
     //PRECISA AINDA COLOCAR O ADDPIKOMON NO STORAGE DO PLAYER
 
-    return pPikomon;
+    return novo;
 }
 
 
@@ -3730,7 +3762,7 @@ bool ShopPikomon(PlPointer *players, int playerAtualIndex, PiPointer pPikomon, D
 
     printf("_____________________________________\n");
     printf("|                                   |\n");
-    printf("|        !Você tem %d pikocoins!     |\n", playerAtual->Pikocoins);
+    printf("|        !Você tem %d pikocoins!     |\n", playerAtual[0].Pikocoins);
     printf("|                                   |\n");
     printf("_____________________________________\n");
 
@@ -3752,22 +3784,15 @@ bool ShopPikomon(PlPointer *players, int playerAtualIndex, PiPointer pPikomon, D
         return false;
     }
 
-    if (playerAtual->Pikocoins < 10) {
+    if (playerAtual[0].Pikocoins < 10) {
         printf("Você não tem Pikocoins suficientes para comprar este Pikomon.\n");
         getchar();
         getchar();
         return false;
     }
-
-    Pikomon novoPikomon = pPikomon[playerEscolha];
-    /*if (!GerarPikomon(novoPikomon, personalities, pPikomon[playerEscolha].Element, pPikomon[playerEscolha].Atributes[0].Total, pPikomon[playerEscolha].Atributes[1].Total, pPikomon[playerEscolha].Atributes[2].Total, pPikomon[playerEscolha].Atributes[3].Total, pPikomon[playerEscolha].Atributes[4].Total, pPikomon[playerEscolha].Atributes[5].Total, pPikomon[playerEscolha].Atributes[6].Total, pPikomon[playerEscolha].Atributes[7].Total)) {
-        printf("Falha ao gerar Pikomon. Tente novamente.\n");
-        return false;
-    }*/
-
     int quantidadePikomonArmazenado = 0;
     for (int i = 0; i < 12; i++) {
-        if (strlen(playerAtual->PikomonsStorage[i].Name) > 0) {
+        if (strlen(playerAtual[0].PikomonsStorage[i].Name) > 0) {
             quantidadePikomonArmazenado++;
         }
     }
@@ -3777,10 +3802,11 @@ bool ShopPikomon(PlPointer *players, int playerAtualIndex, PiPointer pPikomon, D
         return false;
     }
 
-    playerAtual->PikomonsStorage[quantidadePikomonArmazenado] = novoPikomon;
-    playerAtual[0].Pikocoins -= 10;
+    
+    playerAtual[0].PikomonsStorage[quantidadePikomonArmazenado] = GerarPikomon(pPikomon, playerEscolha, personalities);
+    playerAtual[0].Pikocoins -= playerAtual[0].PikomonsStorage[quantidadePikomonArmazenado].Value;
 
-    printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", novoPikomon.Name, playerAtual->Pikocoins);
+    printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", playerAtual[0].PikomonsStorage[quantidadePikomonArmazenado].Name, playerAtual[0].Pikocoins);
     getchar();
     getchar();
     return true;
@@ -3803,7 +3829,7 @@ bool ShopItems(PlPointer players, int playerAtualIndex, ItPointer pItems, DataQu
 
     printf("__\n");
     printf("|                                   |\n");
-    printf("|       !Você tem %d pikocoins!      |\n", playerAtual->Pikocoins);
+    printf("|       !Você tem %d pikocoins!      |\n", playerAtual[0].Pikocoins);
     printf("|                                   |\n");
     printf("__\n");
 
@@ -3827,7 +3853,7 @@ bool ShopItems(PlPointer players, int playerAtualIndex, ItPointer pItems, DataQu
         return false;
     }
 
-    if (playerAtual->Pikocoins < pItems[itemEscolha].Value)
+    if (playerAtual[0].Pikocoins < pItems[itemEscolha].Value)
     {
         printf("Você não tem Pikocoins suficientes para comprar este item.\n");
         getchar();
@@ -3843,9 +3869,9 @@ bool ShopItems(PlPointer players, int playerAtualIndex, ItPointer pItems, DataQu
         return false;
     }
 
-    playerAtual->Pikocoins -= pItems[itemEscolha].Value;
+    playerAtual[0].Pikocoins -= pItems[itemEscolha].Value;
 
-    printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", pItems[itemEscolha].Name, playerAtual->Pikocoins);
+    printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", pItems[itemEscolha].Name, playerAtual[0].Pikocoins);
     getchar();
     getchar();
 
