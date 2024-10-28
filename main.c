@@ -1095,6 +1095,393 @@ int main(){
     SavePikomons(pPikomons, dataQuantities.Pikomon, pikomoms);
     SaveDataQuantity(dataQuantities, dataQuantity);*/
 
+    //Define Items
+
+    //bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], 
+    //char *active, char activeDescription[3][255], int value, bool currentHPDamageIsPysic, char effectCurrentHPTarget, Effect EffectCurrentHP, 
+    //char effectTarget, int StatusEffectChance, Effect StatusEffect[8]);
+
+/*
+char DescAtiva[3][255];
+strcpy(DescAtiva[0], "");
+strcpy(DescAtiva[1], "");
+strcpy(DescAtiva[2], "");
+
+char descItens[3][255];
+strcpy(descItens[0], "Uma poção que cura 10 de HP.");
+strcpy(descItens[1], "");
+strcpy(descItens[2], "");
+
+Effect Heal;
+strcpy(Heal.Acronym, "HP");
+Heal.Quantity = 10;
+Heal.Timer = 1;
+Effect Stats[8];
+strcpy(Stats[0].Acronym, "HP");
+strcpy(Stats[0].Acronym, "HP");
+strcpy(Stats[1].Acronym, "Def");
+strcpy(Stats[2].Acronym, "MaD");
+strcpy(Stats[3].Acronym, "Acc");
+strcpy(Stats[4].Acronym, "Atk");
+strcpy(Stats[5].Acronym, "MAc");
+strcpy(Stats[6].Acronym, "MaA");
+strcpy(Stats[7].Acronym, "Spd");
+Stats[0].Quantity = 0;
+Stats[0].Timer = 0;
+Stats[1].Quantity = 0;
+Stats[1].Timer = 0;
+Stats[2].Quantity = 0;
+Stats[2].Timer = 0;
+Stats[3].Quantity = 0;
+Stats[3].Timer = 0;
+Stats[4].Quantity = 0;
+Stats[4].Timer = 0;
+Stats[5].Quantity = 0;
+Stats[5].Timer = 0;
+Stats[6].Quantity = 0;
+Stats[6].Timer = 0;
+Stats[7].Quantity = 0;
+Stats[7].Timer = 0;
+
+AddItem(&pItems, &dataQuantities, "Poção Básica", "Cura", descItens, "", DescAtiva, 5, false, 'S', Heal, 'S', 100, Stats);
+
+char descItens1[3][255];
+strcpy(descItens1[0], "Uma poção que cura 25 de HP.");
+strcpy(descItens1[1], "");
+strcpy(descItens1[2], "");
+
+Effect Heal1;
+strcpy(Heal1.Acronym, "HP");
+Heal1.Quantity = 25;
+Heal1.Timer = 1;
+Effect Stats1[8];
+strcpy(Stats1[0].Acronym, "HP");
+strcpy(Stats1[1].Acronym, "Def");
+strcpy(Stats1[2].Acronym, "MaD");
+strcpy(Stats1[3].Acronym, "Acc");
+strcpy(Stats1[4].Acronym, "Atk");
+strcpy(Stats1[5].Acronym, "MAc");
+strcpy(Stats1[6].Acronym, "MaA");
+strcpy(Stats1[7].Acronym, "Spd");
+Stats1[0].Quantity = 0;
+Stats1[0].Timer = 0;
+Stats1[1].Quantity = 0;
+Stats1[1].Timer = 0;
+Stats1[2].Quantity = 0;
+Stats1[2].Timer = 0;
+Stats1[3].Quantity = 0;
+Stats1[3].Timer = 0;
+Stats1[4].Quantity = 0;
+Stats1[4].Timer = 0;
+Stats1[5].Quantity = 0;
+Stats1[5].Timer = 0;
+Stats1[6].Quantity = 0;
+Stats1[6].Timer = 0;
+Stats1[7].Quantity = 0;
+Stats1[7].Timer = 0;
+
+AddItem(&pItems, &dataQuantities, "Poção Média", "Cura", descItens1, "", DescAtiva, 5, false, 'S', Heal1, 'S', 100, Stats1);
+
+char descItens2[3][255];
+strcpy(descItens2[0], "Uma poção que cura 50 de HP.");
+strcpy(descItens2[1], "");
+strcpy(descItens2[2], "");
+
+Effect Heal2;
+strcpy(Heal2.Acronym, "HP");
+Heal2.Quantity = 50;
+Heal2.Timer = 1;
+Effect Stats2[8];
+strcpy(Stats2[0].Acronym, "HP");
+strcpy(Stats2[1].Acronym, "Def");
+strcpy(Stats2[2].Acronym, "MaD");
+strcpy(Stats2[3].Acronym, "Acc");
+strcpy(Stats2[4].Acronym, "Atk");
+strcpy(Stats2[5].Acronym, "MAc");
+strcpy(Stats2[6].Acronym, "MaA");
+strcpy(Stats2[7].Acronym, "Spd");
+Stats2[0].Quantity = 0;
+Stats2[0].Timer = 0;
+Stats2[1].Quantity = 0;
+Stats2[1].Timer = 0;
+Stats2[2].Quantity = 0;
+Stats2[2].Timer = 0;
+Stats2[3].Quantity = 0;
+Stats2[3].Timer = 0;
+Stats2[4].Quantity = 0;
+Stats2[4].Timer = 0;
+Stats2[5].Quantity = 0;
+Stats2[5].Timer = 0;
+Stats2[6].Quantity = 0;
+Stats2[6].Timer = 0;
+Stats2[7].Quantity = 0;
+Stats2[7].Timer = 0;
+
+AddItem(&pItems, &dataQuantities, "Poção Máxima", "Cura", descItens1, "", DescAtiva, 5, false, 'S', Heal2, 'S', 100, Stats2);
+
+char descItens3[3][255];
+strcpy(descItens3[0], "Um dispositivo que cura todos");
+strcpy(descItens3[1], "os Pikomons em campo, curando");
+strcpy(descItens3[2], "50 de HP ao longo de 3 turnos.");
+
+Effect Heal3;
+strcpy(Heal3.Acronym, "HP");
+Heal3.Quantity = 60;
+Heal3.Timer = 3;
+Effect Stats3[8];
+strcpy(Stats3[0].Acronym, "HP");
+strcpy(Stats3[1].Acronym, "Def");
+strcpy(Stats3[2].Acronym, "MaD");
+strcpy(Stats3[3].Acronym, "Acc");
+strcpy(Stats3[4].Acronym, "Atk");
+strcpy(Stats3[5].Acronym, "MAc");
+strcpy(Stats3[6].Acronym, "MaA");
+strcpy(Stats3[7].Acronym, "Spd");
+Stats3[0].Quantity = 0;
+Stats3[0].Timer = 0;
+Stats3[1].Quantity = 0;
+Stats3[1].Timer = 0;
+Stats3[2].Quantity = 0;
+Stats3[2].Timer = 0;
+Stats3[3].Quantity = 0;
+Stats3[3].Timer = 0;
+Stats3[4].Quantity = 0;
+Stats3[4].Timer = 0;
+Stats3[5].Quantity = 0;
+Stats3[5].Timer = 0;
+Stats3[6].Quantity = 0;
+Stats3[6].Timer = 0;
+Stats3[7].Quantity = 0;
+Stats3[7].Timer = 0;
+
+AddItem(&pItems, &dataQuantities, "Granada de Cura", "Cura", descItens3, "", DescAtiva, 5, false, 'B', Heal3, 'B', 100, Stats3);
+
+char descItens4[3][255];
+strcpy(descItens4[0], "Uma seringa que coloca o oponente");
+strcpy(descItens4[1], "em um estado de Sono por 3 turnos.");
+strcpy(descItens4[2], "");
+
+Effect Sleep;
+strcpy(Sleep.Acronym, "HP");
+Sleep.Quantity = 0;
+Sleep.Timer = 0;
+Effect SleepStats[8];
+strcpy(SleepStats[0].Acronym, "HP");
+strcpy(SleepStats[0].Acronym, "HP");
+strcpy(SleepStats[1].Acronym, "Def");
+strcpy(SleepStats[2].Acronym, "MaD");
+strcpy(SleepStats[3].Acronym, "Acc");
+strcpy(SleepStats[4].Acronym, "Atk");
+strcpy(SleepStats[5].Acronym, "MAc");
+strcpy(SleepStats[6].Acronym, "MaA");
+strcpy(SleepStats[7].Acronym, "Spd");
+SleepStats[0].Quantity = 0;
+SleepStats[0].Timer = 0;
+SleepStats[1].Quantity = 0;
+SleepStats[1].Timer = 0;
+SleepStats[2].Quantity = 0;
+SleepStats[2].Timer = 0;
+SleepStats[3].Quantity = 0;
+SleepStats[3].Timer = 0;
+SleepStats[4].Quantity = 0;
+SleepStats[4].Timer = 0;
+SleepStats[5].Quantity = 0;
+SleepStats[5].Timer = 0;
+SleepStats[6].Quantity = 0;
+SleepStats[6].Timer = 0;
+SleepStats[7].Quantity = -100;
+SleepStats[7].Timer = 3;
+
+AddItem(&pItems, &dataQuantities, "Sonífero", "Condições", descItens4, "", DescAtiva, 30, false, 'E', Sleep, 'E', 100, SleepStats);
+
+char descItens5[3][255];
+strcpy(descItens5[0], "Um pequeno dispositivo que");
+strcpy(descItens5[1], "diminui as Precisões dos dois");
+strcpy(descItens5[2], "Pikomons em campo em 25.");
+
+Effect Smoke;
+strcpy(Smoke.Acronym, "HP");
+Smoke.Quantity = 0;
+Smoke.Timer = 0;
+Effect SmokeStats[8];
+strcpy(SmokeStats[0].Acronym, "HP");
+strcpy(SmokeStats[1].Acronym, "Def");
+strcpy(SmokeStats[2].Acronym, "MaD");
+strcpy(SmokeStats[3].Acronym, "Acc");
+strcpy(SmokeStats[4].Acronym, "Atk");
+strcpy(SmokeStats[5].Acronym, "MAc");
+strcpy(SmokeStats[6].Acronym, "MaA");
+strcpy(SmokeStats[7].Acronym, "Spd");
+SmokeStats[0].Quantity = 0;
+SmokeStats[0].Timer = 0;
+SmokeStats[1].Quantity = 0;
+SmokeStats[1].Timer = 0;
+SmokeStats[2].Quantity = 0;
+SmokeStats[2].Timer = 0;
+SmokeStats[3].Quantity = -25;
+SmokeStats[3].Timer = 3;
+SmokeStats[4].Quantity = 0;
+SmokeStats[4].Timer = 0;
+SmokeStats[5].Quantity = -25;
+SmokeStats[5].Timer = 3;
+SmokeStats[6].Quantity = 0;
+SmokeStats[6].Timer = 0;
+SmokeStats[7].Quantity = 0;
+SmokeStats[7].Timer = 0;
+
+AddItem(&pItems, &dataQuantities, "Bomba de Fumaça", "Atributos", descItens5, "", DescAtiva, 5, false, 'B', Smoke, 'B', 100, SmokeStats);
+
+char descItens6[3][255];
+strcpy(descItens6[0], "Uma bebida que aumenta a Velocidade");
+strcpy(descItens6[1], "do seu Pikomon em 20.");
+strcpy(descItens6[2], "");
+
+Effect Drink;
+strcpy(Drink.Acronym, "HP");
+Drink.Quantity = 0;
+Drink.Timer = 0;
+Effect DrinkStats[8];
+strcpy(DrinkStats[0].Acronym, "HP");
+strcpy(DrinkStats[1].Acronym, "Def");
+strcpy(DrinkStats[2].Acronym, "MaD");
+strcpy(DrinkStats[3].Acronym, "Acc");
+strcpy(DrinkStats[4].Acronym, "Atk");
+strcpy(DrinkStats[5].Acronym, "MAc");
+strcpy(DrinkStats[6].Acronym, "MaA");
+strcpy(DrinkStats[7].Acronym, "Spd");
+DrinkStats[0].Quantity = 0;
+DrinkStats[0].Timer = 0;
+DrinkStats[1].Quantity = 0;
+DrinkStats[1].Timer = 0;
+DrinkStats[2].Quantity = 0;
+DrinkStats[2].Timer = 0;
+DrinkStats[3].Quantity = 0;
+DrinkStats[3].Timer = 0;
+DrinkStats[4].Quantity = 0;
+DrinkStats[4].Timer = 0;
+DrinkStats[5].Quantity = 0;
+DrinkStats[5].Timer = 0;
+DrinkStats[6].Quantity = 0;
+DrinkStats[6].Timer = 0;
+DrinkStats[7].Quantity = 20;
+DrinkStats[7].Timer = 3;
+
+AddItem(&pItems, &dataQuantities, "Energético", "Atributos", descItens6, "", DescAtiva, 5, false, 'S', Drink, 'S', 100, DrinkStats);
+
+char descItens7[3][255];
+strcpy(descItens7[0], "Uma bebida que aumenta o Ataque");
+strcpy(descItens7[1], "Mágico do seu Pikomon em 20.");
+strcpy(descItens7[2], "");
+
+Effect Coffee;
+strcpy(Coffee.Acronym, "HP");
+Coffee.Quantity = 0;
+Coffee.Timer = 0;
+Effect CoffeeStats[8];
+strcpy(CoffeeStats[0].Acronym, "HP");
+strcpy(CoffeeStats[1].Acronym, "Def");
+strcpy(CoffeeStats[2].Acronym, "MaD");
+strcpy(CoffeeStats[3].Acronym, "Acc");
+strcpy(CoffeeStats[4].Acronym, "Atk");
+strcpy(CoffeeStats[5].Acronym, "MAc");
+strcpy(CoffeeStats[6].Acronym, "MaA");
+strcpy(CoffeeStats[7].Acronym, "Spd");
+CoffeeStats[0].Quantity = 0;
+CoffeeStats[0].Timer = 0;
+CoffeeStats[1].Quantity = 0;
+CoffeeStats[1].Timer = 0;
+CoffeeStats[2].Quantity = 0;
+CoffeeStats[2].Timer = 0;
+CoffeeStats[3].Quantity = 0;
+CoffeeStats[3].Timer = 0;
+CoffeeStats[4].Quantity = 0;
+CoffeeStats[4].Timer = 0;
+CoffeeStats[5].Quantity = 0;
+CoffeeStats[5].Timer = 0;
+CoffeeStats[6].Quantity = 20;
+CoffeeStats[6].Timer = 3;
+CoffeeStats[7].Quantity = 0;
+CoffeeStats[7].Timer = 0;
+
+AddItem(&pItems, &dataQuantities, "Bebida Cafeinada", "Atributos", descItens7, "", DescAtiva, 5, false, 'S', Coffee, 'S', 100, CoffeeStats);
+
+char descItens8[3][255];
+strcpy(descItens8[0], "Uma armadura que aumenta a");
+strcpy(descItens8[1], "Defesa do seu Pikomon em 20.");
+strcpy(descItens8[2], "");
+
+Effect Armor;
+strcpy(Armor.Acronym, "HP");
+Armor.Quantity = 0;
+Armor.Timer = 0;
+Effect ArmorStats[8];
+strcpy(ArmorStats[0].Acronym, "HP");
+strcpy(ArmorStats[1].Acronym, "Def");
+strcpy(ArmorStats[2].Acronym, "MaD");
+strcpy(ArmorStats[3].Acronym, "Acc");
+strcpy(ArmorStats[4].Acronym, "Atk");
+strcpy(ArmorStats[5].Acronym, "MAc");
+strcpy(ArmorStats[6].Acronym, "MaA");
+strcpy(ArmorStats[7].Acronym, "Spd");
+ArmorStats[0].Quantity = 0;
+ArmorStats[0].Timer = 0;
+ArmorStats[1].Quantity = 20;
+ArmorStats[1].Timer = 3;
+ArmorStats[2].Quantity = 0;
+ArmorStats[2].Timer = 0;
+ArmorStats[3].Quantity = 0;
+ArmorStats[3].Timer = 0;
+ArmorStats[4].Quantity = 0;
+ArmorStats[4].Timer = 0;
+ArmorStats[5].Quantity = 0;
+ArmorStats[5].Timer = 0;
+ArmorStats[6].Quantity = 0;
+ArmorStats[6].Timer = 0;
+ArmorStats[7].Quantity = 0;
+ArmorStats[7].Timer = 0;
+
+AddItem(&pItems, &dataQuantities, "Armadura", "Atributos", descItens8, "", DescAtiva, 5, false, 'S', Armor, 'S', 100, ArmorStats);
+
+char descItens9[3][255];
+strcpy(descItens9[0], "Um talismã que aumenta a");
+strcpy(descItens9[1], "Defesa Mágica do seu Pikomon");
+strcpy(descItens9[2], "em 20.");
+
+Effect Talisman;
+strcpy(Armor.Acronym, "HP");
+Talisman.Quantity = 0;
+Talisman.Timer = 0;
+Effect TalismanStats[8];
+strcpy(TalismanStats[0].Acronym, "HP");
+strcpy(TalismanStats[1].Acronym, "Def");
+strcpy(TalismanStats[2].Acronym, "MaD");
+strcpy(TalismanStats[3].Acronym, "Acc");
+strcpy(TalismanStats[4].Acronym, "Atk");
+strcpy(TalismanStats[5].Acronym, "MAc");
+strcpy(TalismanStats[6].Acronym, "MaA");
+strcpy(TalismanStats[7].Acronym, "Spd");
+TalismanStats[0].Quantity = 0;
+TalismanStats[0].Timer = 0;
+TalismanStats[1].Quantity = 0;
+TalismanStats[1].Timer = 0;
+TalismanStats[2].Quantity = 20;
+TalismanStats[2].Timer = 3;
+TalismanStats[3].Quantity = 0;
+TalismanStats[3].Timer = 0;
+TalismanStats[4].Quantity = 0;
+TalismanStats[4].Timer = 0;
+TalismanStats[5].Quantity = 0;
+TalismanStats[5].Timer = 0;
+TalismanStats[6].Quantity = 0;
+TalismanStats[6].Timer = 0;
+TalismanStats[7].Quantity = 0;
+TalismanStats[7].Timer = 0;
+
+AddItem(&pItems, &dataQuantities, "Talisman", "Atributos", descItens9, "", DescAtiva, 5, false, 'S', Talisman, 'S', 100, TalismanStats);*/
+
+    // SaveItems(pItems, dataQuantities.Item, items);
+    // SaveDataQuantity(dataQuantities, dataQuantity);
+
     //------------------------------------------------------------------------------------------------------------------//
 
 
