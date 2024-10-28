@@ -194,16 +194,11 @@ bool SaveItems(ItPointer pItems, int ItemsQuantity, const char *destino);
 bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino);
 bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino);
 void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players);
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]);
+bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]);
 bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char description[3][255], int value, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, double StatusEffectChance, Effect StatusEffect[8]);
-bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
-bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass);
-bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex);
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]);
-bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char *description[3], int value, char effectCurrentHPTarget, Effect enemyEffectCurrentHP, Effect selfEffectCurrentHP, char effectTarget, double enemyStatusEffectChance, Effect enemyStatusEffect[8], double selfStatusEffectChance, Effect selfStatusEffect[8]);
 bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
 bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, char *pass);
-bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, int itemIndex);;
+bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, int itemIndex);
 bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities);
 bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove);
 bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove);
@@ -936,7 +931,7 @@ int main(){
     //------------------------------------------------------------------------------------------------------------------//
 
 
-
+/*
 
     char icoImg[7][20];
     strcpy(icoImg[0], "*********");
@@ -948,7 +943,7 @@ int main(){
     AddPikomon(&pPikomons, &dataQuantities, "Josias", allElements[0], icoImg, 19, 19, 198, 1000, -2, 101, 120, 1);
     
 
-
+*/
 
 
 
@@ -2564,9 +2559,11 @@ void PassPikomonTurnTime(PiPointer *pikomon){
 //------------------------------------------------------------------------------//
 //a funcao log do math.h estava dando um conflito muito estranho toda a vez que chamava com alguma variavel dentro
 double DefenseReductionCalc(double value){
+    
     int base = 2;
     return log(value) / log(base);
     return 1.0;
+    
 }
 //------------------------------------------------------------------------------//
 
@@ -2723,6 +2720,7 @@ void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos) {
     printf("|___________________|____________________|_________________________________________________________________________________________________|\n\n");
 }
 
+
 Pikomon GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed) {
     // Isso aq inicializa o gerador de numeros
     srand(time(NULL));
@@ -2752,8 +2750,6 @@ Pikomon GerarPikomon(Pikomon pPikomon, Personality *personalities, Element eleme
     pPikomon.Atributes[7].Base = (int)(BaseSpeed * (double)pPikomon.Personality.BaseSpeedModifier / 100.0);
 
     pPikomon.Element = element;
-
-    //PRECISA AINDA COLOCAR O ADDPIKOMON NO STORAGE DO PLAYER
 
     return pPikomon;
 }
@@ -2789,7 +2785,7 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
         return false;
     }
 
-    Pikomon novoPikomon = pPikomon[playerEscolha];
+    Pikomon novoPikomon = GerarPikomon(pPikomon[playerEscolha], personalities, pPikomon[playerEscolha].Element, pPikomon[playerEscolha].Atributes[0].Total, pPikomon[playerEscolha].Atributes[1].Total, pPikomon[playerEscolha].Atributes[2].Total, pPikomon[playerEscolha].Atributes[3].Total, pPikomon[playerEscolha].Atributes[4].Total, pPikomon[playerEscolha].Atributes[5].Total, pPikomon[playerEscolha].Atributes[6].Total, pPikomon[playerEscolha].Atributes[7].Total);
     /*if (!GerarPikomon(novoPikomon, personalities, pPikomon[playerEscolha].Element, pPikomon[playerEscolha].Atributes[0].Total, pPikomon[playerEscolha].Atributes[1].Total, pPikomon[playerEscolha].Atributes[2].Total, pPikomon[playerEscolha].Atributes[3].Total, pPikomon[playerEscolha].Atributes[4].Total, pPikomon[playerEscolha].Atributes[5].Total, pPikomon[playerEscolha].Atributes[6].Total, pPikomon[playerEscolha].Atributes[7].Total)) {
         printf("Falha ao gerar Pikomon. Tente novamente.\n");
         return false;
@@ -2803,10 +2799,22 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
     }
 
     if (quantidadePikomonArmazenado >= 12) {
-        printf("Você já possui o máximo de Pikomons permitido no armazenamento.\n");
-        return false;
+        printf("[Aviso]Você já possui o máximo de Pikomons permitido no armazenamento.(Press Enter)\n");
+            getchar();
+            getchar();
     }
-
+    while(true){
+        printf("Escolha a posição do pikomon no armazenamento(0 à 11(total=12), Caso já esteja ocupado o pokemon será substituido):\n");
+        scanf("%d", &quantidadePikomonArmazenado);
+        if(quantidadePikomonArmazenado < 0 || quantidadePikomonArmazenado > 11){
+            printf("Posição inválida(Press Enter)\n");
+            getchar();
+            getchar();
+        }
+        else{
+            break;
+        }
+    }
     playerAtual->PikomonsStorage[quantidadePikomonArmazenado] = novoPikomon;
     playerAtual->Pikocoins -= 10;
 
