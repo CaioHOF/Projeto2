@@ -2816,7 +2816,7 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
         }
     }
     playerAtual->PikomonsStorage[quantidadePikomonArmazenado] = novoPikomon;
-    playerAtual->Pikocoins -= 10;
+    playerAtual->Pikocoins -= novoPikomon.Value;
 
     printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", novoPikomon.Name, playerAtual->Pikocoins);
     
