@@ -195,28 +195,22 @@ bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino
 bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino);
 void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players);
 bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]);
-<<<<<<< HEAD
 bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char description[3][255], int value, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, double StatusEffectChance, Effect StatusEffect[8]);
 bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
 bool AddPlayer(PlPointer pPlayers, DataQuantity dataQuantities, char *name, char *pass);
 bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex);
-=======
+bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]);
 bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *type, char *description[3], int value, char effectCurrentHPTarget, Effect enemyEffectCurrentHP, Effect selfEffectCurrentHP, char effectTarget, double enemyStatusEffectChance, Effect enemyStatusEffect[8], double selfStatusEffectChance, Effect selfStatusEffect[8]);
-bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed);
+bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
 bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, char *pass);
 bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, int itemIndex);;
->>>>>>> origin/Shop
 bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities);
 bool RemoveSkill(SkPointer pSkills, DataQuantity dataQuantities, int indexRemove);
 bool RemoveItem(ItPointer pItems, DataQuantity dataQuantities, int indexRemove);
 bool RemovePikomon(PiPointer pPikomons, DataQuantity dataQuantities, int indexRemove);
 bool SellItemPlayerBag(PlPointer pPlayers, int playerIndex, int bagSellIndex);
 void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7]);
-void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPointer *defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage);
 void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex);
-<<<<<<< HEAD
-double DefenseReductionCalc(double value);
-=======
 void LimparTerminal();
 void Menu();
 void MenuLogin(int userNumero);
@@ -224,7 +218,7 @@ void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos);
 bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, int *indexUs1, int *indexUs2);
 bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality* personalities);
 void MenuShopMP();
->>>>>>> origin/Shop
+double DefenseReductionCalc(double value);
 
 
 int main(){ 
@@ -235,9 +229,6 @@ int main(){
     
     const char *dataQuantity = "DataQuantity.txt", *players = "Players.bin", *items = "Items.bin", *pikomoms = "Pikomoms.bin", *skills = "Skills.bin", *personalities = "Personalities.bin", *elements = "Elements.bin";
     char readLine[256];
-
-
-
 
     DataQuantity dataQuantities;
     dataQuantities.Skill = -1;
@@ -414,8 +405,428 @@ int main(){
 
     //Define Elements
     /*
-        
+        Comum
+    strcpy(allElements[0].Name, "Comum"); 
+    strcpy(allElements[0].Acronym, "Drm");
+    allElements[0].Effectiveness[0] = 100; 
+    allElements[0].Effectiveness[1] = 100;
+    allElements[0].Effectiveness[2] = 100;
+    allElements[0].Effectiveness[3] = 100;
+    allElements[0].Effectiveness[4] = 100;
+    allElements[0].Effectiveness[5] = 100;
+    allElements[0].Effectiveness[6] = 100;
+    allElements[0].Effectiveness[7] = 100;
+    allElements[0].Effectiveness[8] = 100;
+    allElements[0].Effectiveness[9] = 100;
+    //------------------//
+    allElements[0].ElementalDamageScale = 0;
+    allElements[0].SelfElementIndex = 0;
+    //------------------//
+    strcpy(allElements[0].CurrentHPEffect.Acronym, "HP");
+    allElements[0].CurrentHPEffect.Quantity = 0;
+    allElements[0].CurrentHPEffect.Timer = 0;
+    //------------------//
+    strcpy(allElements[0].StatusEffect[0].Acronym, "Def");
+    allElements[0].StatusEffect[0].Quantity = 0;
+    allElements[0].StatusEffect[0].Timer = 0;
+    strcpy(allElements[0].StatusEffect[1].Acronym, "MaD");
+    allElements[0].StatusEffect[1].Quantity = 0;
+    allElements[0].StatusEffect[1].Timer = 0;
+    strcpy(allElements[0].StatusEffect[2].Acronym, "Acc");
+    allElements[0].StatusEffect[2].Quantity = 0;
+    allElements[0].StatusEffect[2].Timer = 0;
+    strcpy(allElements[0].StatusEffect[3].Acronym, "Atk");
+    allElements[0].StatusEffect[3].Quantity = 0;
+    allElements[0].StatusEffect[3].Timer = 0; 
+    strcpy(allElements[0].StatusEffect[4].Acronym, "ElA");
+    allElements[0].StatusEffect[4].Quantity = 0;
+    allElements[0].StatusEffect[4].Timer = 0;
+    strcpy(allElements[0].StatusEffect[5].Acronym, "MaA");
+    allElements[0].StatusEffect[5].Quantity = 0;
+    allElements[0].StatusEffect[5].Timer = 0;
+    strcpy(allElements[0].StatusEffect[6].Acronym, "Spd");
+    allElements[0].StatusEffect[6].Quantity = -100;
+    allElements[0].StatusEffect[6].Timer 
+        Flamejante
+    strcpy(allElements[1].Name, "Flamejante"); 
+    strcpy(allElements[1].Acronym, "Qmd");
+    allElements[1].Effectiveness[0] = 100; //Comum
+    allElements[1].Effectiveness[1] = 50;  //Flamejante
+    allElements[1].Effectiveness[2] = 50;  //Aquático
+    allElements[1].Effectiveness[3] = 200; //Natural
+    allElements[1].Effectiveness[4] = 100; //Elétrico
+    allElements[1].Effectiveness[5] = 100; //Misterioso
+    allElements[1].Effectiveness[6] = 100; //Luminoso
+    allElements[1].Effectiveness[7] = 200; //Gélido
+    allElements[1].Effectiveness[8] = 50;  //Mineral
+    allElements[1].Effectiveness[9] = 100; //Tóxico
+    //------------------//
+    allElements[1].ElementalDamageScale = -15;
+    allElements[1].SelfElementIndex = 1;
+    //------------------//
+    strcpy(allElements[1].CurrentHPEffect.Acronym, "HP");
+    allElements[1].CurrentHPEffect.Quantity = -5;
+    allElements[1].CurrentHPEffect.Timer = 4;
+    //------------------//
+    strcpy(allElements[1].StatusEffect[0].Acronym, "Def");
+    allElements[1].StatusEffect[0].Quantity = 0;
+    allElements[1].StatusEffect[0].Timer = 0;
+    strcpy(allElements[1].StatusEffect[1].Acronym, "MaD");
+    allElements[1].StatusEffect[1].Quantity = 0;
+    allElements[1].StatusEffect[1].Timer = 0;
+    strcpy(allElements[1].StatusEffect[2].Acronym, "Acc");
+    allElements[1].StatusEffect[2].Quantity = 0;
+    allElements[1].StatusEffect[2].Timer = 0;
+    strcpy(allElements[1].StatusEffect[3].Acronym, "Atk");
+    allElements[1].StatusEffect[3].Quantity = -15;
+    allElements[1].StatusEffect[3].Timer = 4; 
+    strcpy(allElements[1].StatusEffect[4].Acronym, "EAc");
+    allElements[1].StatusEffect[4].Quantity = 0;
+    allElements[1].StatusEffect[4].Timer = 0;
+    strcpy(allElements[1].StatusEffect[5].Acronym, "MaA");
+    allElements[1].StatusEffect[5].Quantity = 0;
+    allElements[1].StatusEffect[5].Timer = 0;
+    strcpy(allElements[1].StatusEffect[6].Acronym, "Spd");
+    allElements[1].StatusEffect[6].Quantity = 0;
+    allElements[1].StatusEffect[6].Timer = 
+        Aquático    
+    strcpy(allElements[2].Name, "Aquático"); 
+    strcpy(allElements[2].Acronym, "Mol");
+    allElements[2].Effectiveness[0] = 100; //Comum
+    allElements[2].Effectiveness[1] = 200;  //Flamejante
+    allElements[2].Effectiveness[2] = 50;  //Aquático
+    allElements[2].Effectiveness[3] = 50; //Natural
+    allElements[2].Effectiveness[4] = 100; //Elétrico
+    allElements[2].Effectiveness[5] = 100; //Misterioso
+    allElements[2].Effectiveness[6] = 100; //Luminoso
+    allElements[2].Effectiveness[7] = 50; //Gélido
+    allElements[2].Effectiveness[8] = 200;  //Mineral
+    allElements[2].Effectiveness[9] = 100; //Tóxico
+    //------------------//
+    allElements[2].ElementalDamageScale = 0;
+    allElements[2].SelfElementIndex = 2;
+    //------------------//
+    strcpy(allElements[2].CurrentHPEffect.Acronym, "HP");
+    allElements[2].CurrentHPEffect.Quantity = 0;
+    allElements[2].CurrentHPEffect.Timer = 0;
+    //------------------//
+    strcpy(allElements[2].StatusEffect[0].Acronym, "Def");
+    allElements[2].StatusEffect[0].Quantity = -15;
+    allElements[2].StatusEffect[0].Timer = 3;
+    strcpy(allElements[2].StatusEffect[1].Acronym, "MaD");
+    allElements[2].StatusEffect[1].Quantity = -15;
+    allElements[2].StatusEffect[1].Timer = 3;
+    strcpy(allElements[2].StatusEffect[2].Acronym, "Acc");
+    allElements[2].StatusEffect[2].Quantity = 0;
+    allElements[2].StatusEffect[2].Timer = 0;
+    strcpy(allElements[2].StatusEffect[3].Acronym, "Atk");
+    allElements[2].StatusEffect[3].Quantity = 0;
+    allElements[2].StatusEffect[3].Timer = 0; 
+    strcpy(allElements[2].StatusEffect[4].Acronym, "EAc");
+    allElements[2].StatusEffect[4].Quantity = 0;
+    allElements[2].StatusEffect[4].Timer = 0;
+    strcpy(allElements[2].StatusEffect[5].Acronym, "MaA");
+    allElements[2].StatusEffect[5].Quantity = 0;
+    allElements[2].StatusEffect[5].Timer = 0;
+    strcpy(allElements[2].StatusEffect[6].Acronym, "Spd");
+    allElements[2].StatusEffect[6].Quantity = 0;
+    allElements[2].StatusEffect[6].Timer 
+        Natural    
+    strcpy(allElements[3].Name, "Natural"); 
+    strcpy(allElements[3].Acronym, "Erz");
+    allElements[3].Effectiveness[0] = 100; //Comum
+    allElements[3].Effectiveness[1] = 50;  //Flamejante
+    allElements[3].Effectiveness[2] = 200;  //Aquático
+    allElements[3].Effectiveness[3] = 50; //Natural
+    allElements[3].Effectiveness[4] = 100; //Elétrico
+    allElements[3].Effectiveness[5] = 100; //Misterioso
+    allElements[3].Effectiveness[6] = 100; //Luminoso
+    allElements[3].Effectiveness[7] = 50; //Gélido
+    allElements[3].Effectiveness[8] = 200;  //Mineral
+    allElements[3].Effectiveness[9] = 50; //Tóxico
+    //------------------//
+    allElements[3].ElementalDamageScale = 0;
+    allElements[3].SelfElementIndex = 3;
+    //------------------//
+    strcpy(allElements[3].CurrentHPEffect.Acronym, "HP");
+    allElements[3].CurrentHPEffect.Quantity = 0;
+    allElements[3].CurrentHPEffect.Timer = 0;
+    //------------------//
+    strcpy(allElements[3].StatusEffect[0].Acronym, "Def");
+    allElements[3].StatusEffect[0].Quantity = 0;
+    allElements[3].StatusEffect[0].Timer = 0;
+    strcpy(allElements[3].StatusEffect[1].Acronym, "MaD");
+    allElements[3].StatusEffect[1].Quantity = 0;
+    allElements[3].StatusEffect[1].Timer = 0;
+    strcpy(allElements[3].StatusEffect[2].Acronym, "Acc");
+    allElements[3].StatusEffect[2].Quantity = 0;
+    allElements[3].StatusEffect[2].Timer = 0;
+    strcpy(allElements[3].StatusEffect[3].Acronym, "Atk");
+    allElements[3].StatusEffect[3].Quantity = -10;
+    allElements[3].StatusEffect[3].Timer = 4; 
+    strcpy(allElements[3].StatusEffect[4].Acronym, "EAc");
+    allElements[3].StatusEffect[4].Quantity = 0;
+    allElements[3].StatusEffect[4].Timer = 0;
+    strcpy(allElements[3].StatusEffect[5].Acronym, "MaA");
+    allElements[3].StatusEffect[5].Quantity = -10;
+    allElements[3].StatusEffect[5].Timer = 0;
+    strcpy(allElements[3].StatusEffect[6].Acronym, "Spd");
+    allElements[3].StatusEffect[6].Quantity = -15;
+    allElements[3].StatusEffect[6].Timer 
+        Elétrico    
+    strcpy(allElements[4].Name, "Elétrico"); 
+    strcpy(allElements[4].Acronym, "Prz");
+    allElements[4].Effectiveness[0] = 100; //Comum
+    allElements[4].Effectiveness[1] = 100;  //Flamejante
+    allElements[4].Effectiveness[2] = 200;  //Aquático
+    allElements[4].Effectiveness[3] = 50; //Natural
+    allElements[4].Effectiveness[4] = 50; //Elétrico
+    allElements[4].Effectiveness[5] = 100; //Misterioso
+    allElements[4].Effectiveness[6] = 100; //Luminoso
+    allElements[4].Effectiveness[7] = 50; //Gélido
+    allElements[4].Effectiveness[8] = 50;  //Mineral
+    allElements[4].Effectiveness[9] = 100; //Tóxico
+    //------------------//
+    allElements[4].ElementalDamageScale = -15;
+    allElements[4].SelfElementIndex = 4;
+    //------------------//
+    strcpy(allElements[4].CurrentHPEffect.Acronym, "HP");
+    allElements[4].CurrentHPEffect.Quantity = -5;
+    allElements[4].CurrentHPEffect.Timer = 3;
+    //------------------//
+    strcpy(allElements[4].StatusEffect[0].Acronym, "Def");
+    allElements[4].StatusEffect[0].Quantity = 0;
+    allElements[4].StatusEffect[0].Timer = 0;
+    strcpy(allElements[4].StatusEffect[1].Acronym, "MaD");
+    allElements[4].StatusEffect[1].Quantity = 0;
+    allElements[4].StatusEffect[1].Timer = 0;
+    strcpy(allElements[4].StatusEffect[2].Acronym, "Acc");
+    allElements[4].StatusEffect[2].Quantity = 0;
+    allElements[4].StatusEffect[2].Timer = 0;
+    strcpy(allElements[4].StatusEffect[3].Acronym, "Atk");
+    allElements[4].StatusEffect[3].Quantity = 0;
+    allElements[4].StatusEffect[3].Timer = 0; 
+    strcpy(allElements[4].StatusEffect[4].Acronym, "EAc");
+    allElements[4].StatusEffect[4].Quantity = 0;
+    allElements[4].StatusEffect[4].Timer = 0;
+    strcpy(allElements[4].StatusEffect[5].Acronym, "MaA");
+    allElements[4].StatusEffect[5].Quantity = 0;
+    allElements[4].StatusEffect[5].Timer = 0;
+    strcpy(allElements[4].StatusEffect[6].Acronym, "Spd");
+    allElements[4].StatusEffect[6].Quantity = -15;
+    allElements[4].StatusEffect[6].Timer 
+        Misterioso    
+    strcpy(allElements[5].Name, "Misterioso"); 
+    strcpy(allElements[5].Acronym, "Asb");
+    allElements[5].Effectiveness[0] = 50; //Comum
+    allElements[5].Effectiveness[1] = 100;  //Flamejante
+    allElements[5].Effectiveness[2] = 100;  //Aquático
+    allElements[5].Effectiveness[3] = 100; //Natural
+    allElements[5].Effectiveness[4] = 100; //Elétrico
+    allElements[5].Effectiveness[5] = 200; //Misterioso
+    allElements[5].Effectiveness[6] = 200; //Luminoso
+    allElements[5].Effectiveness[7] = 100; //Gélido
+    allElements[5].Effectiveness[8] = 100;  //Mineral
+    allElements[5].Effectiveness[9] = 100; //Tóxico
+    //------------------//
+    allElements[5].ElementalDamageScale = -10;
+    allElements[5].SelfElementIndex = 5;
+    //------------------//
+    strcpy(allElements[5].CurrentHPEffect.Acronym, "HP");
+    allElements[5].CurrentHPEffect.Quantity = -4;
+    allElements[5].CurrentHPEffect.Timer = 5;
+    //------------------//
+    strcpy(allElements[5].StatusEffect[0].Acronym, "Def");
+    allElements[5].StatusEffect[0].Quantity = 0;
+    allElements[5].StatusEffect[0].Timer = 0;
+    strcpy(allElements[5].StatusEffect[1].Acronym, "MaD");
+    allElements[5].StatusEffect[1].Quantity = 0;
+    allElements[5].StatusEffect[1].Timer = 0;
+    strcpy(allElements[5].StatusEffect[2].Acronym, "Acc");
+    allElements[5].StatusEffect[2].Quantity = 0;
+    allElements[5].StatusEffect[2].Timer = 0;
+    strcpy(allElements[5].StatusEffect[3].Acronym, "Atk");
+    allElements[5].StatusEffect[3].Quantity = 0;
+    allElements[5].StatusEffect[3].Timer = 0; 
+    strcpy(allElements[5].StatusEffect[4].Acronym, "EAc");
+    allElements[5].StatusEffect[4].Quantity = 0;
+    allElements[5].StatusEffect[4].Timer = 0;
+    strcpy(allElements[5].StatusEffect[5].Acronym, "MaA");
+    allElements[5].StatusEffect[5].Quantity = -15;
+    allElements[5].StatusEffect[5].Timer = 5;
+    strcpy(allElements[5].StatusEffect[6].Acronym, "Spd");
+    allElements[5].StatusEffect[6].Quantity = 0;
+    allElements[5].StatusEffect[6].Timer 
+        Luminoso    
+    strcpy(allElements[6].Name, "Luminoso"); 
+    strcpy(allElements[6].Acronym, "Clr");
+    allElements[6].Effectiveness[0] = 100; //Comum
+    allElements[6].Effectiveness[1] = 50;  //Flamejante
+    allElements[6].Effectiveness[2] = 100;  //Aquático
+    allElements[6].Effectiveness[3] = 100; //Natural
+    allElements[6].Effectiveness[4] = 50; //Elétrico
+    allElements[6].Effectiveness[5] = 200; //Misterioso
+    allElements[6].Effectiveness[6] = 100; //Luminoso
+    allElements[6].Effectiveness[7] = 100; //Gélido
+    allElements[6].Effectiveness[8] = 100;  //Mineral
+    allElements[6].Effectiveness[9] = 100; //Tóxico
+    //------------------//
+    allElements[6].ElementalDamageScale = 0;
+    allElements[6].SelfElementIndex = 6;
+    //------------------//
+    strcpy(allElements[6].CurrentHPEffect.Acronym, "HP");
+    allElements[6].CurrentHPEffect.Quantity = 0;
+    allElements[6].CurrentHPEffect.Timer = 0;
+    //------------------//
+    strcpy(allElements[6].StatusEffect[0].Acronym, "Def");
+    allElements[6].StatusEffect[0].Quantity = 0;
+    allElements[6].StatusEffect[0].Timer = 0;
+    strcpy(allElements[6].StatusEffect[1].Acronym, "MaD");
+    allElements[6].StatusEffect[1].Quantity = 0;
+    allElements[6].StatusEffect[1].Timer = 0;
+    strcpy(allElements[6].StatusEffect[2].Acronym, "Acc");
+    allElements[6].StatusEffect[2].Quantity = -20;
+    allElements[6].StatusEffect[2].Timer = 2;
+    strcpy(allElements[6].StatusEffect[3].Acronym, "Atk");
+    allElements[6].StatusEffect[3].Quantity = 0;
+    allElements[6].StatusEffect[3].Timer = 0; 
+    strcpy(allElements[6].StatusEffect[4].Acronym, "EAc");
+    allElements[6].StatusEffect[4].Quantity = -20;
+    allElements[6].StatusEffect[4].Timer = 2;
+    strcpy(allElements[6].StatusEffect[5].Acronym, "MaA");
+    allElements[6].StatusEffect[5].Quantity = -15;
+    allElements[6].StatusEffect[5].Timer = 5;
+    strcpy(allElements[6].StatusEffect[6].Acronym, "Spd");
+    allElements[6].StatusEffect[6].Quantity = 0;
+    allElements[6].StatusEffect[6].Timer 
+        Gélido    
+    strcpy(allElements[7].Name, "Gélido"); 
+    strcpy(allElements[7].Acronym, "Cal");
+    allElements[7].Effectiveness[0] = 100; //Comum
+    allElements[7].Effectiveness[1] = 50;  //Flamejante
+    allElements[7].Effectiveness[2] = 50;  //Aquático
+    allElements[7].Effectiveness[3] = 200; //Natural
+    allElements[7].Effectiveness[4] = 100; //Elétrico
+    allElements[7].Effectiveness[5] = 100; //Misterioso
+    allElements[7].Effectiveness[6] = 100; //Luminoso
+    allElements[7].Effectiveness[7] = 50; //Gélido
+    allElements[7].Effectiveness[8] = 200;  //Mineral
+    allElements[7].Effectiveness[9] = 100; //Tóxico
+    //------------------//
+    allElements[7].ElementalDamageScale = -10;
+    allElements[7].SelfElementIndex = 7;
+    //------------------//
+    strcpy(allElements[7].CurrentHPEffect.Acronym, "HP");
+    allElements[7].CurrentHPEffect.Quantity = -10;
+    allElements[7].CurrentHPEffect.Timer = 2;
+    //------------------//
+    strcpy(allElements[7].StatusEffect[0].Acronym, "Def");
+    allElements[7].StatusEffect[0].Quantity = 0;
+    allElements[7].StatusEffect[0].Timer = 0;
+    strcpy(allElements[7].StatusEffect[1].Acronym, "MaD");
+    allElements[7].StatusEffect[1].Quantity = 0;
+    allElements[7].StatusEffect[1].Timer = 0;
+    strcpy(allElements[7].StatusEffect[2].Acronym, "Acc");
+    allElements[7].StatusEffect[2].Quantity = 0;
+    allElements[7].StatusEffect[2].Timer = 0;
+    strcpy(allElements[7].StatusEffect[3].Acronym, "Atk");
+    allElements[7].StatusEffect[3].Quantity = 0;
+    allElements[7].StatusEffect[3].Timer = 0; 
+    strcpy(allElements[7].StatusEffect[4].Acronym, "EAc");
+    allElements[7].StatusEffect[4].Quantity = 0;
+    allElements[7].StatusEffect[4].Timer = 0;
+    strcpy(allElements[7].StatusEffect[5].Acronym, "MaA");
+    allElements[7].StatusEffect[5].Quantity = 0;
+    allElements[7].StatusEffect[5].Timer = 0;
+    strcpy(allElements[7].StatusEffect[6].Acronym, "Spd");
+    allElements[7].StatusEffect[6].Quantity = -30;
+    allElements[7].StatusEffect[6].Timer 
+        Mineral    
+    strcpy(allElements[8].Name, "Mineral"); 
+    strcpy(allElements[8].Acronym, "Sot");
+    allElements[8].Effectiveness[0] = 100; //Comum
+    allElements[8].Effectiveness[1] = 200;  //Flamejante
+    allElements[8].Effectiveness[2] = 100;  //Aquático
+    allElements[8].Effectiveness[3] = 50; //Natural
+    allElements[8].Effectiveness[4] = 200; //Elétrico
+    allElements[8].Effectiveness[5] = 100; //Misterioso
+    allElements[8].Effectiveness[6] = 100; //Luminoso
+    allElements[8].Effectiveness[7] = 50; //Gélido
+    allElements[8].Effectiveness[8] = 100;  //Mineral
+    allElements[8].Effectiveness[9] = 200; //Tóxico
+    //------------------//
+    allElements[8].ElementalDamageScale = 0;
+    allElements[8].SelfElementIndex = 8;
+    //------------------//
+    strcpy(allElements[8].CurrentHPEffect.Acronym, "HP");
+    allElements[8].CurrentHPEffect.Quantity = 0;
+    allElements[8].CurrentHPEffect.Timer = 0;
+    //------------------//
+    strcpy(allElements[8].StatusEffect[0].Acronym, "Def");
+    allElements[8].StatusEffect[0].Quantity = 0;
+    allElements[8].StatusEffect[0].Timer = 0;
+    strcpy(allElements[8].StatusEffect[1].Acronym, "MaD");
+    allElements[8].StatusEffect[1].Quantity = 0;
+    allElements[8].StatusEffect[1].Timer = 0;
+    strcpy(allElements[8].StatusEffect[2].Acronym, "Acc");
+    allElements[8].StatusEffect[2].Quantity = 0;
+    allElements[8].StatusEffect[2].Timer = 0;
+    strcpy(allElements[8].StatusEffect[3].Acronym, "Atk");
+    allElements[8].StatusEffect[3].Quantity = 0;
+    allElements[8].StatusEffect[3].Timer = 0; 
+    strcpy(allElements[8].StatusEffect[4].Acronym, "EAc");
+    allElements[8].StatusEffect[4].Quantity = 0;
+    allElements[8].StatusEffect[4].Timer = 0;
+    strcpy(allElements[8].StatusEffect[5].Acronym, "MaA");
+    allElements[8].StatusEffect[5].Quantity = 0;
+    allElements[8].StatusEffect[5].Timer = 0;
+    strcpy(allElements[8].StatusEffect[6].Acronym, "Spd");
+    allElements[8].StatusEffect[6].Quantity = -30;
+    allElements[8].StatusEffect[6].Timer 
+        Venenoso    
+    strcpy(allElements[9].Name, "Venenoso"); 
+    strcpy(allElements[9].Acronym, "Ven");
+    allElements[9].Effectiveness[0] = 100; //Comum
+    allElements[9].Effectiveness[1] = 100;  //Flamejante
+    allElements[9].Effectiveness[2] = 100;  //Aquático
+    allElements[9].Effectiveness[3] = 200; //Natural
+    allElements[9].Effectiveness[4] = 100; //Elétrico
+    allElements[9].Effectiveness[5] = 100; //Misterioso
+    allElements[9].Effectiveness[6] = 100; //Luminoso
+    allElements[9].Effectiveness[7] = 100; //Gélido
+    allElements[9].Effectiveness[8] = 50; //Mineral
+    allElements[9].Effectiveness[9] = 50; //Tóxico
+    //------------------//
+    allElements[9].ElementalDamageScale = -30;
+    allElements[9].SelfElementIndex = 9;
+    //------------------//
+    strcpy(allElements[9].CurrentHPEffect.Acronym, "HP");
+    allElements[9].CurrentHPEffect.Quantity = -15;
+    allElements[9].CurrentHPEffect.Timer = 5;
+    //------------------//
+    strcpy(allElements[9].StatusEffect[0].Acronym, "Def");
+    allElements[9].StatusEffect[0].Quantity = 0;
+    allElements[9].StatusEffect[0].Timer = 0;
+    strcpy(allElements[9].StatusEffect[1].Acronym, "MaD");
+    allElements[9].StatusEffect[1].Quantity = 0;
+    allElements[9].StatusEffect[1].Timer = 0;
+    strcpy(allElements[9].StatusEffect[2].Acronym, "Acc");
+    allElements[9].StatusEffect[2].Quantity = 0;
+    allElements[9].StatusEffect[2].Timer = 0;
+    strcpy(allElements[9].StatusEffect[3].Acronym, "Atk");
+    allElements[9].StatusEffect[3].Quantity = 0;
+    allElements[9].StatusEffect[3].Timer = 0; 
+    strcpy(allElements[9].StatusEffect[4].Acronym, "EAc");
+    allElements[9].StatusEffect[4].Quantity = 0;
+    allElements[9].StatusEffect[4].Timer = 0;
+    strcpy(allElements[9].StatusEffect[5].Acronym, "MaA");
+    allElements[9].StatusEffect[5].Quantity = 0;
+    allElements[9].StatusEffect[5].Timer = 0;
+    strcpy(allElements[9].StatusEffect[6].Acronym, "Spd");
+    allElements[9].StatusEffect[6].Quantity = 0;
+    allElements[9].StatusEffect[6].Timer = 0;
     */
+
 
     dBPersonalities = fopen(personalities, "rb");
     if(dBPersonalities == NULL){
@@ -525,90 +936,33 @@ int main(){
     //------------------------------------------------------------------------------------------------------------------//
 
 
+
+
+    char icoImg[7][20];
+    strcpy(icoImg[0], "*********");
+    strcpy(icoImg[1], "*********");
+    strcpy(icoImg[21], "*********");
+    strcpy(icoImg[0], "*********");
+    strcpy(icoImg[0], "*********");
+    strcpy(icoImg[0], "*********");
+    AddPikomon(&pPikomons, &dataQuantities, "Josias", allElements[0], icoImg, 19, 19, 198, 1000, -2, 101, 120, 1);
+    
+
+
+
+
+
+
     //Principal Do Usuário
     //------------------------------------------------------------------------------------------------------------------//
-<<<<<<< HEAD
     //login
     //menu
     bool Battle = false;
-=======
-    int respostaUserMP;
-    bool login1 = false, login2 = false;
-    char respostaCadastro;
-    int indexUs1,indexUs2;
-
-    printf("Gostaria de cadastrar-se?(S/n): ");
-
-    scanf(" %c", &respostaCadastro);
-
-        if (respostaCadastro == 's' || respostaCadastro == 'S') {
-            
-            char name[20];
-            char pass[7];
-            printf("Digite o nome do jogador (até 19 caracteres): ");
-            scanf("%19s", name); 
-            printf("Digite a senha do jogador (6 caracteres): ");
-            scanf("%6s", pass); 
-
-            if (AddPlayer(&pPlayers, &dataQuantities, name, pass)) {
-                if (SavePlayers(pPlayers, dataQuantities.Player, "Players.bin")) {
-                    SaveDataQuantity(dataQuantities, "DataQuantity.txt");
-                    printf("Jogador cadastrado e salvo com sucesso!(Press Enter)\n");
-                    getchar();
-                    getchar();
-                } else {
-                    printf("Falha ao salvar os jogadores.(Press Enter)\n");
-                    getchar();
-                    getchar();
-                }
-            } else {
-                printf("Falha ao cadastrar o jogador.(Press Enter)\n");
-                getchar();
-                getchar();
-            }
-
-        }
-
-
-
-     while (true){
-        LimparTerminal();
-        Menu();
-        printf("Sua escolha?: ");
-        scanf(" %d", &respostaUserMP);
-        if(respostaUserMP == 1){
-            LimparTerminal();
-            Login(pPlayers, dataQuantities.Player, &login1, &login2, &indexUs1, &indexUs2);
-            while(true){
-                MenuShopMP();
-                scanf(" %d", &respostaUserMP);
-                //if(respostaUserMP == 1){
-                    //ShopPikomon();
-                //}
-            }
-
-
-        }
-        if(respostaUserMP == 2){
-                printf(":)");
-        }
-        if(respostaUserMP == 3){
-            printf(":)");
-        }
-        if(respostaUserMP == 4){
-            printf(":)");
-        }
-
-    }
-
-
-    bool Battle;
->>>>>>> origin/Shop
     if(Battle){
         //Variaveis calcSkill
         bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit, usedItemStatusHit;
         int selfDamage, enemyDamage;
-        
+        char calcNextTurn[7];
         
         //Variaveis Battle
         bool playerOneTurn, reset, nextTurnReset = false, battleIsOver;
@@ -671,23 +1025,6 @@ int main(){
 
 //Debug/Print/Base Functions
 //------------------------------------------------------------------------------//
-<<<<<<< HEAD
-bool DebugPlayers(PlPointer pPlayers, int index, int playersQuantity){
-    return false;
-}
-
-bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
-    return false;
-}
-
-bool DebugItems(ItPointer pItems, int index, int ItemsQuantity){
-    return false;
-}
-
-bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity){
-    return false;
-}
-=======
 bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
 {
     int j, k;
@@ -991,7 +1328,6 @@ bool DebugItems(ItPointer pItems, int index, int ItemsQuantity) {
     return true;
 }
 
-
 bool DebugSkills(SkPointer pSkills, int index, int skillsQuantity) {
     if (index == -1) {
         for (index = 0; index < skillsQuantity; index++) {
@@ -1216,8 +1552,6 @@ bool DebugElements(Element *elements, int index) {
     }
     return true;
 }
-
->>>>>>> origin/Shop
 //------------------------------------------------------------------------------//
 
 
@@ -1368,12 +1702,7 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
 
 //Manage Memory Functions
 //------------------------------------------------------------------------------//
-<<<<<<< HEAD
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]){
-=======
-bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char target, bool *learnablePersonalities, bool *LearnableElements, int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect *enemyEffect, int selfEffectChance, Effect *selfEffect){
-   /*
->>>>>>> origin/Shop
+bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pSkills == NULL){
         perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
@@ -1408,37 +1737,36 @@ bool AddSkill(SkPointer pSkills, DataQuantity dataQuantities, char *name, char t
         return false;
     }
 
-    dataQuantities.Skill++;
-    pSkills = (SkPointer)realloc(pSkills, dataQuantities.Skill * sizeof(Skill));
+    dataQuantities[0].Skill++;
+    (*pSkills) = (SkPointer)realloc((*pSkills), dataQuantities[0].Skill * sizeof(Skill));
     if(pSkills == NULL){
         perror("ERRO na realocacao de memoria em \"AddSkill\"");
         return false;
     }
-    memset(&pSkills[dataQuantities.Skill-1], 0, sizeof(Skill));
-    strcpy(pSkills[dataQuantities.Skill-1].Name, name);
-    pSkills[dataQuantities.Skill-1].Target = target;
+    memset(&(*pSkills)[dataQuantities[0].Skill-1], 0, sizeof(Skill));
+    strcpy((*pSkills)[dataQuantities[0].Skill-1].Name, name);
+    (*pSkills)[dataQuantities[0].Skill-1].Target = target;
     int i;
     for(i = 0; i < 13; i++){
-        pSkills[dataQuantities.Skill-1].LearnablePersonalities[i] = learnablePersonalities[i];
-        pSkills[dataQuantities.Skill-1].LearnableElements[i] = LearnableElements[i];
+        (*pSkills)[dataQuantities[0].Skill-1].LearnablePersonalities[i] = learnablePersonalities[i];
+        (*pSkills)[dataQuantities[0].Skill-1].LearnableElements[i] = LearnableElements[i];
     }
-    pSkills[dataQuantities.Skill-1].ElementEffectHitChance = elementEffectChance;
-    pSkills[dataQuantities.Skill-1].Element = element;
-    pSkills[dataQuantities.Skill-1].AttackBase = attackBase;
-    pSkills[dataQuantities.Skill-1].AttackScale = attackScale;
-    pSkills[dataQuantities.Skill-1].MagicBase = magicBase;
-    pSkills[dataQuantities.Skill-1].MagicAttackScale = magicAttackScale;
-    pSkills[dataQuantities.Skill-1].CritChance = critChance;
-    pSkills[dataQuantities.Skill-1].EffectTarget = effectTarget;
-    pSkills[dataQuantities.Skill-1].EnemyEffectHitChance = enemyEffectChance;
+    (*pSkills)[dataQuantities[0].Skill-1].ElementEffectHitChance = elementEffectChance;
+    (*pSkills)[dataQuantities[0].Skill-1].Element = element;
+    (*pSkills)[dataQuantities[0].Skill-1].AttackBase = attackBase;
+    (*pSkills)[dataQuantities[0].Skill-1].AttackScale = attackScale;
+    (*pSkills)[dataQuantities[0].Skill-1].MagicBase = magicBase;
+    (*pSkills)[dataQuantities[0].Skill-1].MagicAttackScale = magicAttackScale;
+    (*pSkills)[dataQuantities[0].Skill-1].CritChance = critChance;
+    (*pSkills)[dataQuantities[0].Skill-1].EffectTarget = effectTarget;
+    (*pSkills)[dataQuantities[0].Skill-1].EnemyEffectHitChance = enemyEffectChance;
     for(i = 0; i < 8; i++){
-        pSkills[dataQuantities.Skill-1].EnemyEffect[i] = enemyEffect[i];
+        (*pSkills)[dataQuantities[0].Skill-1].EnemyEffect[i] = enemyEffect[i];
     }
-    pSkills[dataQuantities.Skill-1].SelfEffectHitChance = selfEffectChance;
+    (*pSkills)[dataQuantities[0].Skill-1].SelfEffectHitChance = selfEffectChance;
     for(i = 0; i < 8; i++){
-        pSkills[dataQuantities.Skill-1].SelfEffect[i] = selfEffect[i];
+        (*pSkills)[dataQuantities[0].Skill-1].SelfEffect[i] = selfEffect[i];
     }
-<<<<<<< HEAD
     return true;
 }
 
@@ -1493,178 +1821,119 @@ bool AddItem(ItPointer pItems, DataQuantity dataQuantities, char *name, char *ty
 
 }
 
-bool AddPikomon(PiPointer pPikomons, DataQuantity dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed){
-    //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
+bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed){
     if(pPikomons == NULL){
-=======
-    */
-}
-
-bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed) {
-    // Se o memset estiver errado, ele estará apagando memória de outras variáveis;
-    if (pPikomons == NULL || *pPikomons == NULL) {
->>>>>>> origin/Shop
         perror("ERRO, \"pPikomons\" não pode ser NULL em \"AddPikomon\"");
         return false;
     }
-    if (name == NULL) {
+    if(name == NULL){
         perror("ERRO, \"name\" não pode ser NULL em \"AddPikomon\"");
         return false;
-    } else if (strlen(name) > 19) {
+    }
+    else if(strlen(name) > 19){
         perror("ERRO, \"name\" não pode ter mais de 19 caracteres em \"AddPikomon\"");
         return false;
     }
-    if (iconImg == NULL) {
+    if(iconImg == NULL){
         perror("ERRO, \"icoImg\" não pode ser NULL em \"AddPikomon\"");
         return false;
     }
-    if (BaseHP == 0) {
+    if(BaseHP == 0){
         perror("ERRO, \"BaseHP\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
-    if (BaseDefense == 0) {
+    if(BaseDefense == 0){
         perror("ERRO, \"BaseDefense\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
-    if (BaseMagicDefense == 0) {
+    if(BaseMagicDefense == 0){
         perror("ERRO, \"BaseMagicDefense\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
-<<<<<<< HEAD
     if(BaseAccuracy == 0){
         perror("ERRO, \"BaseAccuracy\" não pode ser 0 em \"AddPikomon\"");
-=======
-    if (BaseAcurracy == 0) {
-        perror("ERRO, \"BaseAcurracy\" não pode ser 0 em \"AddPikomon\"");
->>>>>>> origin/Shop
         return false;
     }
     if (BaseAttack == 0) {
         perror("ERRO, \"BaseAttack\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
-<<<<<<< HEAD
     if(BaseElementalAccuracy == 0){
         perror("ERRO, \"BaseElementalAccuracy\" não pode ser 0 em \"AddPikomon\"");
-=======
-    if (BaseElementalAcurracy == 0) {
-        perror("ERRO, \"BaseElementalAcurracy\" não pode ser 0 em \"AddPikomon\"");
->>>>>>> origin/Shop
         return false;
     }
-    if (BaseMagicAttack == 0) {
+    if(BaseMagicAttack == 0){
         perror("ERRO, \"BaseMagicAttack\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
-    if (BaseSpeed == 0) {
+    if(BaseSpeed == 0){
         perror("ERRO, \"BaseSpeed\" não pode ser 0 em \"AddPikomon\"");
         return false;
     }
 
-<<<<<<< HEAD
 
-    dataQuantities.Pikomon++;
-    pPikomons = (PiPointer)realloc(pPikomons, dataQuantities.Pikomon * sizeof(Pikomon));
+    dataQuantities[0].Pikomon++;
+    (*pPikomons) = (PiPointer)realloc((*pPikomons), dataQuantities[0].Pikomon * sizeof(Pikomon));
     if(pPikomons == NULL){
         perror("ERRO na realocacao de memoria em \"AddPikomon\"");
-=======
-    dataQuantities->Pikomon++;
-    *pPikomons = (PiPointer)realloc(*pPikomons, dataQuantities->Pikomon * sizeof(Pikomon));
-    if (*pPikomons == NULL) {
-        perror("ERRO na realocação de memória em \"AddPikomon\"");
->>>>>>> origin/Shop
         return false;
     }
-
-    memset(&(*pPikomons)[dataQuantities->Pikomon - 1], 0, sizeof(Pikomon));
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].Name, name);
-    (*pPikomons)[dataQuantities->Pikomon - 1].Element = element;
-
-    for (int i = 0; i < 7; i++) {
-        strcpy((*pPikomons)[dataQuantities->Pikomon - 1].IconImg[i], iconImg[i]);
+    memset(&(*pPikomons)[dataQuantities[0].Pikomon-1], 0, sizeof(Pikomon));
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Name, name);
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Element = element;
+    int i;
+    for(i = 0; i < 7; i++){
+        strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].IconImg[i], iconImg[i]);
     }
-<<<<<<< HEAD
-    strcpy(pPikomons[dataQuantities.Pikomon-1].CurrentHP.Name, "CurrentHP");
-    pPikomons[dataQuantities.Pikomon-1].CurrentHP.Base = 0;
-    pPikomons[dataQuantities.Pikomon-1].CurrentHP.acronym = NULL;
-    pPikomons[dataQuantities.Pikomon-1].CurrentHP.Bonus = NULL;
-    pPikomons[dataQuantities.Pikomon-1].CurrentHP.BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[0].Name, "HP");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[0].Base = BaseHP;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[0].acronym = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[0].Bonus = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[0].BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[1].Name, "Defense");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[1].Base = BaseDefense;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[1].acronym = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[1].Bonus = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[1].BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[2].Name, "MagicDefense");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[2].Base = BaseMagicDefense;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[2].acronym = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[2].Bonus = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[2].BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[3].Name, "Accuracy");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[3].Base = BaseAccuracy;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[3].acronym = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[3].Bonus = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[3].BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[4].Name, "Attack");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[4].Base = BaseAttack;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[4].acronym = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[4].Bonus = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[4].BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[5].Name, "ElementalAccuracy");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[5].Base = BaseElementalAccuracy;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[5].acronym = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[5].Bonus = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[5].BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[6].Name, "MagicAttack");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[6].Base = BaseMagicAttack;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[6].acronym = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[6].Bonus = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[6].BonusTimer = NULL;
-    strcpy(pPikomons[dataQuantities.Pikomon-1].Atributes[7].Name, "Speed");
-    pPikomons[dataQuantities.Pikomon-1].Atributes[7].Base = BaseSpeed;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[7].acronym = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[7].Bonus = NULL;
-    pPikomons[dataQuantities.Pikomon-1].Atributes[7].BonusTimer = NULL;
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].CurrentHP.Name, "CurrentHP");
+    (*pPikomons)[dataQuantities[0].Pikomon-1].CurrentHP.Base = 0;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].CurrentHP.acronym = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].CurrentHP.Bonus = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].CurrentHP.BonusTimer = NULL;
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[0].Name, "HP");
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[0].Base = BaseHP;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[0].acronym = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[0].Bonus = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[0].BonusTimer = NULL;
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[1].Name, "Defense");
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[1].Base = BaseDefense;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[1].acronym = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[1].Bonus = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[1].BonusTimer = NULL;
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[2].Name, "MagicDefense");
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[2].Base = BaseMagicDefense;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[2].acronym = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[2].Bonus = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[2].BonusTimer = NULL;
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[3].Name, "Accuracy");
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[3].Base = BaseAccuracy;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[3].acronym = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[3].Bonus = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[3].BonusTimer = NULL;
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[4].Name, "Attack");
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[4].Base = BaseAttack;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[4].acronym = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[4].Bonus = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[4].BonusTimer = NULL;
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[5].Name, "ElementalAccuracy");
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[5].Base = BaseElementalAccuracy;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[5].acronym = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[5].Bonus = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[5].BonusTimer = NULL;
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[6].Name, "MagicAttack");
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[6].Base = BaseMagicAttack;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[6].acronym = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[6].Bonus = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[6].BonusTimer = NULL;
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[7].Name, "Speed");
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[7].Base = BaseSpeed;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[7].acronym = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[7].Bonus = NULL;
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Atributes[7].BonusTimer = NULL;
     return true;
-=======
-
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].CurrentHP.Name, "CurrentHP");
-    (*pPikomons)[dataQuantities->Pikomon - 1].CurrentHP.Base = 0;
-
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].Atributes[0].Name, "HP");
-    (*pPikomons)[dataQuantities->Pikomon - 1].Atributes[0].Base = BaseHP;
-    
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].Atributes[1].Name, "Defense");
-    (*pPikomons)[dataQuantities->Pikomon - 1].Atributes[1].Base = BaseDefense;
-    
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].Atributes[2].Name, "MagicDefense");
-    (*pPikomons)[dataQuantities->Pikomon - 1].Atributes[2].Base = BaseMagicDefense;
-    
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].Atributes[3].Name, "Acurracy");
-    (*pPikomons)[dataQuantities->Pikomon - 1].Atributes[3].Base = BaseAcurracy;
-    
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].Atributes[4].Name, "Attack");
-    (*pPikomons)[dataQuantities->Pikomon - 1].Atributes[4].Base = BaseAttack;
-    
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].Atributes[5].Name, "ElementalAcurracy");
-    (*pPikomons)[dataQuantities->Pikomon - 1].Atributes[5].Base = BaseElementalAcurracy;
-    
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].Atributes[6].Name, "MagicAttack");
-    (*pPikomons)[dataQuantities->Pikomon - 1].Atributes[6].Base = BaseMagicAttack;
-    
-    strcpy((*pPikomons)[dataQuantities->Pikomon - 1].Atributes[7].Name, "Speed");
-    (*pPikomons)[dataQuantities->Pikomon - 1].Atributes[7].Base = BaseSpeed;
-
-    return true; 
->>>>>>> origin/Shop
 }
 
-bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, char *pass) {
-    // Se o memset estiver errado, ele estará apagando memória de outras variáveis;
+bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, char *pass){
     if (pPlayers == NULL || *pPlayers == NULL) {
         perror("ERRO, \"pPlayers\" não pode ser NULL em \"AddPlayers\"");
         return false;
@@ -1683,29 +1952,26 @@ bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, ch
         perror("ERRO, \"name\" não pode ter mais de 19 caracteres em \"AddPlayers\"");
         return false;
     }
-<<<<<<< HEAD
     
-    dataQuantities.Player++;
-    pPlayers = (PlPointer)realloc(pPlayers, dataQuantities.Player * sizeof(Player));
+    dataQuantities[0].Player++;
+    (*pPlayers) = (PlPointer)realloc((*pPlayers), dataQuantities[0].Player * sizeof(Player));
     if(pPlayers == NULL){
         perror("ERRO na realocacao de memoria em \"AddPlayers\"");
-=======
-
-    dataQuantities->Player++;
-    *pPlayers = (PlPointer)realloc(*pPlayers, dataQuantities->Player * sizeof(Player));
+    }
+    dataQuantities[0].Player++;
+    (*pPlayers) = (PlPointer)realloc(*pPlayers, dataQuantities[0].Player * sizeof(Player));
     if (*pPlayers == NULL) {
         perror("ERRO na realocação de memória em \"AddPlayers\"");
->>>>>>> origin/Shop
         return false;
     }
-    memset(&(*pPlayers)[dataQuantities->Player - 1], 0, sizeof(Player));
-    strcpy((*pPlayers)[dataQuantities->Player - 1].Name, name);
-    strcpy((*pPlayers)[dataQuantities->Player - 1].Pass, pass);
-    (*pPlayers)[dataQuantities->Player - 1].Pikocoins = 50;
+    memset(&(*pPlayers)[dataQuantities[0].Player - 1], 0, sizeof(Player));
+    strcpy((*pPlayers)[dataQuantities[0].Player - 1].Name, name);
+    strcpy((*pPlayers)[dataQuantities[0].Player - 1].Pass, pass);
+    (*pPlayers)[dataQuantities[0].Player - 1].Pikocoins = 50;
     return true;
 }
 
-bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, int itemIndex) {
+bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, int itemIndex){
     if (pPlayers == NULL || *pPlayers == NULL) {
         perror("ERRO, \"pPlayers\" não pode ser NULL em \"AddItemPlayerBag\"");
         return false;
@@ -1723,16 +1989,6 @@ bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, in
         return false;
     }
 
-<<<<<<< HEAD
-    pPlayers[playerIndex].BagCurrentSize++;
-    pPlayers[playerIndex].Bag = (ItPointer)realloc(pPlayers[playerIndex].Bag, pPlayers[playerIndex].BagCurrentSize * sizeof(Item));
-    if(pPlayers[playerIndex].Bag == NULL){
-        perror("ERRO na realocacao de memoria em \"AddItemPlayerBag\"");
-        return false;
-    }
-    pPlayers[playerIndex].Bag[pPlayers[playerIndex].BagCurrentSize-1] = pItems[itemIndex];
-    return true;
-=======
     // Aumenta o tamanho atual da bag do jogador
     (*pPlayers)[playerIndex].BagCurrentSize++;
     (*pPlayers)[playerIndex].Bag = (ItPointer)realloc((*pPlayers)[playerIndex].Bag, (*pPlayers)[playerIndex].BagCurrentSize * sizeof(Item));
@@ -1744,7 +2000,6 @@ bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, in
     // Adiciona o item à bag do jogador
     (*pPlayers)[playerIndex].Bag[(*pPlayers)[playerIndex].BagCurrentSize - 1] = pItems[itemIndex];
     return true; 
->>>>>>> origin/Shop
 }
 
 bool StorePikomonPlayer(PlPointer pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities){
@@ -1945,7 +2200,6 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn)
 }
 
 void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPointer *defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage){
-/*
     int I, J, bonusQuantity;
     double elementalEffectivness;
     double physicalDamageReduction, magicDamageReduction;
@@ -2074,8 +2328,6 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
         }
     }
     else *enemyEffectHit = false;
- 
- */
 }
 
 void UseItem(PlPointer *selfPlayer, PlPointer *enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit){
@@ -2471,12 +2723,7 @@ void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos) {
     printf("|___________________|____________________|_________________________________________________________________________________________________|\n\n");
 }
 
-
-bool GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAcurracy, int BaseAttack, int BaseElementalAcurracy, int BaseMagicAttack, int BaseSpeed) {
-    if (personalities == NULL || 13 <= 0) {
-        return false;
-    }
-
+Pikomon GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed) {
     // Isso aq inicializa o gerador de numeros
     srand(time(NULL));
 
@@ -2495,20 +2742,20 @@ bool GerarPikomon(Pikomon pPikomon, Personality *personalities, Element element,
         }
     }
 
-    pPikomon.Atributes[0].Base = (int)(BaseHP * pPikomon.Personality.BaseHPModifier / 100);
-    pPikomon.Atributes[1].Base = (int)(BaseDefense * pPikomon.Personality.BaseDefenseModifier / 100);
-    pPikomon.Atributes[2].Base = (int)(BaseMagicDefense * pPikomon.Personality.BaseMagicDefenseModifier / 100);
-    pPikomon.Atributes[3].Base = (int)(BaseAcurracy * pPikomon.Personality.BaseAcurracyModifier / 100);
-    pPikomon.Atributes[4].Base = (int)(BaseAttack * pPikomon.Personality.BaseAttackModifier / 100);
-    pPikomon.Atributes[5].Base = (int)(BaseElementalAcurracy * pPikomon.Personality.BaseElementalAcurracyModifier / 100);
-    pPikomon.Atributes[6].Base = (int)(BaseMagicAttack * pPikomon.Personality.BaseMagicAttackModifier / 100);
-    pPikomon.Atributes[7].Base = (int)(BaseSpeed * pPikomon.Personality.BaseSpeedModifier / 100);
+    pPikomon.Atributes[0].Base = (int)(BaseHP * (double)pPikomon.Personality.BaseHPModifier / 100.0);
+    pPikomon.Atributes[1].Base = (int)(BaseDefense * (double)pPikomon.Personality.BaseDefenseModifier / 100.0);
+    pPikomon.Atributes[2].Base = (int)(BaseMagicDefense * (double)pPikomon.Personality.BaseMagicDefenseModifier / 100.0);
+    pPikomon.Atributes[3].Base = (int)(BaseAccuracy * (double)pPikomon.Personality.BaseAccuracyModifier / 100.0);
+    pPikomon.Atributes[4].Base = (int)(BaseAttack * (double)pPikomon.Personality.BaseAttackModifier / 100.0);
+    pPikomon.Atributes[5].Base = (int)(BaseElementalAccuracy * (double)pPikomon.Personality.BaseElementalAccuracyModifier / 100.0);
+    pPikomon.Atributes[6].Base = (int)(BaseMagicAttack * (double)pPikomon.Personality.BaseMagicAttackModifier / 100.0);
+    pPikomon.Atributes[7].Base = (int)(BaseSpeed * (double)pPikomon.Personality.BaseSpeedModifier / 100.0);
 
     pPikomon.Element = element;
 
     //PRECISA AINDA COLOCAR O ADDPIKOMON NO STORAGE DO PLAYER
 
-    return true;
+    return pPikomon;
 }
 
 
@@ -2543,10 +2790,10 @@ bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, Da
     }
 
     Pikomon novoPikomon = pPikomon[playerEscolha];
-    if (!GerarPikomon(novoPikomon, personalities, pPikomon[playerEscolha].Element, pPikomon[playerEscolha].Atributes[0].Total, pPikomon[playerEscolha].Atributes[1].Total, pPikomon[playerEscolha].Atributes[2].Total, pPikomon[playerEscolha].Atributes[3].Total, pPikomon[playerEscolha].Atributes[4].Total, pPikomon[playerEscolha].Atributes[5].Total, pPikomon[playerEscolha].Atributes[6].Total, pPikomon[playerEscolha].Atributes[7].Total)) {
+    /*if (!GerarPikomon(novoPikomon, personalities, pPikomon[playerEscolha].Element, pPikomon[playerEscolha].Atributes[0].Total, pPikomon[playerEscolha].Atributes[1].Total, pPikomon[playerEscolha].Atributes[2].Total, pPikomon[playerEscolha].Atributes[3].Total, pPikomon[playerEscolha].Atributes[4].Total, pPikomon[playerEscolha].Atributes[5].Total, pPikomon[playerEscolha].Atributes[6].Total, pPikomon[playerEscolha].Atributes[7].Total)) {
         printf("Falha ao gerar Pikomon. Tente novamente.\n");
         return false;
-    }
+    }*/
 
     int quantidadePikomonArmazenado = 0;
     for (int i = 0; i < 12; i++) {
