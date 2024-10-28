@@ -132,7 +132,7 @@ typedef struct Item
 typedef struct Pikomon
 {
 
-    char Name[10];
+    char Name[20];
     char IconImg[7][25];
     char Passive[20];
     char PassiveDescription[3][255];
@@ -902,7 +902,7 @@ int main(){
     }
     dBPikomons = fopen(pikomoms, "rb");
     if(dBPikomons == NULL){
-        perror("Falha ao abrir \"players\"");
+        perror("Falha ao abrir \"pikomoms\"");
         free(pItems);
         free(pSkills);
         return 1;
@@ -1010,7 +1010,7 @@ strcpy(icoImg6[0], "########^#######/|");
 strcpy(icoImg6[1], "#####__/#\\#####/ }");
 strcpy(icoImg6[2], "###==o    ==__/ }#");
 strcpy(icoImg6[3], "##>           <###");
-strcpy(icoImg6[4], "###===\\|__==‾‾\\##");
+strcpy(icoImg6[4], "###===\\|__==‾‾\\###");
 strcpy(icoImg6[5], "###############‾##");
 strcpy(icoImg6[6], "##################");
 
@@ -1032,9 +1032,9 @@ strcpy(icoImg8[0], " ==_   ^==^   _== ");
 strcpy(icoImg8[1], "{WVW{ {*\\/*} }WVW}");
 strcpy(icoImg8[2], "|{\\|v\\_/##\\_/v|/}|");
 strcpy(icoImg8[3], " [v\\V\\{####}/V/v] ");
-strcpy(icoImg8[4], "  \\V\v\\{##}/v/V/  ");
+strcpy(icoImg8[4], "  \\V\\v\\{##}/v/V/  ");
 strcpy(icoImg8[5], "      /WwwW\\      ");
-strcpy(icoImg8[6], "    <v/V/\\V\v>    ");
+strcpy(icoImg8[6], "    <v/V/\\V\\v>    ");
 
 AddPikomon(&pPikomons, &dataQuantities, "Fênix", allElements[1], icoImg8, "", descfds, 5, 50,20,20,100,70,100,75,65);
 
@@ -1083,17 +1083,13 @@ strcpy(icoImg12[6], "==================");
 AddPikomon(&pPikomons, &dataQuantities, "Speleotema", allElements[8], icoImg12, "", descfds, 5, 50,100,30,100,40,100,35,35);
 
 SavePikomons(pPikomons, dataQuantities.Pikomon, pikomoms);
-SaveDataQuantity(dataQuantities, dataQuantity);
-*/
-
-/*
-    int I;
-    for(I = 0; I < 7; I ++){
-        printf("%s\n", pPikomons[8].IconImg[I]);
-    }//dobra pra 38?
+SaveDataQuantity(dataQuantities, dataQuantity);*/
 
     DebugPikomons(pPikomons, -1, dataQuantities.Pikomon);
-*/   
+    getchar();
+    getchar();
+    getchar();
+
     //------------------------------------------------------------------------------------------------------------------//
 
 
@@ -1206,14 +1202,14 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
                         printf("| Nome:| %20s | |,| Element:| %10s | |,| HP:| %3d |,| Atk:| %3d |,| Def:| %3d |,,| SpA:| %3d |,| SpD:| %3d |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d |\n",
                                pPlayers[index].PikomonsStorage[j].Name,
                                pPlayers[index].PikomonsStorage[j].Element.Name,
-                               pPlayers[index].PikomonsStorage[j].Atributes[0].Total,
-                               pPlayers[index].PikomonsStorage[j].Atributes[4].Total,
-                               pPlayers[index].PikomonsStorage[j].Atributes[1].Total,
-                               pPlayers[index].PikomonsStorage[j].Atributes[6].Total,
-                               pPlayers[index].PikomonsStorage[j].Atributes[2].Total,
-                               pPlayers[index].PikomonsStorage[j].Atributes[7].Total,
-                               pPlayers[index].PikomonsStorage[j].Atributes[3].Total,
-                               pPlayers[index].PikomonsStorage[j].Atributes[5].Total);
+                               pPlayers[index].PikomonsStorage[j].Atributes[0].Base,
+                               pPlayers[index].PikomonsStorage[j].Atributes[4].Base,
+                               pPlayers[index].PikomonsStorage[j].Atributes[1].Base,
+                               pPlayers[index].PikomonsStorage[j].Atributes[6].Base,
+                               pPlayers[index].PikomonsStorage[j].Atributes[2].Base,
+                               pPlayers[index].PikomonsStorage[j].Atributes[7].Base,
+                               pPlayers[index].PikomonsStorage[j].Atributes[3].Base,
+                               pPlayers[index].PikomonsStorage[j].Atributes[5].Base);
 
                         // Exibir habilidades do Pokémon
                         for (k = 0; k < 4; k++)
@@ -1262,14 +1258,14 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
                     printf("| Nome:| %20s | |,| Element:| %10s | |,| HP:| %3d |,| Atk:| %3d |,| Def:| %3d |,,| SpA:| %3d |,| SpD:| %3d |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d |\n",
                            pPlayers[index].PikomonsStorage[j].Name,
                            pPlayers[index].PikomonsStorage[j].Element.Name,
-                           pPlayers[index].PikomonsStorage[j].Atributes[0].Total,
-                           pPlayers[index].PikomonsStorage[j].Atributes[4].Total,
-                           pPlayers[index].PikomonsStorage[j].Atributes[1].Total,
-                           pPlayers[index].PikomonsStorage[j].Atributes[6].Total,
-                           pPlayers[index].PikomonsStorage[j].Atributes[2].Total,
-                           pPlayers[index].PikomonsStorage[j].Atributes[7].Total,
-                           pPlayers[index].PikomonsStorage[j].Atributes[3].Total,
-                           pPlayers[index].PikomonsStorage[j].Atributes[5].Total);
+                           pPlayers[index].PikomonsStorage[j].Atributes[0].Base,
+                           pPlayers[index].PikomonsStorage[j].Atributes[4].Base,
+                           pPlayers[index].PikomonsStorage[j].Atributes[1].Base,
+                           pPlayers[index].PikomonsStorage[j].Atributes[6].Base,
+                           pPlayers[index].PikomonsStorage[j].Atributes[2].Base,
+                           pPlayers[index].PikomonsStorage[j].Atributes[7].Base,
+                           pPlayers[index].PikomonsStorage[j].Atributes[3].Base,
+                           pPlayers[index].PikomonsStorage[j].Atributes[5].Base);
 
                     // Exibir habilidades do Pokémon
                     for (k = 0; k < 4; k++)
@@ -1309,14 +1305,14 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
                 printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
                        pPikomon[index].Name,
                        pPikomon[index].Element.Name,
-                       pPikomon[index].Atributes[0].Total,
-                       pPikomon[index].Atributes[4].Total,
-                       pPikomon[index].Atributes[1].Total,
-                       pPikomon[index].Atributes[6].Total,
-                       pPikomon[index].Atributes[2].Total,
-                       pPikomon[index].Atributes[7].Total,
-                       pPikomon[index].Atributes[3].Total,
-                       pPikomon[index].Atributes[5].Total);
+                       pPikomon[index].Atributes[0].Base,
+                       pPikomon[index].Atributes[4].Base,
+                       pPikomon[index].Atributes[1].Base,
+                       pPikomon[index].Atributes[6].Base,
+                       pPikomon[index].Atributes[2].Base,
+                       pPikomon[index].Atributes[7].Base,
+                       pPikomon[index].Atributes[3].Base,
+                       pPikomon[index].Atributes[5].Base);
 
 
                 // Exibir IconImg do Pikomon
@@ -1351,14 +1347,14 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
             printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
                    pPikomon[index].Name,
                    pPikomon[index].Element.Name,
-                   pPikomon[index].Atributes[0].Total,
-                   pPikomon[index].Atributes[4].Total,
-                   pPikomon[index].Atributes[1].Total,
-                   pPikomon[index].Atributes[6].Total,
-                   pPikomon[index].Atributes[2].Total,
-                   pPikomon[index].Atributes[7].Total,
-                   pPikomon[index].Atributes[3].Total,
-                   pPikomon[index].Atributes[5].Total);
+                   pPikomon[index].Atributes[0].Base,
+                   pPikomon[index].Atributes[4].Base,
+                   pPikomon[index].Atributes[1].Base,
+                   pPikomon[index].Atributes[6].Base,
+                   pPikomon[index].Atributes[2].Base,
+                   pPikomon[index].Atributes[7].Base,
+                   pPikomon[index].Atributes[3].Base,
+                   pPikomon[index].Atributes[5].Base);
 
 
 
