@@ -211,6 +211,7 @@ bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, 
 bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality *personalities);
 void MenuShopMP();
 double DefenseReductionCalc(double value);
+bool ShopItems(PlPointer players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade);
 
 int main()
 {
@@ -999,7 +1000,7 @@ int main()
             getchar();
         }
     }
-/*
+
     while (true)
     {
         LimparTerminal();
@@ -1049,7 +1050,12 @@ int main()
                     }
                     break;
                 case 3:
-                    shopping = false;
+                    if(!oPrimeiroFoi){
+                        oPrimeiroFoi = true;
+                    }
+                    else{
+                        shopping = false;
+                    }
                     break;
                 default:
                     printf("Opção inválida. Tente novamente. (Pressione Enter)\n");
@@ -1072,7 +1078,7 @@ int main()
             printf(":)");
         }
     }
-    */
+    
     bool Battle = false;
     if (Battle)
     {
