@@ -1065,31 +1065,36 @@ int main()
                 }
             }
         }
-        if (respostaUserMP == 2)
-        {
-            char EntradaPlayerDebug[20];
-            int indexPlayerLoop;
-            printf("Qual o username do jogador: ");
-            scanf(" %19s", EntradaPlayerDebug);
-            for (indexPlayerLoop = 0; indexPlayerLoop < dataQuantities.Player; indexPlayerLoop++)
-            {
-                if (strcmp(pPlayers[indexPlayerLoop].Name, EntradaPlayerDebug) == 0)
-                {
-                    break;
+            if (respostaUserMP == 2) {
+                char EntradaPlayerDebug[20];
+                int indexPlayerLoop;
+
+                printf("Qual o username do jogador: ");
+                scanf("%19s", EntradaPlayerDebug);  
+
+                for (indexPlayerLoop = 0; indexPlayerLoop < dataQuantities.Player; indexPlayerLoop++) {
+                    if (strcmp(pPlayers[indexPlayerLoop].Name, EntradaPlayerDebug) == 0) {
+                        break;  
+                    }
                 }
+
+                if (indexPlayerLoop < dataQuantities.Player) {
+                    DebugPlayers(pPlayers, indexPlayerLoop, dataQuantities.Player);  
+                } else {
+                    printf("Jogador não encontrado.\n");
+                }
+
+                printf("Press Enter");
+                getchar();  
+                getchar();  
             }
-            DebugPlayers(pPlayers,indexPlayerLoop,dataQuantities.Player);
-            printf("Press Enter");
-            getchar();
-            getchar();
-        }
         if (respostaUserMP == 3)
         {
             printf(":)");
         }
         if (respostaUserMP == 4)
         {
-            printf(":)");
+            return 1;
         }
     }
     
