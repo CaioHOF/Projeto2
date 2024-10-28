@@ -1201,7 +1201,8 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                     break;
                 }
             }
-            SelectBattlePikomons();
+            EscolherPikomon(&pPlayers[indexUs1]);
+            EscolherPikomon(&pPlayers[indexUs2]);
             //Variaveis calcSkill
             bool SkillWasUsed = false;
             bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit, usedItemStatusHit;
@@ -3788,6 +3789,29 @@ void PrintPikomonEffects(PiPointer pikomon)
                    pik[0].Atributes[i].acronym[j],
                    pik[0].Atributes[i].Bonus[j],
                    pik[0].Atributes[i].BonusTimer[j]);
+        }
+    }
+}
+
+void EscolherPikomon(Player *player) {
+    for(int k = 0; k <6; k++){
+        printf("%s, escolha seu Pikomon para a batalha:\n",player[0].Name);
+        for (int i = 0; i < 12; i++) {
+            if (strlen(player[0].PikomonsStorage[i].Name) > 0) {
+                printf("%d. %s\n", i + 1, player[0].PikomonsStorage[i].Name);
+            }
+        }
+        printf("Digite o número do Pikomon que deseja escolher: ");
+        int escolha;
+        scanf("%d", &escolha);
+        
+        
+        if (escolha < 1 || escolha > 6 || strlen(player[0].PikomonsStorage[escolha - 1].Name) == 0) {
+            printf("Escolha inválida. Tente novamente.\n");
+            k--;
+        } else {
+            player[0].BatlePikomons[k] = player[0].PikomonsStorage[escolha - 1]; 
+            printf("Você escolheu %s para a batalha!\n", player[0].PikomonsStorage[player[0].SelectedPikomonIndex].Name);
         }
     }
 }
