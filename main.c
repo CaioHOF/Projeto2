@@ -1627,7 +1627,7 @@ bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino){
 }
 
 //favor usar isso quando as batalhas acabarem para liberar as memorias dinamicas
-void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players){
+void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer *pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players){
     //pode ter um memset cagado aqui
     if(pSkills == NULL){
         perror("ERRO, \"pSkills\" é NULL em \"FreeAllHeapMemory\"");
@@ -1650,29 +1650,29 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
     free(pPikomons);
     int i, j, k, I;
     for(i = 0; i < dataquantities.Player; i++){
-        for(j = 0; j < pPlayers[i].BagCurrentSize; j++){
-            pPlayers[i].Pikocoins += pPlayers[i].Bag[j].Value;
+        for(j = 0; j < (*pPlayers)[i].BagCurrentSize; j++){
+            (*pPlayers)[i].Pikocoins += (*pPlayers)[i].Bag[j].Value;
         }
-        pPlayers[i].BagCurrentSize = 0;
-        free(pPlayers[i].Bag);
+        (*pPlayers)[i].BagCurrentSize = 0;
+        free((*pPlayers)[i].Bag);
         for(j = 0; j < 6; j++){
             for(k = 0; k < 8; k++){
-                for(I = 0; I < pPlayers[i].BatlePikomons[j].Atributes[k].BonusQuantity; I++){
-                    free(pPlayers[i].BatlePikomons[j].Atributes[k].acronym[I]);
-                    pPlayers[i].BatlePikomons[j].Atributes[k].acronym[I] = NULL;
+                for(I = 0; I < (*pPlayers)[i].BatlePikomons[j].Atributes[k].BonusQuantity; I++){
+                    free((*pPlayers)[i].BatlePikomons[j].Atributes[k].acronym[I]);
+                    (*pPlayers)[i].BatlePikomons[j].Atributes[k].acronym[I] = NULL;
                 }
-                free(pPlayers[i].BatlePikomons[j].Atributes[k].Bonus);
-                pPlayers[i].BatlePikomons[j].Atributes[k].Bonus = NULL;
-                free(pPlayers[i].BatlePikomons[j].Atributes[k].BonusTimer);
-                pPlayers[i].BatlePikomons[j].Atributes[k].BonusTimer = NULL;
-                pPlayers[i].BatlePikomons[j].Atributes[k].BonusQuantity = 0;
+                free((*pPlayers)[i].BatlePikomons[j].Atributes[k].Bonus);
+                (*pPlayers)[i].BatlePikomons[j].Atributes[k].Bonus = NULL;
+                free((*pPlayers)[i].BatlePikomons[j].Atributes[k].BonusTimer);
+                (*pPlayers)[i].BatlePikomons[j].Atributes[k].BonusTimer = NULL;
+                (*pPlayers)[i].BatlePikomons[j].Atributes[k].BonusQuantity = 0;
             }
         }
         //esse cara aqui pode dar ruim
-        memset(pPlayers[i].BatlePikomons, 0, 6 * sizeof(Pikomon));
+        memset((*pPlayers)[i].BatlePikomons, 0, 6 * sizeof(Pikomon));
     }
-    SavePlayers(pPlayers, dataquantities.Player, players);
-    free(pPlayers);
+    SavePlayers((*pPlayers), dataquantities.Player, players);
+    free((*pPlayers));
 }
 //------------------------------------------------------------------------------//
 
