@@ -931,22 +931,6 @@ int main(){
 
 
 
-
-    char icoImg[7][20];
-    strcpy(icoImg[0], "*********");
-    strcpy(icoImg[1], "*********");
-    strcpy(icoImg[21], "*********");
-    strcpy(icoImg[0], "*********");
-    strcpy(icoImg[0], "*********");
-    strcpy(icoImg[0], "*********");
-    AddPikomon(&pPikomons, &dataQuantities, "Josias", allElements[0], icoImg, 19, 19, 198, 1000, -2, 101, 120, 1);
-    
-
-
-
-
-
-
     //Principal Do Usuário
     //------------------------------------------------------------------------------------------------------------------//
     //login
@@ -1815,7 +1799,7 @@ bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *
 
 }
 
-bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed){
+bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][19], char passive[20], char passiveDescription[3][255], int value, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed){
     if(pPikomons == NULL){
         perror("ERRO, \"pPikomons\" não pode ser NULL em \"AddPikomon\"");
         return false;
@@ -1865,7 +1849,6 @@ bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, 
         return false;
     }
 
-
     dataQuantities[0].Pikomon++;
     (*pPikomons) = (PiPointer)realloc((*pPikomons), dataQuantities[0].Pikomon * sizeof(Pikomon));
     if(pPikomons == NULL){
@@ -1879,6 +1862,11 @@ bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, 
     for(i = 0; i < 7; i++){
         strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].IconImg[i], iconImg[i]);
     }
+    strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].Passive, passive);
+    for(i = 0; i < 3; i++){
+        strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].PassiveDescription[i], passiveDescription[i]);
+    }
+    (*pPikomons)[dataQuantities[0].Pikomon-1].Value = value;
     strcpy((*pPikomons)[dataQuantities[0].Pikomon-1].CurrentHP.Name, "CurrentHP");
     (*pPikomons)[dataQuantities[0].Pikomon-1].CurrentHP.Base = 0;
     (*pPikomons)[dataQuantities[0].Pikomon-1].CurrentHP.acronym = NULL;
