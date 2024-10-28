@@ -2565,7 +2565,6 @@ double LNfalso(double x){
 }
 //------------------------------------------------------------------------------//
 
-//assaaaaa
 
 bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, int *indexUs1, int *indexUs2) {
     char usernameEntrada[20];
