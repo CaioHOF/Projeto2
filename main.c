@@ -211,11 +211,12 @@ void Menu();
 void MenuLogin(int userNumero);
 void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos);
 bool Login(PlPointer pPlayers, int playersQuantity, bool *login1, bool *login2, int *indexUs1, int *indexUs2);
-bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality* personalities);
+bool ShopPikomon(PlPointer *players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality* personalities);
 void MenuShopMP();
 double DefenseReductionCalc(double value);
 double LNfalso(double x);
-
+bool ShopItems(PlPointer *players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade);
+void PrintPikomonEffects(PiPointer pikomon);
 
 int main(){ 
     //Declaracoes
@@ -1085,75 +1086,653 @@ AddPikomon(&pPikomons, &dataQuantities, "Speleotema", allElements[8], icoImg12, 
 SavePikomons(pPikomons, dataQuantities.Pikomon, pikomoms);
 SaveDataQuantity(dataQuantities, dataQuantity);*/
 
-    DebugPikomons(pPikomons, -1, dataQuantities.Pikomon);
-    getchar();
-    getchar();
-    getchar();
 
     //------------------------------------------------------------------------------------------------------------------//
-
 
 
     //Principal Do Usuário
     //------------------------------------------------------------------------------------------------------------------//
-    //login
-    //menu
-    bool Battle = false;
-    if(Battle){
-        //Variaveis calcSkill
-        bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit, usedItemStatusHit;
-        int selfDamage, enemyDamage;
-        char calcNextTurn[7];
-        
-        //Variaveis Battle
-        bool playerOneTurn, reset, nextTurnReset = false, battleIsOver;
-        int i = 0, turnCost;
-        PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
-        reset = true;
-        battleIsOver = false;
-        
-        
-        while(!battleIsOver){
-            //Recalcula os turnos toda a vez que tiver um reset, tipo quando a velocidade alterar
-            if(reset){
-                if(selectedPlayerOnePicomon[0].Atributes[7].Total == selectedPlayerTwoPicomon[0].Atributes[7].Total){
-                    if((rand() % 100 + 1) > 50) playerOneTurn = true;
-                    else playerOneTurn = false;
-                turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total;
+    int respostaUserMP;
+    bool login1 = false, login2 = false;
+    char respostaCadastro;
+    int indexUs1, indexUs2;
+
+    //DebugPersonality(allPersonalities, -1);
+
+    printf("Gostaria de cadastrar-se?(S/n): ");
+
+    scanf(" %c", &respostaCadastro);
+
+    if (respostaCadastro == 's' || respostaCadastro == 'S')
+    {
+
+        char name[20];
+        char pass[7];
+        printf("Digite o nome do jogador (até 19 caracteres): ");
+        scanf("%19s", name);
+        printf("Digite a senha do jogador (6 caracteres): ");
+        scanf("%6s", pass);
+
+        if (AddPlayer(&pPlayers, &dataQuantities, name, pass))
+        {
+            if (SavePlayers(pPlayers, dataQuantities.Player, "Players.bin"))
+            {
+                SaveDataQuantity(dataQuantities, "DataQuantity.txt");
+                printf("Jogador cadastrado e salvo com sucesso!(Press Enter)\n");
+                getchar();
+                getchar();
+            }
+            else
+            {
+                printf("Falha ao salvar os jogadores.(Press Enter)\n");
+                getchar();
+                getchar();
+            }
+        }
+        else
+        {
+            printf("Falha ao cadastrar o jogador.(Press Enter)\n");
+            getchar();
+            getchar();
+        }
+    }
+    while (true)
+    {
+        LimparTerminal();
+        Menu();
+        printf("Sua escolha?: ");
+        scanf(" %d", &respostaUserMP);
+        if (respostaUserMP == 1)
+        {
+            LimparTerminal();
+            Login(pPlayers, dataQuantities.Player, &login1, &login2, &indexUs1, &indexUs2);
+            playerOneIndex = indexUs1;
+            playerTwoIndex = indexUs2;
+            bool shopping = true;
+            bool oPrimeiroFoi = false;
+            int turnoShop, jogador;
+            while (shopping)
+            {
+                if (!oPrimeiroFoi)
+                {
+                    turnoShop = indexUs1;
+                    jogador = 1;
                 }
-                else if(selectedPlayerOnePicomon[0].Atributes[7].Total > selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerTwoPicomon[0].Atributes[7].Total, playerOneTurn = true;
-                else if(selectedPlayerOnePicomon[0].Atributes[7].Total < selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total, playerOneTurn = false;
+                else
+                {
+                    turnoShop = indexUs2;
+                    jogador = 2;
+                }
+                LimparTerminal();
+                MenuShopMP();
+                printf("Jogador %d, escolha sua ação de compra: ", jogador);
+                scanf(" %d", &respostaUserMP);
+
+                switch (respostaUserMP)
+                {
+                case 1: 
+                    if (!ShopPikomon(&pPlayers, turnoShop, pPikomons, dataQuantities, allPersonalities))
+                    {
+                        printf("Não foi possível comprar Pikomon. (Pressione Enter para continuar)\n");
+                        getchar();
+                        getchar();
+                    }
+                    break;
+                case 2: 
+                    if (!ShopItems(&pPlayers, turnoShop, pItems, dataQuantities))
+                    {
+                        printf("Não foi possível comprar o item. (Pressione Enter para continuar)\n");
+                        getchar();
+                        getchar();
+                    }
+                    break;
+                case 3:
+                    if(!oPrimeiroFoi){
+                        oPrimeiroFoi = true;
+                    }
+                    else{
+                        shopping = false;
+                    }
+                    break;
+                default:
+                    printf("Opção inválida. Tente novamente. (Pressione Enter)\n");
+                    getchar();
+                    getchar();
+                    break;
+                }
             }
-            if(nextTurnReset){
-                nextTurnReset = false;
-                reset = true;
-            }
-
-
-            if(playerOneTurn){
-                selectedPlayerOnePicomon[0].ChargedSpeed += selectedPlayerOnePicomon[0].Atributes[7].Total;
-                while(selectedPlayerOnePicomon[0].ChargedSpeed - turnCost >= 0){
-                    selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
-
-                    
+            SelectBattlePikomons();
+            //Variaveis calcSkill
+            bool SkillWasUsed = false;
+            bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit, usedItemStatusHit;
+            int selfDamage, enemyDamage, usedSkillIndex;
+            //useitem
+            bool ItemWasUsed = false;
+            bool selfEffectHit;
+            //Variaveis Battle
+            char calcNextTurn[7], userResponse;
+            bool playerOneTurn, reset, nextTurnReset = false, battleIsOver, playerOneVictory, respostaValida, respostaValida2;
+            int i = 0, turnCost;
+            PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
+            reset = true;
+            battleIsOver = false;
+            while(!battleIsOver){
+                //Recalcula os turnos toda a vez que tiver um reset, tipo quando a velocidade alterar
+                if(SkillWasUsed){
+                    SkillWasUsed = false;
+                    if (skillHit)
+                    {
+                        if (critHit)
+                        {
+                            printf("O pikomon acertou um critico! Causando %d ao pokemon inimigo e causando %d a si mesmo", enemyDamage, selfDamage);
+                        }
+                        else
+                        {
+                            printf("O pikomon acertou causando %d ao pokemon inimigo e causando %d a si mesmo", enemyDamage, selfDamage);
+                        }
+                    }
+                    else
+                    {
+                        printf("O pikomon errou...");
+                    }
+                    getchar();
+                    getchar();
+                }
+                if(ItemWasUsed){
+                    ItemWasUsed = false;
+                    if(selfEffectHit){
+                        printf("O efeito do item funcionou");
+                    }
+                    else{
+                        printf("O efeito do item não funcionou");
+                    } 
+                    getchar();
+                    getchar();
+                }
+                
+                if(reset){
+                    if(selectedPlayerOnePicomon[0].Atributes[7].Total == selectedPlayerTwoPicomon[0].Atributes[7].Total){
+                        if((rand() % 100 + 1) > 50) playerOneTurn = true;
+                        else playerOneTurn = false;
+                    turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total;
+                    }
+                    else if(selectedPlayerOnePicomon[0].Atributes[7].Total > selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerTwoPicomon[0].Atributes[7].Total, playerOneTurn = true;
+                    else if(selectedPlayerOnePicomon[0].Atributes[7].Total < selectedPlayerTwoPicomon[0].Atributes[7].Total) turnCost = selectedPlayerOnePicomon[0].Atributes[7].Total, playerOneTurn = false;
+                }
+                if(nextTurnReset){
+                    nextTurnReset = false;
+                    reset = true;
+                }
+                if(playerOneTurn){
+                    selectedPlayerOnePicomon[0].ChargedSpeed += selectedPlayerOnePicomon[0].Atributes[7].Total;
+                    while(selectedPlayerOnePicomon[0].ChargedSpeed - turnCost >= 0){
+                        selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
+                        if(SkillWasUsed){
+                            SkillWasUsed = false;
+                            if (skillHit)
+                                {
+                                    if (critHit)
+                                    {
+                                        printf("O pikomon acertou um critico! Causando %d ao pokemon inimigo e causando %d a si mesmo", enemyDamage, selfDamage);
+                                    }
+                                    else
+                                    {
+                                        printf("O pikomon acertou causando %d ao pokemon inimigo e causando %d a si mesmo", enemyDamage, selfDamage);
+                                    }
+                                }
+                                else
+                                {
+                                    printf("O pikomon errou...");
+                                }
+                            getchar();
+                            getchar();
+                        }
+                        if(ItemWasUsed){
+                            ItemWasUsed = false;
+                            if(selfEffectHit){
+                                printf("O efeito do item funcionou");
+                            }
+                            else{
+                                printf("O efeito do item não funcionou");
+                            } 
+                            getchar();
+                            getchar();
+                        }
                         //acoes do player1
-                    
+                        if(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex].CurrentHP.Total > 0){
+                            PassPikomonTurnTime(&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex]);
+                            CalcNextTurn(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], calcNextTurn);
+                            MenuBattle(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], calcNextTurn);
+                            respostaValida = false;
+                            while (!respostaValida){
+                                sscanf(" %c", &userResponse);
+                                if(/*escolheu usa skill*/userResponse == '1'){
+                                    respostaValida = true;
+                                    printf("Skill(1):\n");
+                                    ShowSkill(&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex].Skills[0]);
+                                    printf("Skill(2):\n");
+                                    ShowSkill(&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex].Skills[1]);
+                                    printf("Skill(3):\n");
+                                    ShowSkill(&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex].Skills[2]);
+                                    printf("Skill(4):\n");
+                                    ShowSkill(&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex].Skills[3]);
+                                    respostaValida2 = false;
+                                    while(!respostaValida2){
+                                        printf("Escolha uma skill\n");
+                                        sscanf(" %c", &userResponse);
+                                        if(userResponse == '1'){
+                                            respostaValida2 = true;
+                                            SkillWasUsed = true;
+                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 0, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                        }
+                                        else if(userResponse == '2'){
+                                            respostaValida2 = true;
+                                            SkillWasUsed = true;
+                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 1, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
+                                        }
+                                        else if(userResponse == '3'){
+                                            respostaValida2 = true;
+                                            SkillWasUsed = true;
+                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 2, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+
+                                        }
+                                        else if(userResponse == '4'){
+                                            respostaValida2 = true;
+                                            SkillWasUsed = true;
+                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 3, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+
+                                        }
+                                        else{
+                                            printf("Comando digitado invalido, digite novamente");
+                                            respostaValida2 = false;
+                                        }
+                                    }
+                                }
+                                else if(/*escolheu usa Item*/userResponse == '2'){
+                                    respostaValida = true;
+                                    int flamengo;
+                                    for(flamengo = 0; flamengo < pPlayers[playerOneIndex].BagCurrentSize; flamengo++){
+                                        printf("Item(%d):\n", flamengo);
+                                        ShowItems(&pPlayers[playerOneIndex].Bag[flamengo]);
+                                    }
+                                    respostaValida2 = false;
+                                    while (!respostaValida2){
+                                        printf("Selecione um item");
+                                        sscanf(" %c", &userResponse);
+                                        if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < pPlayers[playerOneIndex].BagCurrentSize){
+                                            ItemWasUsed = true;
+                                            UseItem(&pPlayers[playerOneIndex], &pPlayers[playerTwoIndex], (int)userResponse - (int)'0', &usedItemStatusHit);
+                                            pPlayers[playerOneIndex].Pikocoins -= pPlayers[playerOneIndex].Bag[(int)userResponse - (int)'0'].Value;
+                                            SellItemPlayerBag(&pPlayers, playerOneIndex, (int)userResponse - (int)'0');
+                                        }
+                                        else{
+                                            printf("Comando digitado invalido, digite novamente");
+                                            respostaValida2 = false;
+                                        }
+                                    }
+                                }
+                                else if(/*escolheu troca pikomon*/userResponse == '3'){
+                                    respostaValida = true;
+                                    reset = true;
+                                    int quant;
+                                    for (quant = 0; quant < 6; quant++){
+                                        printf("Pikomon(%d):\n", quant);
+                                        ShowPikomon(&pPlayers[playerOneIndex].BatlePikomons[quant]);
+                                    }
+                                    respostaValida2 = false;
+                                    while (!respostaValida2){
+                                        printf("Selecione um pikomon ou digite D para desistir da batalha");
+                                        sscanf(" %c", &userResponse);
+                                        if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < 6){
+                                            if(pPlayers[playerOneIndex].BatlePikomons[(int)userResponse - (int)'0'].CurrentHP.Total > 0){
+                                                respostaValida2 = true;
+                                                pPlayers[playerOneIndex].SelectedPikomonIndex = (int)userResponse - (int)'0';
+                                            }
+                                            else{
+                                                printf("este pikomon não consegue mais batalhar, digite novamente");
+                                                respostaValida2 = false;
+                                            }
+                                        }
+                                        else if(userResponse == 'D'){
+                                            respostaValida = true;
+                                            playerOneVictory = false;
+                                            battleIsOver = true;
+                                        }
+                                        else{
+                                            printf("Comando digitado invalido, digite novamente");
+                                            respostaValida2 = false;
+                                        }
+                                    }
+                                    
+                                    break;
+                                }
+                                else if(/*escolheu desistir*/userResponse == '4'){
+                                    respostaValida = true;
+                                    playerOneVictory = false;
+                                    battleIsOver = true;
+                                    
+                                    break;
+                                }
+                                else{
+                                    printf("Comando digitado invalido, digite novamente");
+                                    respostaValida = false;
+                                }
+                            }
+                            
+                        }
+                        else{
+                            CalcNextTurn(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], calcNextTurn);
+                            MenuBattle(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], calcNextTurn);
+                            respostaValida = false;
+                            while (!respostaValida){
+                                printf("Seu pikomon não consegue mais batalhar, troque o ou desista\n");
+                                sscanf(" %c", &userResponse);
+                                if(/*escolheu troca pikomon*/userResponse == '3'){
+                                    respostaValida = true;
+                                    reset = true;
+                                    int quant;
+                                    for (quant = 0; quant < 6; quant++){
+                                        printf("Pikomon(%d):\n", quant);
+                                        ShowPikomon(&pPlayers[playerOneIndex].BatlePikomons[quant]);
+                                    }
+                                    respostaValida2 = false;
+                                    while (!respostaValida2){
+                                        printf("Selecione um pikomon ou digite D para desistir da batalha");
+                                        sscanf(" %c", &userResponse);
+                                        if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < 6){
+                                            if(pPlayers[playerOneIndex].BatlePikomons[(int)userResponse - (int)'0'].CurrentHP.Total > 0){
+                                                respostaValida2 = true;
+                                                pPlayers[playerOneIndex].SelectedPikomonIndex = (int)userResponse - (int)'0';
+                                            }
+                                            else{
+                                                printf("este pikomon não consegue mais batalhar, digite novamente");
+                                                respostaValida2 = false;
+                                            }
+                                        }
+                                        else if(userResponse == 'D'){
+                                            respostaValida = true;
+                                            playerOneVictory = false;
+                                            battleIsOver = true;
+                                        }
+                                        else{
+                                            printf("Comando digitado invalido, digite novamente");
+                                            respostaValida2 = false;
+                                        }
+                                    }
+                                    
+                                    break;
+                                }
+                                else if(/*escolheu desistir*/userResponse == '4'){
+                                    respostaValida = true;
+                                    playerOneVictory = false;
+                                    battleIsOver = true;
+                                    
+                                    break;
+                                }
+                                else{
+                                    printf("Comando digitado invalido, digite novamente");
+                                    respostaValida = false;
+                                }
+                            }
+                        }
+
+                    }
+                    playerOneTurn = false;
                 }
-                playerOneTurn = false;
+                else{
+                    selectedPlayerTwoPicomon[0].ChargedSpeed += selectedPlayerTwoPicomon[0].Atributes[7].Total;
+                    while(selectedPlayerTwoPicomon[0].ChargedSpeed - turnCost >= 0){
+                        selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
+                        if(SkillWasUsed){
+                            SkillWasUsed = false;
+                            if (skillHit)
+                            {
+                                if (critHit)
+                                {
+                                    printf("O pikomon acertou um critico! Causando %d ao pokemon inimigo e causando %d a si mesmo", enemyDamage, selfDamage);
+                                }
+                                else
+                                {
+                                    printf("O pikomon acertou causando %d ao pokemon inimigo e causando %d a si mesmo", enemyDamage, selfDamage);
+                                }
+                            }
+                            else
+                            {
+                                printf("O pikomon errou...");
+                            }
+                            getchar();
+                            getchar();                        
+                        }
+                        if(ItemWasUsed){
+                            ItemWasUsed = false;
+                            if(selfEffectHit){
+                                printf("O efeito do item funcionou");
+                            }
+                            else{
+                                printf("O efeito do item não funcionou");
+                            } 
+                            getchar();
+                            getchar();
+                        }
+                        
+                        //acoes do player2
+                        if(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex].CurrentHP.Total > 0){
+                            PassPikomonTurnTime(&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex]);
+                            CalcNextTurn(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], calcNextTurn);
+                            MenuBattle(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], calcNextTurn);
+                            respostaValida = false;
+                            while (!respostaValida){
+                                sscanf(" %c", &userResponse);
+                                if(/*escolheu usa skill*/userResponse == '1'){
+                                    respostaValida = true;
+                                    printf("Skill(1):\n");
+                                    ShowSkill(&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex].Skills[0]);
+                                    printf("Skill(2):\n");
+                                    ShowSkill(&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex].Skills[1]);
+                                    printf("Skill(3):\n");
+                                    ShowSkill(&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex].Skills[2]);
+                                    printf("Skill(4):\n");
+                                    ShowSkill(&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex].Skills[3]);
+                                    respostaValida2 = false;
+                                    while(!respostaValida2){
+                                        printf("Escolha uma skill\n");
+                                        sscanf(" %c", &userResponse);
+                                        if(userResponse == '1'){
+                                            respostaValida2 = true;
+                                            SkillWasUsed = true;
+                                            CalcSkill(allElements, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], 0, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                        }
+                                        else if(userResponse == '2'){
+                                            respostaValida2 = true;
+                                            SkillWasUsed = true;
+                                            CalcSkill(allElements, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], 1, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+
+                                        }
+                                        else if(userResponse == '3'){
+                                            respostaValida2 = true;
+                                            SkillWasUsed = true;
+                                            CalcSkill(allElements, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], 2, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+
+                                        }
+                                        else if(userResponse == '4'){
+                                            respostaValida2 = true;
+                                            SkillWasUsed = true;
+                                            CalcSkill(allElements, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], 3, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+
+                                        }
+                                        else{
+                                            printf("Comando digitado invalido, digite novamente");
+                                            respostaValida2 = false;
+                                        }
+                                    }
+                                }
+                                else if(/*escolheu usa item*/userResponse == '2'){
+                                    respostaValida = true;
+                                    int flamengo;
+                                    for(flamengo = 0; flamengo < pPlayers[playerTwoIndex].BagCurrentSize; flamengo++){
+                                        printf("Item(%d):\n", flamengo);
+                                        ShowItems(&pPlayers[playerTwoIndex].Bag[flamengo]);
+                                    }
+                                    respostaValida2 = false;
+                                    while (!respostaValida2){
+                                        printf("Selecione um item");
+                                        sscanf(" %c", &userResponse);
+                                        if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < pPlayers[playerTwoIndex].BagCurrentSize){
+                                            ItemWasUsed = true;
+                                            UseItem(&pPlayers[playerTwoIndex], &pPlayers[playerOneIndex], (int)userResponse - (int)'0', &usedItemStatusHit);
+                                            pPlayers[playerTwoIndex].Pikocoins -= pPlayers[playerTwoIndex].Bag[(int)userResponse - (int)'0'].Value;
+                                            SellItemPlayerBag(&pPlayers, playerTwoIndex, (int)userResponse - (int)'0');
+                                        }
+                                        else{
+                                            printf("Comando digitado invalido, digite novamente");
+                                            respostaValida2 = false;
+                                        }
+                                    }
+                                }
+                                else if(/*escolheu troca pikomon*/userResponse == '3'){
+                                    respostaValida = true;
+                                    reset = true;
+                                    int quant;
+                                    for (quant = 0; quant < 6; quant++){
+                                        printf("Pikomon(%d):\n", quant);
+                                        ShowPikomon(&pPlayers[playerTwoIndex].BatlePikomons[quant]);
+                                    }
+                                    respostaValida2 = false;
+                                    while (!respostaValida2){
+                                        printf("Selecione um pikomon ou digite D para desistir da batalha");
+                                        sscanf(" %c", &userResponse);
+                                        if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < 6){
+                                            if(pPlayers[playerTwoIndex].BatlePikomons[(int)userResponse - (int)'0'].CurrentHP.Total > 0){
+                                                respostaValida2 = true;
+                                                pPlayers[playerTwoIndex].SelectedPikomonIndex = (int)userResponse - (int)'0';
+                                            }
+                                            else{
+                                                printf("este pikomon não consegue mais batalhar, digite novamente");
+                                                respostaValida2 = false;
+                                            }
+                                        }
+                                        else if(userResponse == 'D'){
+                                            respostaValida = true;
+                                            playerOneVictory = true;
+                                            battleIsOver = true;
+                                        }
+                                        else{
+                                            printf("Comando digitado invalido, digite novamente");
+                                            respostaValida2 = false;
+                                        }
+                                    }
+                                    
+                                    break;
+                                }
+                                else if(/*escolheu desistir*/userResponse == '4'){
+                                    respostaValida = true;
+                                    playerOneVictory = true;
+                                    battleIsOver = true;
+                                    
+                                    break;
+                                }
+                                else{
+                                    printf("Comando digitado invalido, digite novamente");
+                                    respostaValida = false;
+                                }
+                            }
+                        }
+                        else{
+                            CalcNextTurn(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], calcNextTurn);
+                            MenuBattle(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], calcNextTurn);
+                            respostaValida = false;
+                            while (!respostaValida){
+                                printf("Seu pikomon não consegue mais batalhar, troque o ou desista\n");
+                                sscanf(" %c", &userResponse);
+                                if(/*escolheu troca pikomon*/userResponse == '3'){
+                                    respostaValida = true;
+                                    reset = true;
+                                    int quant;
+                                    for (quant = 0; quant < 6; quant++){
+                                        printf("Pikomon(%d):\n", quant);
+                                        ShowPikomon(&pPlayers[playerTwoIndex].BatlePikomons[quant]);
+                                    }
+                                    respostaValida2 = false;
+                                    while (!respostaValida2){
+                                        printf("Selecione um pikomon ou digite D para desistir da batalha");
+                                        sscanf(" %c", &userResponse);
+                                        if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < 6){
+                                            if(pPlayers[playerTwoIndex].BatlePikomons[(int)userResponse - (int)'0'].CurrentHP.Total > 0){
+                                                respostaValida2 = true;
+                                                pPlayers[playerTwoIndex].SelectedPikomonIndex = (int)userResponse - (int)'0';
+                                            }
+                                            else{
+                                                printf("este pikomon não consegue mais batalhar, digite novamente");
+                                                respostaValida2 = false;
+                                            }
+                                        }
+                                        else if(userResponse == 'D'){
+                                            respostaValida = true;
+                                            playerOneVictory = true;
+                                            battleIsOver = true;
+                                        }
+                                        else{
+                                            printf("Comando digitado invalido, digite novamente");
+                                            respostaValida2 = false;
+                                        }
+                                    }
+                                    
+                                    break;
+                                }
+                                else if(/*escolheu desistir*/userResponse == '4'){
+                                    respostaValida = true;
+                                    playerOneVictory = true;
+                                    battleIsOver = true;
+                                    
+                                    break;
+                                }
+                                else{
+                                    printf("Comando digitado invalido, digite novamente");
+                                    respostaValida = false;
+                                }
+                            }
+                        }
+
+                    }
+                    playerOneTurn = true;
+                }
+            }
+            if(playerOneVictory){
+                pPlayers[playerOneIndex].Pikocoins += 100;
+
             }
             else{
-                selectedPlayerTwoPicomon[0].ChargedSpeed += selectedPlayerTwoPicomon[0].Atributes[7].Total;
-                while(selectedPlayerTwoPicomon[0].ChargedSpeed - turnCost >= 0){
-                    selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
+                pPlayers[playerTwoIndex].Pikocoins += 100;
 
-                     
-                        //acoes do player2
-                    
-
-                }
-                playerOneTurn = true;
             }
+
+        }
+        if (respostaUserMP == 2)
+        {
+            char EntradaPlayerDebug[20];
+            int indexPlayerLoop;
+            printf("Qual o username do jogador: ");
+            scanf(" %19s", EntradaPlayerDebug);
+            for (indexPlayerLoop = 0; indexPlayerLoop < dataQuantities.Player; indexPlayerLoop++)
+            {
+                if (strcmp(pPlayers[indexPlayerLoop].Name, EntradaPlayerDebug) == 0)
+                {
+                    break;
+                }
+            }
+            DebugPlayers(pPlayers,indexPlayerLoop,dataQuantities.Player);
+            printf("Press Enter");
+            getchar();
+            getchar();
+        }
+        if (respostaUserMP == 3)
+        {
+            printf(":)");
+        }
+        if (respostaUserMP == 4)
+        {
+            printf(":)");
         }
     }
     //------------------------------------------------------------------------------------------------------------------//
@@ -1691,6 +2270,160 @@ bool DebugElements(Element *elements, int index) {
         perror("Index inválido.");
         return false;
     }
+    return true;
+}
+
+bool ShowSkill(SkPointer skill) 
+{
+    if (skill == NULL) {
+        perror("Skill inválida.");
+        return false;
+    }
+
+    printf("Skill:\n");
+    printf("Name: %s | Type: %s | Target: %c | ElementEffectChance: %d | AttackBase: %d | AttackScale: %d | MagicBase: %d | MagicAttackScale: %d | CritChance: %d | EffectTarget: %c | EnemyEffectHitChance: %d | SelfEffectHitChance: %d\n",
+           skill[0].Name,
+           skill[0].Type,
+           skill[0].Target,
+           skill[0].ElementEffectHitChance,
+           skill[0].AttackBase,
+           skill[0].AttackScale,
+           skill[0].MagicBase,
+           skill[0].MagicAttackScale,
+           skill[0].CritChance,
+           skill[0].EffectTarget,
+           skill[0].EnemyEffectHitChance,
+           skill[0].SelfEffectHitChance);
+
+
+    for (int j = 0; j < 3; j++)
+    {
+        printf("| Description[%d]: %s |\n", j, skill[0].Description[j]);
+    }
+
+
+    printf("| Active: %s |\n", skill[0].Active);
+    for (int j = 0; j < 3; j++)
+    {
+        printf("| ActiveDescription[%d]: %s |\n", j, skill[0].ActiveDescription[j]);
+    }
+
+
+    printf("| Enemy Effects:\n");
+    for (int k = 0; k < 8; k++)
+    {
+        if (skill[0].EnemyEffect[k].Quantity > 0)
+        {
+            printf("| Enemy Effect[%d] | Quantity: %d | Timer: %d |\n",
+                   k,
+                   skill[0].EnemyEffect[k].Quantity,
+                   skill[0].EnemyEffect[k].Timer);
+        }
+    }
+
+
+    printf("| Self Effects:\n");
+    for (int k = 0; k < 8; k++)
+    {
+        if (skill[0].SelfEffect[k].Quantity > 0)
+        {
+            printf("| Self Effect[%d] | Quantity: %d | Timer: %d |\n",
+                   k,
+                   skill[0].SelfEffect[k].Quantity,
+                   skill[0].SelfEffect[k].Timer);
+        }
+    }
+
+    return true;
+}
+
+bool ShowItems(ItPointer pItem)
+{
+    if (pItem == NULL) {
+        perror("Item inválido.");
+        return false;
+    }
+
+    printf("| Item | Name: %s | Type: %s | Value: %d |\n",
+           pItem[0].Name,
+           pItem[0].Type,
+           pItem[0].Value);
+
+    for (int j = 0; j < 3; j++)
+    {
+        printf("| Description[%d]: %s |\n", j, pItem[0].Description[j]);
+    }
+
+    printf("| Active: %s |\n", pItem[0].Active);
+    for (int j = 0; j < 3; j++)
+    {
+        printf("| ActiveDescription[%d]: %s |\n", j, pItem[0].ActiveDescription[j]);
+    }
+
+    printf("| Current HP Damage Is Physic: %s |\n", pItem[0].CurrentHPDamageIsPhysic ? "true" : "false");
+    printf("| EffectCurrentHPTarget: %c |\n", pItem[0].EffectCurrentHPTarget);
+    printf("| EffectCurrentHP | Quantity: %d | Timer: %d |\n",
+           pItem[0].EffectCurrentHP.Quantity,
+           pItem[0].EffectCurrentHP.Timer);
+
+    printf("| EffectTarget: %c |\n", pItem[0].EffectTarget);
+    printf("| Status Effect Chance: %d |\n", pItem[0].StatusEffectChance);
+
+    for (int k = 0; k < 8; k++)
+    {
+        if (pItem[0].StatusEffect[k].Quantity > 0)
+        {
+            printf("| Status Effect[%d] | Quantity: %d | Timer: %d |\n",
+                   k,
+                   pItem[0].StatusEffect[k].Quantity,
+                   pItem[0].StatusEffect[k].Timer);
+        }
+    }
+
+    return true;
+}
+
+bool ShowPikomon(PiPointer pPikomon)
+{
+    int j, k;
+
+    if (pPikomon == NULL || strlen(pPikomon[0].Name) == 0)
+    {
+        printf("Pikomon inválido.\n");
+        return false;
+    }
+
+    printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
+           pPikomon[0].Name,
+           pPikomon[0].Element.Name,
+           pPikomon[0].Atributes[0].Base,
+           pPikomon[0].Atributes[4].Base,
+           pPikomon[0].Atributes[1].Base,
+           pPikomon[0].Atributes[6].Base,
+           pPikomon[0].Atributes[2].Base,
+           pPikomon[0].Atributes[7].Base,
+           pPikomon[0].Atributes[3].Base,
+           pPikomon[0].Atributes[5].Base);
+
+    printf("IconImg:\n");
+    for (j = 0; j < 7; j++)
+    {
+        printf("| %s |\n", pPikomon[0].IconImg[j]);
+    }
+    printf("\n");
+
+    for (k = 0; k < 4; k++)
+    {
+        if (strlen(pPikomon[0].Skills[k].Name) > 0)
+        {
+            printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %d | |,| MagicAttackScale:| %d | |;\n",
+                   pPikomon[0].Skills[k].Name,
+                   pPikomon[0].Skills[k].Target,
+                   pPikomon[0].Skills[k].AttackScale,
+                   pPikomon[0].Skills[k].MagicAttackScale);
+        }
+    }
+
     return true;
 }
 //------------------------------------------------------------------------------//
@@ -2696,7 +3429,7 @@ void PassPikomonTurnTime(PiPointer *pikomon){
     }
 
     for(I = 0; I < 8; I++){
-        pik[0].Atributes[I].Total = 0;
+        pik[0].Atributes[I].Total = pik[0].Atributes[I].Base;
         for(J = 0; J < pik[0].Atributes[I].BonusQuantity; J++){
             pik[0].Atributes[I].Total += pik[0].Atributes[I].Bonus[J];
         }
@@ -2916,8 +3649,8 @@ Pikomon GerarPikomon(Pikomon pPikomon, Personality *personalities, Element eleme
 }
 
 
-bool ShopPikomon(PlPointer players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality* personalities) { 
-    Player* playerAtual = &players[playerAtualIndex];
+bool ShopPikomon(PlPointer *players, int playerAtualIndex, PiPointer pPikomon, DataQuantity pikomonQuantidade, Personality* personalities){ 
+    Player* playerAtual = &(*players)[playerAtualIndex];
 
     printf("_____________________________________\n");
     printf("|                                   |\n");
@@ -2982,4 +3715,79 @@ void MenuShopMP() {
     printf("                |_____________________________________|\n");
     printf("                | Escolha uma opção (3 para passar)   |\n");
     printf("                |_____________________________________|\n");
+}
+
+bool ShopItems(PlPointer *players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade)
+{
+    Player *playerAtual = &(*players)[playerAtualIndex];
+
+    printf("__\n");
+    printf("|                                   |\n");
+    printf("|       !Você tem %d pikocoins!      |\n", playerAtual->Pikocoins);
+    printf("|                                   |\n");
+    printf("__\n");
+
+    printf("Itens disponíveis para compra:\n");
+    DebugItems(pItems, -1, itemQuantidade.Item);
+    printf("Escolha um item para comprar (ou -1 para sair): ");
+
+    int itemEscolha;
+    scanf("%d", &itemEscolha);
+
+    if (itemEscolha == -1)
+    {
+        return true;
+    }
+
+    if (itemEscolha < 0 || itemEscolha >= itemQuantidade.Item)
+    {
+        printf("Escolha inválida. Tente novamente.\n");
+        return false;
+    }
+
+    if (playerAtual->Pikocoins < pItems[itemEscolha].Value)
+    {
+        printf("Você não tem Pikocoins suficientes para comprar este item.\n");
+        return false;
+    }
+
+    if (!AddItemPlayerBag(&players, playerAtualIndex, pItems, itemEscolha))
+    {
+        printf("Falha ao adicionar o item ao inventário. Tente novamente.\n");
+        return false;
+    }
+
+    playerAtual->Pikocoins -= pItems[itemEscolha].Value;
+
+    printf("Você comprou %s! Agora você tem %d pikocoins restantes.\n", pItems[itemEscolha].Name, playerAtual->Pikocoins);
+
+    return true;
+}
+
+void PrintPikomonEffects(PiPointer pikomon)
+{
+    int i, j;
+    PiPointer pik =pikomon;
+
+    printf("Efeitos no HP Atual:\n");
+    for (j = 0; j < pik[0].CurrentHP.BonusQuantity; j++)
+    {
+        printf("Efeito %s: Quantidade = %d, Timer = %d\n", 
+               pik[0].CurrentHP.acronym[j], 
+               pik[0].CurrentHP.Bonus[j], 
+               pik[0].CurrentHP.BonusTimer[j]);
+    }
+
+    printf("\nEfeitos nos Atributos:\n");
+    for (i = 0; i < 8; i++)
+    {
+        printf("Atributo %d:\n", i + 1);
+        for (j = 0; j < pik[0].Atributes[i].BonusQuantity; j++)
+        {
+            printf("  Efeito %s: Quantidade = %d, Timer = %d\n",
+                   pik[0].Atributes[i].acronym[j],
+                   pik[0].Atributes[i].Bonus[j],
+                   pik[0].Atributes[i].BonusTimer[j]);
+        }
+    }
 }
