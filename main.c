@@ -88,7 +88,7 @@ typedef struct Skill
     Element Element;
 
     char Target;
-    int hitChance;
+    int HitChance;
     int AttackBase;
     int AttackScale;
     int MagicBase;
@@ -194,7 +194,7 @@ bool SaveItems(ItPointer pItems, int ItemsQuantity, const char *destino);
 bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino);
 bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino);
 void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer *pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players);
-bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]);
+bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], char *active, char activeDescription[3][255], bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectHitChance, Element element, char target, int hitChance, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectHitChance, Effect enemyEffect[8], int selfEffectHitChance, Effect selfEffect[8]);
 bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], char *active, char activeDescription[3][255], int value, bool currentHPDamageIsPysic, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, int StatusEffectChance, Effect StatusEffect[8]);
 bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][25], char passive[20], char passiveDescription[3][255], int value, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
 bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, char *pass);
@@ -2595,7 +2595,7 @@ void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiP
 
 //Manage Memory Functions
 //------------------------------------------------------------------------------//
-bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]){
+bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], char *active, char activeDescription[3][255], bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectHitChance, Element element, char target, int hitChance, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectHitChance, Effect enemyEffect[8], int selfEffectHitChance, Effect selfEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pSkills == NULL){
         perror("ERRO, \"pSkills\" não pode ser NULL em \"AddSkill\"");
@@ -2609,7 +2609,7 @@ bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char
         perror("ERRO, \"target\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
         return false;
     }
-    if(elementEffectChance < 0){
+    if(elementEffectHitChance < 0){
         perror("ERRO, \"elementEffectChance\" não pode ser menor que zero em \"AddSkill\"");
         return false;
     }
@@ -2621,11 +2621,11 @@ bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char
         perror("ERRO, \"effectTarget\" não pode ser diferente de 'S', 'E' ou 'B' em \"AddSkill\"");
         return false;
     }
-    if(enemyEffectChance < 0){
+    if(enemyEffectHitChance < 0){
         perror("ERRO, \"enemyEffectChance\" não pode ser menor que zero em \"AddSkill\"");
         return false;
     }
-    if(selfEffectChance < 0){
+    if(selfEffectHitChance < 0){
         perror("ERRO, \"selfEffectChance\" não pode ser menor que zero em \"AddSkill\"");
         return false;
     }
@@ -2638,25 +2638,35 @@ bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char
     }
     memset(&(*pSkills)[dataQuantities[0].Skill-1], 0, sizeof(Skill));
     strcpy((*pSkills)[dataQuantities[0].Skill-1].Name, name);
-    (*pSkills)[dataQuantities[0].Skill-1].Target = target;
+    strcpy((*pSkills)[dataQuantities[0].Skill-1].Type, type);
     int i;
+    for(i = 0; i < 3; i++){
+        strcpy((*pSkills)[dataQuantities[0].Skill-1].Description[i], description[i]);
+    }
+    strcpy((*pSkills)[dataQuantities[0].Skill-1].Active, active);
+    for(i = 0; i < 3; i++){
+        strcpy((*pSkills)[dataQuantities[0].Skill-1].ActiveDescription[i], activeDescription[i]);
+    }
     for(i = 0; i < 13; i++){
         (*pSkills)[dataQuantities[0].Skill-1].LearnablePersonalities[i] = learnablePersonalities[i];
+    }
+    for(i = 0; i < 10; i++){
         (*pSkills)[dataQuantities[0].Skill-1].LearnableElements[i] = LearnableElements[i];
     }
-    (*pSkills)[dataQuantities[0].Skill-1].ElementEffectHitChance = elementEffectChance;
+    (*pSkills)[dataQuantities[0].Skill-1].ElementEffectHitChance = elementEffectHitChance;
     (*pSkills)[dataQuantities[0].Skill-1].Element = element;
+    (*pSkills)[dataQuantities[0].Skill-1].Target = target;
     (*pSkills)[dataQuantities[0].Skill-1].AttackBase = attackBase;
     (*pSkills)[dataQuantities[0].Skill-1].AttackScale = attackScale;
     (*pSkills)[dataQuantities[0].Skill-1].MagicBase = magicBase;
     (*pSkills)[dataQuantities[0].Skill-1].MagicAttackScale = magicAttackScale;
     (*pSkills)[dataQuantities[0].Skill-1].CritChance = critChance;
     (*pSkills)[dataQuantities[0].Skill-1].EffectTarget = effectTarget;
-    (*pSkills)[dataQuantities[0].Skill-1].EnemyEffectHitChance = enemyEffectChance;
+    (*pSkills)[dataQuantities[0].Skill-1].EnemyEffectHitChance = enemyEffectHitChance;
     for(i = 0; i < 8; i++){
         (*pSkills)[dataQuantities[0].Skill-1].EnemyEffect[i] = enemyEffect[i];
     }
-    (*pSkills)[dataQuantities[0].Skill-1].SelfEffectHitChance = selfEffectChance;
+    (*pSkills)[dataQuantities[0].Skill-1].SelfEffectHitChance = selfEffectHitChance;
     for(i = 0; i < 8; i++){
         (*pSkills)[dataQuantities[0].Skill-1].SelfEffect[i] = selfEffect[i];
     }
@@ -3183,7 +3193,7 @@ void CalcSkill(Element allElements[10], PiPointer atacker, int skillIndex, PiPoi
     else *elementalEffectHit = false;
 
 
-    if(((rand() % 100)+1) <= (double)atacker[0].Atributes[3].Total * (double)usedSkill[0].hitChance / 100.0){
+    if(((rand() % 100)+1) <= (double)atacker[0].Atributes[3].Total * (double)usedSkill[0].HitChance / 100.0){
         *skillHit = true;
         int magicDamage, physicalDamage;
         if((rand() % 100 +1) <= usedSkill[0].CritChance) *critHit = true;
