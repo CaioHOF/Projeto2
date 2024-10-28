@@ -195,7 +195,7 @@ bool SavePikomons(PiPointer pPikomons, int pikomonsQuantity, const char *destino
 bool SavePlayers(PlPointer pPlayers, int playersQuantity, const char *destino);
 void FreeAllHeapMemoryAndSaveEverything(SkPointer pSkills, ItPointer pItems, PiPointer pPikomons, PlPointer *pPlayers, DataQuantity dataquantities, const char *dataQuantity, const char *skills, const char *items, const char *pikomoms, const char *players);
 bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char target, bool learnablePersonalities[13], bool LearnableElements[10], int elementEffectChance, Element element, int  attackBase, int attackScale, int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectChance, Effect enemyEffect[8], int selfEffectChance, Effect selfEffect[8]);
-bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], int value, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, double StatusEffectChance, Effect StatusEffect[8]);
+bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], char *active, char activeDescription[3][255], int value, bool currentHPDamageIsPysic, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, int StatusEffectChance, Effect StatusEffect[8]);
 bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][25], char passive[20], char passiveDescription[3][255], int value, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
 bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, char *pass);
 bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex);;
@@ -2663,7 +2663,7 @@ bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char
     return true;
 }
 
-bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], int value, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, double StatusEffectChance, Effect StatusEffect[8]){
+bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], char *active, char activeDescription[3][255], int value, bool currentHPDamageIsPysic, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, int StatusEffectChance, Effect StatusEffect[8]){
     //Se o memset estiver errado ele estara apagando memoria de outras variaveis;
     if(pItems == NULL){
         perror("ERRO, \"pItems\" não pode ser NULL em \"AddItem\"");
@@ -2689,7 +2689,23 @@ bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *
         }
     }
 
+    /*char Name[20];
+    char Type[20];
+    char Description[3][255];
+    char Active[20];
+    char ActiveDescription[3][255];
+    int Value;
 
+    bool CurrentHPDamageIsPhysic;
+    char EffectCurrentHPTarget;
+    //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
+    Effect EffectCurrentHP;
+    //Esse valor é usado pra definir o quanto uma pocao de cura cura e em quanto tempo, ou um veneno. O outro serve para alterar os status da vida maxima 
+    
+    char EffectTarget;
+    //Target pode ser 'S' para self, 'E' para enemy, e 'B' para both
+    int StatusEffectChance;
+    Effect StatusEffect[8];*/
     dataQuantities[0].Item++;
     (*pItems) = (ItPointer)realloc((*pItems), dataQuantities[0].Item * sizeof(Item));
     if(pItems == NULL){
@@ -2702,7 +2718,12 @@ bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *
     for(i = 0; i < 3; i++){
         strcpy((*pItems)[dataQuantities[0].Item-1].Description[i], description[i]);
     }
+    strcpy((*pItems)[dataQuantities[0].Item-1].Active, active);
+    for(i = 0; i < 3; i++){
+        strcpy((*pItems)[dataQuantities[0].Item-1].ActiveDescription[i], activeDescription[i]);
+    }
     (*pItems)[dataQuantities[0].Item-1].Value = value;
+    (*pItems)[dataQuantities[0].Item-1].CurrentHPDamageIsPhysic = currentHPDamageIsPysic;
     (*pItems)[dataQuantities[0].Item-1].EffectCurrentHPTarget = effectCurrentHPTarget;
     (*pItems)[dataQuantities[0].Item-1].EffectCurrentHP = EffectCurrentHP;
     (*pItems)[dataQuantities[0].Item-1].EffectTarget = effectTarget;
@@ -3258,13 +3279,19 @@ void UseItem(PlPointer selfPlayer, PlPointer enemyPlayer, int itemUsedIndex, boo
     usedItem = &selfPlayer[0].Bag[itemUsedIndex];
     pikomon = &selfPlayer[0].BatlePikomons[selfPlayer[0].SelectedPikomonIndex];
     otherPikomon = &enemyPlayer[0].BatlePikomons[enemyPlayer[0].SelectedPikomonIndex];
-    if(usedItem[0].CurrentHPDamageIsPhysic){
-        pikomonDamageReduction = 1.0 - (DefenseReductionCalc(pikomon[0].Atributes[1].Total) * 0.11);
-        otherpikomonDamageReduction = 1.0 - (DefenseReductionCalc(otherPikomon[0].Atributes[1].Total) * 0.11); 
+    if(usedItem[0].EffectCurrentHP.Quantity >= 0){
+        if(usedItem[0].CurrentHPDamageIsPhysic){
+            pikomonDamageReduction = 1.0 - (DefenseReductionCalc(pikomon[0].Atributes[1].Total) * 0.11);
+            otherpikomonDamageReduction = 1.0 - (DefenseReductionCalc(otherPikomon[0].Atributes[1].Total) * 0.11); 
+        }
+        else{
+            pikomonDamageReduction = 1.0 - (DefenseReductionCalc(pikomon[0].Atributes[2].Total) * 0.11);
+            otherpikomonDamageReduction = 1.0 - (DefenseReductionCalc(otherPikomon[0].Atributes[2].Total) * 0.11);
+        }
     }
     else{
-        pikomonDamageReduction = 1.0 - (DefenseReductionCalc(pikomon[0].Atributes[2].Total) * 0.11);
-        otherpikomonDamageReduction = 1.0 - (DefenseReductionCalc(otherPikomon[0].Atributes[2].Total) * 0.11);
+        pikomonDamageReduction = 1;
+        otherpikomonDamageReduction = 1;
     }
 
     if(usedItem[0].EffectCurrentHPTarget == 'S'){
@@ -3310,7 +3337,7 @@ void UseItem(PlPointer selfPlayer, PlPointer enemyPlayer, int itemUsedIndex, boo
                 otherPikomon[0].CurrentHP.Bonus = (int*)realloc(otherPikomon[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
                 otherPikomon[0].CurrentHP.BonusTimer = (int*)realloc(otherPikomon[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
                 strcpy(otherPikomon[0].CurrentHP.acronym[bonusQuantity-1], usedItem[0].EffectCurrentHP.Acronym);
-                otherPikomon[0].CurrentHP.Bonus[bonusQuantity-1] = (int)( usedItem[0].EffectCurrentHP.Quantity * pikomonDamageReduction);
+                otherPikomon[0].CurrentHP.Bonus[bonusQuantity-1] = (int)( usedItem[0].EffectCurrentHP.Quantity * otherpikomonDamageReduction);
                 otherPikomon[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedItem[0].EffectCurrentHP.Timer;
             }
             
@@ -3370,7 +3397,7 @@ void UseItem(PlPointer selfPlayer, PlPointer enemyPlayer, int itemUsedIndex, boo
                 otherPikomon[0].CurrentHP.Bonus = (int*)realloc(otherPikomon[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
                 otherPikomon[0].CurrentHP.BonusTimer = (int*)realloc(otherPikomon[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
                 strcpy(otherPikomon[0].CurrentHP.acronym[bonusQuantity-1], usedItem[0].EffectCurrentHP.Acronym);
-                otherPikomon[0].CurrentHP.Bonus[bonusQuantity-1] = (int)( usedItem[0].EffectCurrentHP.Quantity * pikomonDamageReduction);
+                otherPikomon[0].CurrentHP.Bonus[bonusQuantity-1] = (int)( usedItem[0].EffectCurrentHP.Quantity * otherpikomonDamageReduction);
                 otherPikomon[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedItem[0].EffectCurrentHP.Timer;
             }
             
