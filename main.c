@@ -2559,8 +2559,21 @@ void PassPikomonTurnTime(PiPointer *pikomon){
 //a funcao log do math.h estava dando um conflito muito estranho toda a vez que chamava com alguma variavel dentro
 double DefenseReductionCalc(double value){
     int base = 2;
-    return log(value) / log(base);
+    return LNfalso(value) / LNfalso(base);
     return 1.0;
+}
+double LNfalso(double x){
+    if (x <= 0) {
+        return 0;
+    }
+    double z = (x - 1) / (x + 1);
+    double resultado = 0.0;
+    int n;
+    for (n = 1; n <= 20; n += 2) {
+        resultado += (1.0 / n) * z;
+        z *= (x - 1) / (x + 1) * (x - 1) / (x + 1);
+    }
+    return 2 * resultado;
 }
 //------------------------------------------------------------------------------//
 
