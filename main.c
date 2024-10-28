@@ -198,12 +198,13 @@ bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char
 bool AddItem(ItPointer *pItems, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], int value, char effectCurrentHPTarget, Effect EffectCurrentHP, char effectTarget, double StatusEffectChance, Effect StatusEffect[8]);
 bool AddPikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, char *name, Element element, char iconImg[7][25], char passive[20], char passiveDescription[3][255], int value, int BaseHP, int BaseDefense, int BaseMagicDefense, int BaseAccuracy, int BaseAttack, int BaseElementalAccuracy, int BaseMagicAttack, int BaseSpeed);
 bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, char *pass);
-bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, int itemIndex);;
+bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex);;
 bool StorePikomonPlayer(PlPointer *pPlayers, int playerIndex, int storagePikomonPlacementIndex, PiPointer pPikomons, int pikomonIndex, DataQuantity dataQuantities);
 bool RemoveSkill(SkPointer *pSkills, DataQuantity *dataQuantities, int indexRemove);
 bool RemoveItem(ItPointer *pItems, DataQuantity *dataQuantities, int indexRemove);
 bool RemovePikomon(PiPointer *pPikomons, DataQuantity *dataQuantities, int indexRemove);
 bool SellItemPlayerBag(PlPointer *pPlayers, int playerIndex, int bagSellIndex);
+void SelectBattlePikomons(Player *player);
 void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char calcNextTurn[7]);
 void Batle(PlPointer pPlayers, int playerOneIndex, int playerTwoIndex);
 void LimparTerminal();
@@ -215,8 +216,15 @@ bool ShopPikomon(PlPointer *players, int playerAtualIndex, PiPointer pPikomon, D
 void MenuShopMP();
 double DefenseReductionCalc(double value);
 double LNfalso(double x);
-bool ShopItems(PlPointer *players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade);
+bool ShopItems(PlPointer players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade);
 void PrintPikomonEffects(PiPointer pikomon);
+void PassPikomonTurnTime(PiPointer pikomon);
+bool ShowSkill(SkPointer skill);
+void CalcSkill(Element allElements[10], PiPointer atacker, int skillIndex, PiPointer defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage);
+bool ShowItems(ItPointer pItem);
+void UseItem(PlPointer selfPlayer, PlPointer enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit);
+bool ShowPikomon(PiPointer pPikomon);
+
 
 int main(){ 
     //Declaracoes
@@ -256,153 +264,154 @@ int main(){
     //Loads
     //------------------------------------------------------------------------------------------------------------------//
     //Define Personalities
-    /*strcpy(allPersonalities[0].Name, "Cabeca-Quente");
-    allPersonalities[0].rarity = 8;
-    allPersonalities[0].BaseHPModifier = 100;
-    allPersonalities[0].BaseDefenseModifier = 100;
-    allPersonalities[0].BaseMagicDefenseModifier = 100;
-    allPersonalities[0].BaseAccuracyModifier = 70;
-    allPersonalities[0].BaseAttackModifier = 130;
-    allPersonalities[0].BaseElementalAccuracyModifier = 70;
-    allPersonalities[0].BaseMagicAttackModifier = 130;
-    allPersonalities[0].BaseSpeedModifier = 100;
+    /*
+        strcpy(allPersonalities[0].Name, "Cabeca-Quente");
+        allPersonalities[0].rarity = 8;
+        allPersonalities[0].BaseHPModifier = 100;
+        allPersonalities[0].BaseDefenseModifier = 100;
+        allPersonalities[0].BaseMagicDefenseModifier = 100;
+        allPersonalities[0].BaseAccuracyModifier = 70;
+        allPersonalities[0].BaseAttackModifier = 130;
+        allPersonalities[0].BaseElementalAccuracyModifier = 70;
+        allPersonalities[0].BaseMagicAttackModifier = 130;
+        allPersonalities[0].BaseSpeedModifier = 100;
 
-    strcpy(allPersonalities[1].Name, "Meigo");
-    allPersonalities[1].rarity = 10;
-    allPersonalities[1].BaseHPModifier = 100;
-    allPersonalities[1].BaseDefenseModifier = 115;
-    allPersonalities[1].BaseMagicDefenseModifier = 115;
-    allPersonalities[1].BaseAccuracyModifier = 100;
-    allPersonalities[1].BaseAttackModifier = 85;
-    allPersonalities[1].BaseElementalAccuracyModifier = 100;
-    allPersonalities[1].BaseMagicAttackModifier = 85;
-    allPersonalities[1].BaseSpeedModifier = 100;
+        strcpy(allPersonalities[1].Name, "Meigo");
+        allPersonalities[1].rarity = 10;
+        allPersonalities[1].BaseHPModifier = 100;
+        allPersonalities[1].BaseDefenseModifier = 115;
+        allPersonalities[1].BaseMagicDefenseModifier = 115;
+        allPersonalities[1].BaseAccuracyModifier = 100;
+        allPersonalities[1].BaseAttackModifier = 85;
+        allPersonalities[1].BaseElementalAccuracyModifier = 100;
+        allPersonalities[1].BaseMagicAttackModifier = 85;
+        allPersonalities[1].BaseSpeedModifier = 100;
 
-    strcpy(allPersonalities[2].Name, "Apressado");
-    allPersonalities[2].rarity = 5;
-    allPersonalities[2].BaseHPModifier = 100;
-    allPersonalities[2].BaseDefenseModifier = 100;
-    allPersonalities[2].BaseMagicDefenseModifier = 100;
-    allPersonalities[2].BaseAccuracyModifier = 95;
-    allPersonalities[2].BaseAttackModifier = 80;
-    allPersonalities[2].BaseElementalAccuracyModifier = 95;
-    allPersonalities[2].BaseMagicAttackModifier = 80;
-    allPersonalities[2].BaseSpeedModifier = 130;
+        strcpy(allPersonalities[2].Name, "Apressado");
+        allPersonalities[2].rarity = 5;
+        allPersonalities[2].BaseHPModifier = 100;
+        allPersonalities[2].BaseDefenseModifier = 100;
+        allPersonalities[2].BaseMagicDefenseModifier = 100;
+        allPersonalities[2].BaseAccuracyModifier = 95;
+        allPersonalities[2].BaseAttackModifier = 80;
+        allPersonalities[2].BaseElementalAccuracyModifier = 95;
+        allPersonalities[2].BaseMagicAttackModifier = 80;
+        allPersonalities[2].BaseSpeedModifier = 130;
 
-    strcpy(allPersonalities[3].Name, "Dorminhoco");
-    allPersonalities[3].rarity = 11;
-    allPersonalities[3].BaseHPModifier = 100;
-    allPersonalities[3].BaseDefenseModifier = 100;
-    allPersonalities[3].BaseMagicDefenseModifier = 130;
-    allPersonalities[3].BaseAccuracyModifier = 100;
-    allPersonalities[3].BaseAttackModifier = 100;
-    allPersonalities[3].BaseElementalAccuracyModifier = 100;
-    allPersonalities[3].BaseMagicAttackModifier = 80;
-    allPersonalities[3].BaseSpeedModifier = 70;
+        strcpy(allPersonalities[3].Name, "Dorminhoco");
+        allPersonalities[3].rarity = 11;
+        allPersonalities[3].BaseHPModifier = 100;
+        allPersonalities[3].BaseDefenseModifier = 100;
+        allPersonalities[3].BaseMagicDefenseModifier = 130;
+        allPersonalities[3].BaseAccuracyModifier = 100;
+        allPersonalities[3].BaseAttackModifier = 100;
+        allPersonalities[3].BaseElementalAccuracyModifier = 100;
+        allPersonalities[3].BaseMagicAttackModifier = 80;
+        allPersonalities[3].BaseSpeedModifier = 70;
 
-    strcpy(allPersonalities[4].Name, "Místico");
-    allPersonalities[4].rarity = 6;
-    allPersonalities[4].BaseHPModifier = 100;
-    allPersonalities[4].BaseDefenseModifier = 90;
-    allPersonalities[4].BaseMagicDefenseModifier = 130;
-    allPersonalities[4].BaseAccuracyModifier = 100;
-    allPersonalities[4].BaseAttackModifier = 70;
-    allPersonalities[4].BaseElementalAccuracyModifier = 100;
-    allPersonalities[4].BaseMagicAttackModifier = 130;
-    allPersonalities[4].BaseSpeedModifier = 100;
+        strcpy(allPersonalities[4].Name, "Místico");
+        allPersonalities[4].rarity = 6;
+        allPersonalities[4].BaseHPModifier = 100;
+        allPersonalities[4].BaseDefenseModifier = 90;
+        allPersonalities[4].BaseMagicDefenseModifier = 130;
+        allPersonalities[4].BaseAccuracyModifier = 100;
+        allPersonalities[4].BaseAttackModifier = 70;
+        allPersonalities[4].BaseElementalAccuracyModifier = 100;
+        allPersonalities[4].BaseMagicAttackModifier = 130;
+        allPersonalities[4].BaseSpeedModifier = 100;
 
-    strcpy(allPersonalities[5].Name, "Hercúleo");
-    allPersonalities[5].rarity = 6;
-    allPersonalities[5].BaseHPModifier = 100;
-    allPersonalities[5].BaseDefenseModifier = 110;
-    allPersonalities[5].BaseMagicDefenseModifier = 90;
-    allPersonalities[5].BaseAccuracyModifier = 100;
-    allPersonalities[5].BaseAttackModifier = 130;
-    allPersonalities[5].BaseElementalAccuracyModifier = 100;
-    allPersonalities[5].BaseMagicAttackModifier = 70;
-    allPersonalities[5].BaseSpeedModifier = 100;
+        strcpy(allPersonalities[5].Name, "Hercúleo");
+        allPersonalities[5].rarity = 6;
+        allPersonalities[5].BaseHPModifier = 100;
+        allPersonalities[5].BaseDefenseModifier = 110;
+        allPersonalities[5].BaseMagicDefenseModifier = 90;
+        allPersonalities[5].BaseAccuracyModifier = 100;
+        allPersonalities[5].BaseAttackModifier = 130;
+        allPersonalities[5].BaseElementalAccuracyModifier = 100;
+        allPersonalities[5].BaseMagicAttackModifier = 70;
+        allPersonalities[5].BaseSpeedModifier = 100;
 
-    strcpy(allPersonalities[6].Name, "Assustado");
-    allPersonalities[6].rarity = 5;
-    allPersonalities[6].BaseHPModifier = 100;
-    allPersonalities[6].BaseDefenseModifier = 80;
-    allPersonalities[6].BaseMagicDefenseModifier = 80;
-    allPersonalities[6].BaseAccuracyModifier = 100;
-    allPersonalities[6].BaseAttackModifier = 100;
-    allPersonalities[6].BaseElementalAccuracyModifier = 100;
-    allPersonalities[6].BaseMagicAttackModifier = 100;
-    allPersonalities[6].BaseSpeedModifier = 130;
+        strcpy(allPersonalities[6].Name, "Assustado");
+        allPersonalities[6].rarity = 5;
+        allPersonalities[6].BaseHPModifier = 100;
+        allPersonalities[6].BaseDefenseModifier = 80;
+        allPersonalities[6].BaseMagicDefenseModifier = 80;
+        allPersonalities[6].BaseAccuracyModifier = 100;
+        allPersonalities[6].BaseAttackModifier = 100;
+        allPersonalities[6].BaseElementalAccuracyModifier = 100;
+        allPersonalities[6].BaseMagicAttackModifier = 100;
+        allPersonalities[6].BaseSpeedModifier = 130;
 
-    strcpy(allPersonalities[7].Name, "Jovial");
-    allPersonalities[7].rarity = 1;
-    allPersonalities[7].BaseHPModifier = 100;
-    allPersonalities[7].BaseDefenseModifier = 110;
-    allPersonalities[7].BaseMagicDefenseModifier = 110;
-    allPersonalities[7].BaseAccuracyModifier = 110;
-    allPersonalities[7].BaseAttackModifier = 110;
-    allPersonalities[7].BaseMagicAttackModifier = 110;
-    allPersonalities[7].BaseSpeedModifier = 110;
+        strcpy(allPersonalities[7].Name, "Jovial");
+        allPersonalities[7].rarity = 1;
+        allPersonalities[7].BaseHPModifier = 100;
+        allPersonalities[7].BaseDefenseModifier = 110;
+        allPersonalities[7].BaseMagicDefenseModifier = 110;
+        allPersonalities[7].BaseAccuracyModifier = 110;
+        allPersonalities[7].BaseAttackModifier = 110;
+        allPersonalities[7].BaseMagicAttackModifier = 110;
+        allPersonalities[7].BaseSpeedModifier = 110;
 
-    strcpy(allPersonalities[8].Name, "Afobado");
-    allPersonalities[8].rarity = 5;
-    allPersonalities[8].BaseHPModifier = 100;
-    allPersonalities[8].BaseDefenseModifier = 100;
-    allPersonalities[8].BaseMagicDefenseModifier = 100;
-    allPersonalities[8].BaseAccuracyModifier = 80;
-    allPersonalities[8].BaseAttackModifier = 100;
-    allPersonalities[8].BaseElementalAccuracyModifier = 80;
-    allPersonalities[8].BaseMagicAttackModifier = 100;
-    allPersonalities[8].BaseSpeedModifier = 120;
+        strcpy(allPersonalities[8].Name, "Afobado");
+        allPersonalities[8].rarity = 5;
+        allPersonalities[8].BaseHPModifier = 100;
+        allPersonalities[8].BaseDefenseModifier = 100;
+        allPersonalities[8].BaseMagicDefenseModifier = 100;
+        allPersonalities[8].BaseAccuracyModifier = 80;
+        allPersonalities[8].BaseAttackModifier = 100;
+        allPersonalities[8].BaseElementalAccuracyModifier = 80;
+        allPersonalities[8].BaseMagicAttackModifier = 100;
+        allPersonalities[8].BaseSpeedModifier = 120;
 
-    strcpy(allPersonalities[9].Name, "Teimoso");
-    allPersonalities[9].rarity = 10;
-    allPersonalities[9].BaseHPModifier = 100;
-    allPersonalities[9].BaseDefenseModifier = 85;
-    allPersonalities[9].BaseMagicDefenseModifier = 85;
-    allPersonalities[9].BaseAccuracyModifier = 130;
-    allPersonalities[9].BaseAttackModifier = 100;
-    allPersonalities[9].BaseElementalAccuracyModifier = 130;
-    allPersonalities[9].BaseMagicAttackModifier = 100;
-    allPersonalities[9].BaseSpeedModifier = 100;
+        strcpy(allPersonalities[9].Name, "Teimoso");
+        allPersonalities[9].rarity = 10;
+        allPersonalities[9].BaseHPModifier = 100;
+        allPersonalities[9].BaseDefenseModifier = 85;
+        allPersonalities[9].BaseMagicDefenseModifier = 85;
+        allPersonalities[9].BaseAccuracyModifier = 130;
+        allPersonalities[9].BaseAttackModifier = 100;
+        allPersonalities[9].BaseElementalAccuracyModifier = 130;
+        allPersonalities[9].BaseMagicAttackModifier = 100;
+        allPersonalities[9].BaseSpeedModifier = 100;
 
-    strcpy(allPersonalities[10].Name, "Invejoso");
-    allPersonalities[10].rarity = 11;
-    allPersonalities[10].BaseHPModifier = 100;
-    allPersonalities[10].BaseDefenseModifier = 100;
-    allPersonalities[10].BaseMagicDefenseModifier = 120;
-    allPersonalities[10].BaseAccuracyModifier = 100;
-    allPersonalities[10].BaseAttackModifier = 100;
-    allPersonalities[10].BaseElementalAccuracyModifier = 100;
-    allPersonalities[10].BaseMagicAttackModifier = 120;
-    allPersonalities[10].BaseSpeedModifier = 80;
+        strcpy(allPersonalities[10].Name, "Invejoso");
+        allPersonalities[10].rarity = 11;
+        allPersonalities[10].BaseHPModifier = 100;
+        allPersonalities[10].BaseDefenseModifier = 100;
+        allPersonalities[10].BaseMagicDefenseModifier = 120;
+        allPersonalities[10].BaseAccuracyModifier = 100;
+        allPersonalities[10].BaseAttackModifier = 100;
+        allPersonalities[10].BaseElementalAccuracyModifier = 100;
+        allPersonalities[10].BaseMagicAttackModifier = 120;
+        allPersonalities[10].BaseSpeedModifier = 80;
 
-    strcpy(allPersonalities[11].Name, "Resistente");
-    allPersonalities[11].rarity = 11;
-    allPersonalities[11].BaseHPModifier = 100;
-    allPersonalities[11].BaseDefenseModifier = 130;
-    allPersonalities[11].BaseMagicDefenseModifier = 100;
-    allPersonalities[11].BaseAccuracyModifier = 100;
-    allPersonalities[11].BaseElementalAccuracyModifier = 100;
-    allPersonalities[11].BaseAttackModifier = 100;
-    allPersonalities[11].BaseMagicAttackModifier = 100;
-    allPersonalities[11].BaseSpeedModifier = 70;
+        strcpy(allPersonalities[11].Name, "Resistente");
+        allPersonalities[11].rarity = 11;
+        allPersonalities[11].BaseHPModifier = 100;
+        allPersonalities[11].BaseDefenseModifier = 130;
+        allPersonalities[11].BaseMagicDefenseModifier = 100;
+        allPersonalities[11].BaseAccuracyModifier = 100;
+        allPersonalities[11].BaseElementalAccuracyModifier = 100;
+        allPersonalities[11].BaseAttackModifier = 100;
+        allPersonalities[11].BaseMagicAttackModifier = 100;
+        allPersonalities[11].BaseSpeedModifier = 70;
 
-    strcpy(allPersonalities[12].Name, "Decidido");
-    allPersonalities[12].rarity = 11;
-    allPersonalities[12].BaseHPModifier = 100;
-    allPersonalities[12].BaseDefenseModifier = 120;
-    allPersonalities[12].BaseMagicDefenseModifier = 100;
-    allPersonalities[12].BaseAccuracyModifier = 100;
-    allPersonalities[12].BaseAttackModifier = 120;
-    allPersonalities[12].BaseElementalAccuracyModifier = 100;
-    allPersonalities[12].BaseMagicAttackModifier = 100;
-    allPersonalities[12].BaseSpeedModifier = 80;
-    
-    SavePersonalities(allPersonalities, personalities);*/
+        strcpy(allPersonalities[12].Name, "Decidido");
+        allPersonalities[12].rarity = 11;
+        allPersonalities[12].BaseHPModifier = 100;
+        allPersonalities[12].BaseDefenseModifier = 120;
+        allPersonalities[12].BaseMagicDefenseModifier = 100;
+        allPersonalities[12].BaseAccuracyModifier = 100;
+        allPersonalities[12].BaseAttackModifier = 120;
+        allPersonalities[12].BaseElementalAccuracyModifier = 100;
+        allPersonalities[12].BaseMagicAttackModifier = 100;
+        allPersonalities[12].BaseSpeedModifier = 80;
+
+        SavePersonalities(allPersonalities, personalities);*/
 
     //Define Elements
     
-/*    
+    /*    
     strcpy(allElements[0].Name, "Comum"); 
     strcpy(allElements[0].Acronym, "Drm");
     allElements[0].Effectiveness[0] = 100; 
@@ -823,7 +832,7 @@ int main(){
     allElements[9].StatusEffect[6].Quantity = 0;
     allElements[9].StatusEffect[6].Timer = 0;
     SaveElements(allElements, elements);
-*/
+    */
 
 
     dBPersonalities = fopen(personalities, "rb");
@@ -933,159 +942,158 @@ int main(){
     fclose(dBPlayers);
 
 
-//:oco:
+//define pikomons
 
 /*
-        char descfds[3][255];
-        strcpy(descfds[0], "");
-        strcpy(descfds[1], "");
-        strcpy(descfds[2], "");
-        char icoImg[7][25];
-strcpy(icoImg[0], "####__________####");
-strcpy(icoImg[1], "###|          |###");
-strcpy(icoImg[2], "###| .      . |###");
-strcpy(icoImg[3], "###|   -__-   |###");
-strcpy(icoImg[4], "###|          |###");
-strcpy(icoImg[5], "###|          |###");
-strcpy(icoImg[6], "###|__________|###");
+    char descfds[3][255];
+    strcpy(descfds[0], "");
+    strcpy(descfds[1], "");
+    strcpy(descfds[2], "");
+    char icoImg[7][25];
+    strcpy(icoImg[0], "####__________####");
+    strcpy(icoImg[1], "###|          |###");
+    strcpy(icoImg[2], "###| .      . |###");
+    strcpy(icoImg[3], "###|   -__-   |###");
+    strcpy(icoImg[4], "###|          |###");
+    strcpy(icoImg[5], "###|          |###");
+    strcpy(icoImg[6], "###|__________|###");
 
-AddPikomon(&pPikomons, &dataQuantities, "Moldew", allElements[0], icoImg, "", descfds, 5, 25,25,25,100,25,100,25,35);
+    AddPikomon(&pPikomons, &dataQuantities, "Moldew", allElements[0], icoImg, "", descfds, 5, 25,25,25,100,25,100,25,35);
 
-char icoImg1[7][25];
-strcpy(icoImg1[0], "   ===      ===   ");
-strcpy(icoImg1[1], "  [###]    [###]  ");
-strcpy(icoImg1[2], " |#####====#####| ");
-strcpy(icoImg1[3], "  [##0######0##]  ");
-strcpy(icoImg1[4], "   \\__\\####/__/   ");
-strcpy(icoImg1[5], "       \\##/       ");
-strcpy(icoImg1[6], "        \\/        ");
+    char icoImg1[7][25];
+    strcpy(icoImg1[0], "   ===      ===   ");
+    strcpy(icoImg1[1], "  [###]    [###]  ");
+    strcpy(icoImg1[2], " |#####====#####| ");
+    strcpy(icoImg1[3], "  [##0######0##]  ");
+    strcpy(icoImg1[4], "   \\__\\####/__/   ");
+    strcpy(icoImg1[5], "       \\##/       ");
+    strcpy(icoImg1[6], "        \\/        ");
 
-AddPikomon(&pPikomons, &dataQuantities, "Ratton", allElements[0], icoImg1, "", descfds, 5, 50,20,35,100,30,100,20,65);
+    AddPikomon(&pPikomons, &dataQuantities, "Ratton", allElements[0], icoImg1, "", descfds, 5, 50,20,35,100,30,100,20,65);
 
-char icoImg2[7][25];
-strcpy(icoImg2[0], "   /\\        /\\  ");
-strcpy(icoImg2[1], "  /##\\      /##\\  ");
-strcpy(icoImg2[2], " [#####======###\\ ");
-strcpy(icoImg2[3], "[######O######O##]");
-strcpy(icoImg2[4], "[|\\|\\|\\(___/\\_)##|");
-strcpy(icoImg2[5], "/====/##########| ");
-strcpy(icoImg2[6], "====/##########|  ");
+    char icoImg2[7][25];
+    strcpy(icoImg2[0], "   /\\        /\\  ");
+    strcpy(icoImg2[1], "  /##\\      /##\\  ");
+    strcpy(icoImg2[2], " [#####======###\\ ");
+    strcpy(icoImg2[3], "[######O######O##]");
+    strcpy(icoImg2[4], "[|\\|\\|\\(___/\\_)##|");
+    strcpy(icoImg2[5], "/====/##########| ");
+    strcpy(icoImg2[6], "====/##########|  ");
 
-AddPikomon(&pPikomons, &dataQuantities, "Bichano", allElements[0], icoImg2, "", descfds, 5, 50,50,35,100,50,100,20,60);
+    AddPikomon(&pPikomons, &dataQuantities, "Bichano", allElements[0], icoImg2, "", descfds, 5, 50,50,35,100,50,100,20,60);
 
-char icoImg3[7][25];
-strcpy(icoImg3[0], "        /\\        ");
-strcpy(icoImg3[1], "       /##\\       ");
-strcpy(icoImg3[2], "      /####\\      ");
-strcpy(icoImg3[3], "==================");
-strcpy(icoImg3[4], "     |*####*|     ");
-strcpy(icoImg3[5], "     v^^ww^^v     ");
-strcpy(icoImg3[6], "      wwvvww      ");
+    char icoImg3[7][25];
+    strcpy(icoImg3[0], "        /\\        ");
+    strcpy(icoImg3[1], "       /##\\       ");
+    strcpy(icoImg3[2], "      /####\\      ");
+    strcpy(icoImg3[3], "==================");
+    strcpy(icoImg3[4], "     |*####*|     ");
+    strcpy(icoImg3[5], "     v^^ww^^v     ");
+    strcpy(icoImg3[6], "      wwvvww      ");
 
-AddPikomon(&pPikomons, &dataQuantities, "Mago", allElements[5], icoImg3, "", descfds, 5, 60,45,50,100,15,100,75,35);
+    AddPikomon(&pPikomons, &dataQuantities, "Mago", allElements[5], icoImg3, "", descfds, 5, 60,45,50,100,15,100,75,35);
 
-char icoImg4[7][25];
-strcpy(icoImg4[0], "   ___=====__     ");
-strcpy(icoImg4[1], " </##########\\__  ");
-strcpy(icoImg4[2], "</#######ò####*#} ");
-strcpy(icoImg4[3], "<#########/vvvvv  ");
-strcpy(icoImg4[4], "/#########\\^^^^^} ");
-strcpy(icoImg4[5], "#########/‾‾‾‾‾‾  ");
-strcpy(icoImg4[6], "########|         ");
+    char icoImg4[7][25];
+    strcpy(icoImg4[0], "   ___=====__     ");
+    strcpy(icoImg4[1], " </##########\\__  ");
+    strcpy(icoImg4[2], "</#######ò####*#} ");
+    strcpy(icoImg4[3], "<#########/vvvvv  ");
+    strcpy(icoImg4[4], "/#########\\^^^^^} ");
+    strcpy(icoImg4[5], "#########/‾‾‾‾‾‾  ");
+    strcpy(icoImg4[6], "########|         ");
 
-AddPikomon(&pPikomons, &dataQuantities, "Calangora", allElements[9], icoImg4, "", descfds, 5, 60,45,20,100,75,100,10,45);
+    AddPikomon(&pPikomons, &dataQuantities, "Calangora", allElements[9], icoImg4, "", descfds, 5, 60,45,20,100,75,100,10,45);
 
-char icoImg5[7][25];
-strcpy(icoImg5[0], "######__/\\__######");
-strcpy(icoImg5[1], "#####[      ]#####");
-strcpy(icoImg5[2], "####|<>    <>|####");
-strcpy(icoImg5[3], "####| |====| |####");
-strcpy(icoImg5[4], "#####[______]#####");
-strcpy(icoImg5[5], "####/|010101|\\####");
-strcpy(icoImg5[6], "###| |101010| |###");
+    char icoImg5[7][25];
+    strcpy(icoImg5[0], "######__/\\__######");
+    strcpy(icoImg5[1], "#####[      ]#####");
+    strcpy(icoImg5[2], "####|<>    <>|####");
+    strcpy(icoImg5[3], "####| |====| |####");
+    strcpy(icoImg5[4], "#####[______]#####");
+    strcpy(icoImg5[5], "####/|010101|\\####");
+    strcpy(icoImg5[6], "###| |101010| |###");
 
-AddPikomon(&pPikomons, &dataQuantities, "Roboto", allElements[4], icoImg5, "", descfds, 5, 60,80,80,100,20,100,20,35);
+    AddPikomon(&pPikomons, &dataQuantities, "Roboto", allElements[4], icoImg5, "", descfds, 5, 60,80,80,100,20,100,20,35);
 
-char icoImg6[7][25];
-strcpy(icoImg6[0], "########^#######/|");
-strcpy(icoImg6[1], "#####__/#\\#####/ }");
-strcpy(icoImg6[2], "###==o    ==__/ }#");
-strcpy(icoImg6[3], "##>           <###");
-strcpy(icoImg6[4], "###===\\|__==‾‾\\###");
-strcpy(icoImg6[5], "###############‾##");
-strcpy(icoImg6[6], "##################");
+    char icoImg6[7][25];
+    strcpy(icoImg6[0], "########^#######/|");
+    strcpy(icoImg6[1], "#####__/#\\#####/ }");
+    strcpy(icoImg6[2], "###==o    ==__/ }#");
+    strcpy(icoImg6[3], "##>           <###");
+    strcpy(icoImg6[4], "###===\\|__==‾‾\\###");
+    strcpy(icoImg6[5], "###############‾##");
+    strcpy(icoImg6[6], "##################");
 
-AddPikomon(&pPikomons, &dataQuantities, "Peixe Secreto", allElements[2], icoImg6, "", descfds, 5, 50,45,45,100,45,100,45,45);
+    AddPikomon(&pPikomons, &dataQuantities, "Peixe Secreto", allElements[2], icoImg6, "", descfds, 5, 50,45,45,100,45,100,45,45);
 
-char icoImg7[7][25];
-strcpy(icoImg7[0], "##__##_===_##__###");
-strcpy(icoImg7[1], "#{  }{ o o }{  }##");
-strcpy(icoImg7[2], "#[. \\|  ^  |/; ]>#");
-strcpy(icoImg7[3], "#<\\__    .  __/###");
-strcpy(icoImg7[4], "###v#|v    |#,####");
-strcpy(icoImg7[5], "####,|   <>|######");
-strcpy(icoImg7[6], "#####|,    |>#####");
+    char icoImg7[7][25];
+    strcpy(icoImg7[0], "##__##_===_##__###");
+    strcpy(icoImg7[1], "#{  }{ o o }{  }##");
+    strcpy(icoImg7[2], "#[. \\|  ^  |/; ]>#");
+    strcpy(icoImg7[3], "#<\\__    .  __/###");
+    strcpy(icoImg7[4], "###v#|v    |#,####");
+    strcpy(icoImg7[5], "####,|   <>|######");
+    strcpy(icoImg7[6], "#####|,    |>#####");
 
-AddPikomon(&pPikomons, &dataQuantities, "Cacto", allElements[3], icoImg7, "", descfds, 5, 70,75,60,100,10,100,65,35);
+    AddPikomon(&pPikomons, &dataQuantities, "Cacto", allElements[3], icoImg7, "", descfds, 5, 70,75,60,100,10,100,65,35);
 
-char icoImg8[7][25];
-strcpy(icoImg8[0], " ==_   ^==^   _== ");
-strcpy(icoImg8[1], "{WVW{ {*\\/*} }WVW}");
-strcpy(icoImg8[2], "|{\\|v\\_/##\\_/v|/}|");
-strcpy(icoImg8[3], " [v\\V\\{####}/V/v] ");
-strcpy(icoImg8[4], "  \\V\\v\\{##}/v/V/  ");
-strcpy(icoImg8[5], "      /WwwW\\      ");
-strcpy(icoImg8[6], "    <v/V/\\V\\v>    ");
+    char icoImg8[7][25];
+    strcpy(icoImg8[0], " ==_   ^==^   _== ");
+    strcpy(icoImg8[1], "{WVW{ {*\\/*} }WVW}");
+    strcpy(icoImg8[2], "|{\\|v\\_/##\\_/v|/}|");
+    strcpy(icoImg8[3], " [v\\V\\{####}/V/v] ");
+    strcpy(icoImg8[4], "  \\V\\v\\{##}/v/V/  ");
+    strcpy(icoImg8[5], "      /WwwW\\      ");
+    strcpy(icoImg8[6], "    <v/V/\\V\\v>    ");
 
-AddPikomon(&pPikomons, &dataQuantities, "Fênix", allElements[1], icoImg8, "", descfds, 5, 50,20,20,100,70,100,75,65);
+    AddPikomon(&pPikomons, &dataQuantities, "Fênix", allElements[1], icoImg8, "", descfds, 5, 50,20,20,100,70,100,75,65);
 
-char icoImg9[7][25];
-strcpy(icoImg9[0], "#######====#######");
-strcpy(icoImg9[1], "######{wVVw}######");
-strcpy(icoImg9[2], "#####[o ^^ o]#####");
-strcpy(icoImg9[3], "####[ T{  }T ]####");
-strcpy(icoImg9[4], "###{  J || L  }###");
-strcpy(icoImg9[5], "####{  /LJ\\  }####");
-strcpy(icoImg9[6], "####{m}u##u{m}####");
+    char icoImg9[7][25];
+    strcpy(icoImg9[0], "#######====#######");
+    strcpy(icoImg9[1], "######{wVVw}######");
+    strcpy(icoImg9[2], "#####[o ^^ o]#####");
+    strcpy(icoImg9[3], "####[ T{  }T ]####");
+    strcpy(icoImg9[4], "###{  J || L  }###");
+    strcpy(icoImg9[5], "####{  /LJ\\  }####");
+    strcpy(icoImg9[6], "####{m}u##u{m}####");
 
-AddPikomon(&pPikomons, &dataQuantities, "Mamute", allElements[7], icoImg9, "", descfds, 5, 80,20,20,100,60,100,20,45);
+    AddPikomon(&pPikomons, &dataQuantities, "Mamute", allElements[7], icoImg9, "", descfds, 5, 80,20,20,100,60,100,20,45);
 
-char icoImg10[7][25];
-strcpy(icoImg10[0], "######_===_#######");
-strcpy(icoImg10[1], "#####/0 o /#######");
-strcpy(icoImg10[2], "####[ ^ _[######oO");
-strcpy(icoImg10[3], "#{‾‾ {__|#########");
-strcpy(icoImg10[4], "##‾‾{   {######O##");
-strcpy(icoImg10[5], "#####=_  \\###o####");
-strcpy(icoImg10[6], "########\\_\\~######");
+    char icoImg10[7][25];
+    strcpy(icoImg10[0], "######_===_#######");
+    strcpy(icoImg10[1], "#####/0 o /#######");
+    strcpy(icoImg10[2], "####[ ^ _[######oO");
+    strcpy(icoImg10[3], "#{‾‾ {__|#########");
+    strcpy(icoImg10[4], "##‾‾{   {######O##");
+    strcpy(icoImg10[5], "#####=_  \\###o####");
+    strcpy(icoImg10[6], "########\\_\\~######");
 
-AddPikomon(&pPikomons, &dataQuantities, "Vulto", allElements[5], icoImg10, "", descfds, 5, 50,80,10,100,80,100,10,45);
+    AddPikomon(&pPikomons, &dataQuantities, "Vulto", allElements[5], icoImg10, "", descfds, 5, 50,80,10,100,80,100,10,45);
 
-char icoImg11[7][25];
-strcpy(icoImg11[0], "  \\\\          //  ");
-strcpy(icoImg11[1], "   \\\\ _====_ //   ");
-strcpy(icoImg11[2], "    \\{O=O=O=}/    ");
-strcpy(icoImg11[3], "===={O=O=O=O=}====");
-strcpy(icoImg11[4], "    /{O=O=O=}\\    ");
-strcpy(icoImg11[5], "   // ‾====‾ \\\\   ");
-strcpy(icoImg11[6], "  //          \\\\  ");
+    char icoImg11[7][25];
+    strcpy(icoImg11[0], "  \\\\          //  ");
+    strcpy(icoImg11[1], "   \\\\ _====_ //   ");
+    strcpy(icoImg11[2], "    \\{O=O=O=}/    ");
+    strcpy(icoImg11[3], "===={O=O=O=O=}====");
+    strcpy(icoImg11[4], "    /{O=O=O=}\\    ");
+    strcpy(icoImg11[5], "   // ‾====‾ \\\\   ");
+    strcpy(icoImg11[6], "  //          \\\\  ");
 
-AddPikomon(&pPikomons, &dataQuantities, "AlienSolar", allElements[6], icoImg11, "", descfds, 5, 70,40,80,100,10,100,75,35);
+    AddPikomon(&pPikomons, &dataQuantities, "AlienSolar", allElements[6], icoImg11, "", descfds, 5, 70,40,80,100,10,100,75,35);
 
-char icoImg12[7][25];
-strcpy(icoImg12[0], "#######/\\#########");
-strcpy(icoImg12[1], "######/__\\########");
-strcpy(icoImg12[2], "#####[T T ]#######");
-strcpy(icoImg12[3], "####|  ^  o|######");
-strcpy(icoImg12[4], "###|.   <>  |#####");
-strcpy(icoImg12[5], "#.[  ^    *  ]#.##");
-strcpy(icoImg12[6], "==================");
+    char icoImg12[7][25];
+    strcpy(icoImg12[0], "#######/\\#########");
+    strcpy(icoImg12[1], "######/__\\########");
+    strcpy(icoImg12[2], "#####[T T ]#######");
+    strcpy(icoImg12[3], "####|  ^  o|######");
+    strcpy(icoImg12[4], "###|.   <>  |#####");
+    strcpy(icoImg12[5], "#.[  ^    *  ]#.##");
+    strcpy(icoImg12[6], "==================");
 
-AddPikomon(&pPikomons, &dataQuantities, "Speleotema", allElements[8], icoImg12, "", descfds, 5, 50,100,30,100,40,100,35,35);
+    AddPikomon(&pPikomons, &dataQuantities, "Speleotema", allElements[8], icoImg12, "", descfds, 5, 50,100,30,100,40,100,35,35);
 
-SavePikomons(pPikomons, dataQuantities.Pikomon, pikomoms);
-SaveDataQuantity(dataQuantities, dataQuantity);*/
-
+    SavePikomons(pPikomons, dataQuantities.Pikomon, pikomoms);
+    SaveDataQuantity(dataQuantities, dataQuantity);*/
 
     //------------------------------------------------------------------------------------------------------------------//
 
@@ -1179,7 +1187,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                     }
                     break;
                 case 2: 
-                    if (!ShopItems(&pPlayers, turnoShop, pItems, dataQuantities))
+                    if (!ShopItems(pPlayers, turnoShop, pItems, dataQuantities))
                     {
                         printf("Não foi possível comprar o item. (Pressione Enter para continuar)\n");
                         getchar();
@@ -1201,19 +1209,26 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                     break;
                 }
             }
-            SelectBattlePikomons();
+            printf("Player One Selecione seus picomons de batalha");
+            getchar();
+            getchar();
+            SelectBattlePikomons(&pPlayers[playerOneIndex]);
+            printf("Player Two Selecione seus picomons de batalha");
+            getchar();
+            getchar();
+            SelectBattlePikomons(&pPlayers[playerTwoIndex]);
             //Variaveis calcSkill
             bool SkillWasUsed = false;
             bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit, usedItemStatusHit;
             int selfDamage, enemyDamage, usedSkillIndex;
             //useitem
             bool ItemWasUsed = false;
-            bool selfEffectHit;
             //Variaveis Battle
             char calcNextTurn[7], userResponse;
             bool playerOneTurn, reset, nextTurnReset = false, battleIsOver, playerOneVictory, respostaValida, respostaValida2;
             int i = 0, turnCost;
             PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
+            PlPointer PlayerOne = &pPlayers[playerOneIndex], PlayerTwo = &pPlayers[playerTwoIndex];
             reset = true;
             battleIsOver = false;
             while(!battleIsOver){
@@ -1298,6 +1313,10 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                             getchar();
                             getchar();
                         }
+                        
+                        PrintPikomonEffects(&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex]);
+                        getchar();
+                        getchar();
                         //acoes do player1
                         if(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex].CurrentHP.Total > 0){
                             PassPikomonTurnTime(&pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex]);
@@ -1305,7 +1324,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                             MenuBattle(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], calcNextTurn);
                             respostaValida = false;
                             while (!respostaValida){
-                                sscanf(" %c", &userResponse);
+                                scanf(" %c", &userResponse);
                                 if(/*escolheu usa skill*/userResponse == '1'){
                                     respostaValida = true;
                                     printf("Skill(1):\n");
@@ -1319,28 +1338,28 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while(!respostaValida2){
                                         printf("Escolha uma skill\n");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if(userResponse == '1'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 0, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, selectedPlayerOnePicomon, 0, selectedPlayerTwoPicomon, &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
                                         }
                                         else if(userResponse == '2'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 1, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, selectedPlayerOnePicomon, 1, selectedPlayerTwoPicomon, &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
                                         }
                                         else if(userResponse == '3'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 2, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, selectedPlayerOnePicomon, 2, selectedPlayerTwoPicomon, &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
                                         }
                                         else if(userResponse == '4'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], 3, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, selectedPlayerOnePicomon, 3, selectedPlayerTwoPicomon, &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
                                         }
                                         else{
@@ -1359,10 +1378,10 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while (!respostaValida2){
                                         printf("Selecione um item");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < pPlayers[playerOneIndex].BagCurrentSize){
                                             ItemWasUsed = true;
-                                            UseItem(&pPlayers[playerOneIndex], &pPlayers[playerTwoIndex], (int)userResponse - (int)'0', &usedItemStatusHit);
+                                            UseItem(PlayerOne, PlayerTwo, (int)userResponse - (int)'0', &usedItemStatusHit);
                                             pPlayers[playerOneIndex].Pikocoins -= pPlayers[playerOneIndex].Bag[(int)userResponse - (int)'0'].Value;
                                             SellItemPlayerBag(&pPlayers, playerOneIndex, (int)userResponse - (int)'0');
                                         }
@@ -1383,7 +1402,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while (!respostaValida2){
                                         printf("Selecione um pikomon ou digite D para desistir da batalha");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < 6){
                                             if(pPlayers[playerOneIndex].BatlePikomons[(int)userResponse - (int)'0'].CurrentHP.Total > 0){
                                                 respostaValida2 = true;
@@ -1404,7 +1423,8 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                             respostaValida2 = false;
                                         }
                                     }
-                                    
+                                    selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex];
+                                    selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
                                     break;
                                 }
                                 else if(/*escolheu desistir*/userResponse == '4'){
@@ -1427,7 +1447,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                             respostaValida = false;
                             while (!respostaValida){
                                 printf("Seu pikomon não consegue mais batalhar, troque o ou desista\n");
-                                sscanf(" %c", &userResponse);
+                                scanf(" %c", &userResponse);
                                 if(/*escolheu troca pikomon*/userResponse == '3'){
                                     respostaValida = true;
                                     reset = true;
@@ -1439,7 +1459,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while (!respostaValida2){
                                         printf("Selecione um pikomon ou digite D para desistir da batalha");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < 6){
                                             if(pPlayers[playerOneIndex].BatlePikomons[(int)userResponse - (int)'0'].CurrentHP.Total > 0){
                                                 respostaValida2 = true;
@@ -1460,7 +1480,8 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                             respostaValida2 = false;
                                         }
                                     }
-                                    
+                                    selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex];
+                                    selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
                                     break;
                                 }
                                 else if(/*escolheu desistir*/userResponse == '4'){
@@ -1515,7 +1536,9 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                             getchar();
                             getchar();
                         }
-                        
+                        PrintPikomonEffects(&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex]);
+                        getchar();
+                        getchar();
                         //acoes do player2
                         if(pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex].CurrentHP.Total > 0){
                             PassPikomonTurnTime(&pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex]);
@@ -1523,7 +1546,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                             MenuBattle(pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], calcNextTurn);
                             respostaValida = false;
                             while (!respostaValida){
-                                sscanf(" %c", &userResponse);
+                                scanf(" %c", &userResponse);
                                 if(/*escolheu usa skill*/userResponse == '1'){
                                     respostaValida = true;
                                     printf("Skill(1):\n");
@@ -1537,28 +1560,28 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while(!respostaValida2){
                                         printf("Escolha uma skill\n");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if(userResponse == '1'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], 0, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, selectedPlayerTwoPicomon, 0, selectedPlayerOnePicomon, &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
                                         }
                                         else if(userResponse == '2'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], 1, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, selectedPlayerTwoPicomon, 1, selectedPlayerOnePicomon, &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
                                         }
                                         else if(userResponse == '3'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], 2, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, selectedPlayerTwoPicomon, 2, selectedPlayerOnePicomon, &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
                                         }
                                         else if(userResponse == '4'){
                                             respostaValida2 = true;
                                             SkillWasUsed = true;
-                                            CalcSkill(allElements, &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex], 3, &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
+                                            CalcSkill(allElements, selectedPlayerTwoPicomon, 3, selectedPlayerOnePicomon, &elementalEffectHit, &skillHit, &critHit, &selfEffectHit, &enemyEffectHit, &selfDamage, &enemyDamage);
 
                                         }
                                         else{
@@ -1577,7 +1600,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while (!respostaValida2){
                                         printf("Selecione um item");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < pPlayers[playerTwoIndex].BagCurrentSize){
                                             ItemWasUsed = true;
                                             UseItem(&pPlayers[playerTwoIndex], &pPlayers[playerOneIndex], (int)userResponse - (int)'0', &usedItemStatusHit);
@@ -1601,7 +1624,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while (!respostaValida2){
                                         printf("Selecione um pikomon ou digite D para desistir da batalha");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < 6){
                                             if(pPlayers[playerTwoIndex].BatlePikomons[(int)userResponse - (int)'0'].CurrentHP.Total > 0){
                                                 respostaValida2 = true;
@@ -1622,7 +1645,8 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                             respostaValida2 = false;
                                         }
                                     }
-                                    
+                                    selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex];
+                                    selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
                                     break;
                                 }
                                 else if(/*escolheu desistir*/userResponse == '4'){
@@ -1644,7 +1668,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                             respostaValida = false;
                             while (!respostaValida){
                                 printf("Seu pikomon não consegue mais batalhar, troque o ou desista\n");
-                                sscanf(" %c", &userResponse);
+                                scanf(" %c", &userResponse);
                                 if(/*escolheu troca pikomon*/userResponse == '3'){
                                     respostaValida = true;
                                     reset = true;
@@ -1656,7 +1680,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                     respostaValida2 = false;
                                     while (!respostaValida2){
                                         printf("Selecione um pikomon ou digite D para desistir da batalha");
-                                        sscanf(" %c", &userResponse);
+                                        scanf(" %c", &userResponse);
                                         if((int)userResponse - (int)'0' > -1 && (int)userResponse - (int)'0' < 6){
                                             if(pPlayers[playerTwoIndex].BatlePikomons[(int)userResponse - (int)'0'].CurrentHP.Total > 0){
                                                 respostaValida2 = true;
@@ -1677,7 +1701,8 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
                                             respostaValida2 = false;
                                         }
                                     }
-                                    
+                                    selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex];
+                                    selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
                                     break;
                                 }
                                 else if(/*escolheu desistir*/userResponse == '4'){
@@ -1733,6 +1758,7 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
         if (respostaUserMP == 4)
         {
             printf(":)");
+            break;
         }
     }
     //------------------------------------------------------------------------------------------------------------------//
@@ -1741,12 +1767,9 @@ SaveDataQuantity(dataQuantities, dataQuantity);*/
 }
 
 
-
-
 //Debug/Print/Base Functions
 //------------------------------------------------------------------------------//
-bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
-{
+bool DebugPlayers(Player *pPlayers, int index, int playersQuantity){
     int j, k;
 
     // -1 para pegar todos os players
@@ -1870,8 +1893,7 @@ bool DebugPlayers(Player *pPlayers, int index, int playersQuantity)
     return true;
 }
 
-bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity)
-{
+bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
     int j, k;
 
     if (index == -1)
@@ -2273,8 +2295,7 @@ bool DebugElements(Element *elements, int index) {
     return true;
 }
 
-bool ShowSkill(SkPointer skill) 
-{
+bool ShowSkill(SkPointer skill){
     if (skill == NULL) {
         perror("Skill inválida.");
         return false;
@@ -2337,8 +2358,7 @@ bool ShowSkill(SkPointer skill)
     return true;
 }
 
-bool ShowItems(ItPointer pItem)
-{
+bool ShowItems(ItPointer pItem){
     if (pItem == NULL) {
         perror("Item inválido.");
         return false;
@@ -2383,8 +2403,7 @@ bool ShowItems(ItPointer pItem)
     return true;
 }
 
-bool ShowPikomon(PiPointer pPikomon)
-{
+bool ShowPikomon(PiPointer pPikomon){
     int j, k;
 
     if (pPikomon == NULL || strlen(pPikomon[0].Name) == 0)
@@ -2849,8 +2868,8 @@ bool AddPlayer(PlPointer *pPlayers, DataQuantity *dataQuantities, char *name, ch
     return true;
 }
 
-bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, int itemIndex){
-    if (pPlayers == NULL || *pPlayers == NULL) {
+bool AddItemPlayerBag(PlPointer pPlayers, int playerIndex, ItPointer pItems, int itemIndex){
+    if (pPlayers == NULL || pPlayers == NULL) {
         perror("ERRO, \"pPlayers\" não pode ser NULL em \"AddItemPlayerBag\"");
         return false;
     }
@@ -2868,15 +2887,15 @@ bool AddItemPlayerBag(PlPointer *pPlayers, int playerIndex, ItPointer pItems, in
     }
 
     // Aumenta o tamanho atual da bag do jogador
-    (*pPlayers)[playerIndex].BagCurrentSize++;
-    (*pPlayers)[playerIndex].Bag = (ItPointer)realloc((*pPlayers)[playerIndex].Bag, (*pPlayers)[playerIndex].BagCurrentSize * sizeof(Item));
-    if ((*pPlayers)[playerIndex].Bag == NULL) {
+    pPlayers[playerIndex].BagCurrentSize++;
+    pPlayers[playerIndex].Bag = (ItPointer)realloc(pPlayers[playerIndex].Bag, pPlayers[playerIndex].BagCurrentSize * sizeof(Item));
+    if (pPlayers[playerIndex].Bag == NULL) {
         perror("ERRO na realocação de memória em \"AddItemPlayerBag\"");
         return false;
     }
 
     // Adiciona o item à bag do jogador
-    (*pPlayers)[playerIndex].Bag[(*pPlayers)[playerIndex].BagCurrentSize - 1] = pItems[itemIndex];
+    pPlayers[playerIndex].Bag[pPlayers[playerIndex].BagCurrentSize - 1] = pItems[itemIndex];
     return true; 
 }
 
@@ -3033,6 +3052,29 @@ bool SellItemPlayerBag(PlPointer *pPlayers, int playerIndex, int bagSellIndex){
     free(tempItems);
     return true;
 }
+
+void SelectBattlePikomons(Player *player){
+    for(int k = 0; k <6; k++){
+        printf("Escolha seu Pikomon para a batalha:\n");
+        for (int i = 0; i < 12; i++) {
+            if (strlen(player[0].PikomonsStorage[i].Name) > 0) {
+                printf("%d. %s\n", i + 1, player[0].PikomonsStorage[i].Name);
+            }
+        }
+        printf("Digite o número do Pikomon que deseja escolher: ");
+        int escolha;
+        scanf("%d", &escolha);
+
+
+        if (escolha < 1 ||  escolha > 6  || strlen(player[0].PikomonsStorage[escolha - 1].Name) == 0) {
+            printf("Escolha inválida. Tente novamente.\n");
+            k--;
+        } else {
+            player[0].BatlePikomons[k] = player[0].PikomonsStorage[escolha - 1]; 
+            printf("Você escolheu %s para a batalha!\n", player[0].PikomonsStorage[player[0].SelectedPikomonIndex].Name);
+        }
+    }
+} 
 //------------------------------------------------------------------------------//
 
 
@@ -3077,89 +3119,89 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn)
     }
 }
 
-void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPointer *defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage){
+void CalcSkill(Element allElements[10], PiPointer atacker, int skillIndex, PiPointer defenser, bool *elementalEffectHit, bool *skillHit, bool *critHit, bool *selfEffectHit, bool *enemyEffectHit, int *selfDamage, int *enemyDamage){
     int I, J, bonusQuantity;
     double elementalEffectivness;
     double physicalDamageReduction, magicDamageReduction;
-    SkPointer usedSkill = &(*atacker)[0].Skills[skillIndex];
+    SkPointer usedSkill = &atacker[0].Skills[skillIndex];
 
 
-    if(((rand() % 100)+1) <= ((double)usedSkill[0].ElementEffectHitChance) * ((double)(*atacker)[0].Atributes[5].Total)/100.0){
+    if(((rand() % 100)+1) <= ((double)usedSkill[0].ElementEffectHitChance) * ((double)atacker[0].Atributes[5].Total)/100.0){
         *elementalEffectHit = true;
-        physicalDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[1].Total) * 0.11);
-        magicDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[2].Total) * 0.11);
-        elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
+        physicalDamageReduction = 1.0 - (DefenseReductionCalc(defenser[0].Atributes[1].Total) * 0.11);
+        magicDamageReduction = 1.0 - (DefenseReductionCalc(defenser[0].Atributes[2].Total) * 0.11);
+        elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[defenser[0].Element.SelfElementIndex] / 100.0;
 
         if(usedSkill[0].Element.CurrentHPEffect.Timer > 0){
-            (*defenser)[0].CurrentHP.BonusQuantity++;
-            bonusQuantity = (*defenser)[0].CurrentHP.BonusQuantity;
-            (*defenser)[0].CurrentHP.acronym = (char**)realloc((*defenser)[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
-            (*defenser)[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
-            (*defenser)[0].CurrentHP.Bonus = (int*)realloc((*defenser)[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
-            (*defenser)[0].CurrentHP.BonusTimer = (int*)realloc((*defenser)[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
-            strcpy((*defenser)[0].CurrentHP.acronym[bonusQuantity-1], usedSkill[0].Element.Acronym);
-            (*defenser)[0].CurrentHP.Bonus[bonusQuantity-1] = (int)((usedSkill[0].Element.CurrentHPEffect.Quantity + (((double)usedSkill[0].Element.ElementalDamageScale) * ((double)(*atacker)[0].Atributes[6].Total)/ 100.0)) * magicDamageReduction * elementalEffectivness);
-            (*defenser)[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedSkill[0].Element.CurrentHPEffect.Timer;
+            defenser[0].CurrentHP.BonusQuantity++;
+            bonusQuantity = defenser[0].CurrentHP.BonusQuantity;
+            defenser[0].CurrentHP.acronym = (char**)realloc(defenser[0].CurrentHP.acronym, bonusQuantity * sizeof(char*));
+            defenser[0].CurrentHP.acronym[bonusQuantity-1] = (char *)calloc(4, sizeof(char));
+            defenser[0].CurrentHP.Bonus = (int*)realloc(defenser[0].CurrentHP.Bonus, bonusQuantity * sizeof(int));
+            defenser[0].CurrentHP.BonusTimer = (int*)realloc(defenser[0].CurrentHP.BonusTimer, bonusQuantity * sizeof(int));
+            strcpy(defenser[0].CurrentHP.acronym[bonusQuantity-1], usedSkill[0].Element.Acronym);
+            defenser[0].CurrentHP.Bonus[bonusQuantity-1] = (int)((usedSkill[0].Element.CurrentHPEffect.Quantity + (((double)usedSkill[0].Element.ElementalDamageScale) * ((double)atacker[0].Atributes[6].Total)/ 100.0)) * magicDamageReduction * elementalEffectivness);
+            defenser[0].CurrentHP.BonusTimer[bonusQuantity-1] = usedSkill[0].Element.CurrentHPEffect.Timer;
         }
         
         for (I = 0; I < 8; I++){
             if(usedSkill[0].Element.StatusEffect[I].Timer > 0){
-                (*defenser)[0].Atributes[I].BonusQuantity++;
-                bonusQuantity = (*defenser)[0].Atributes[I].BonusQuantity;
-                (*defenser)[0].Atributes[I].acronym = (char**)realloc((*defenser)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
-                (*defenser)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
-                (*defenser)[0].Atributes[I].Bonus = (int*)realloc((*defenser)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
-                (*defenser)[0].Atributes[I].BonusTimer = (int*)realloc((*defenser)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
-                strcpy((*defenser)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
-                (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
-                (*defenser)[0].Atributes[I].Total += (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1];
-                (*defenser)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+                defenser[0].Atributes[I].BonusQuantity++;
+                bonusQuantity = defenser[0].Atributes[I].BonusQuantity;
+                defenser[0].Atributes[I].acronym = (char**)realloc(defenser[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                defenser[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                defenser[0].Atributes[I].Bonus = (int*)realloc(defenser[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                defenser[0].Atributes[I].BonusTimer = (int*)realloc(defenser[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                strcpy(defenser[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
+                defenser[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
+                defenser[0].Atributes[I].Total += defenser[0].Atributes[I].Bonus[bonusQuantity-1];
+                defenser[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
             }
         }
     }
     else *elementalEffectHit = false;
 
 
-    if(((rand() % 100)+1) <= (double)(*atacker)[0].Atributes[3].Total * (double)usedSkill[0].hitChance / 100.0){
+    if(((rand() % 100)+1) <= (double)atacker[0].Atributes[3].Total * (double)usedSkill[0].hitChance / 100.0){
         *skillHit = true;
         int magicDamage, physicalDamage;
         if((rand() % 100 +1) <= usedSkill[0].CritChance) *critHit = true;
 
-        magicDamage = (int)(((double)(*atacker)[0].Atributes[6].Total * (double)usedSkill[0].MagicAttackScale / 100.0) + usedSkill[0].MagicBase) * (*critHit) ? 2 : 1;
-        physicalDamage = (int)(((double)(*atacker)[0].Atributes[4].Total * (double)usedSkill[0].AttackScale / 100.0) + usedSkill[0].AttackBase) * (*critHit) ? 2 : 1;
+        magicDamage = (int)(((double)atacker[0].Atributes[6].Total * (double)usedSkill[0].MagicAttackScale / 100.0) + usedSkill[0].MagicBase) * (*critHit) ? 2 : 1;
+        physicalDamage = (int)(((double)atacker[0].Atributes[4].Total * (double)usedSkill[0].AttackScale / 100.0) + usedSkill[0].AttackBase) * (*critHit) ? 2 : 1;
         if(usedSkill[0].Target == 'S'){
-            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*atacker)[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - (DefenseReductionCalc((*atacker)[0].Atributes[1].Total) * 0.11);
-            magicDamageReduction = 1.0 - (DefenseReductionCalc((*atacker)[0].Atributes[2].Total) * 0.11);
+            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[atacker[0].Element.SelfElementIndex] / 100.0;
+            physicalDamageReduction = 1.0 - (DefenseReductionCalc(atacker[0].Atributes[1].Total) * 0.11);
+            magicDamageReduction = 1.0 - (DefenseReductionCalc(atacker[0].Atributes[2].Total) * 0.11);
             *selfDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
-            (*atacker)[0].CurrentHP.Total -= *selfDamage;
+            atacker[0].CurrentHP.Total -= *selfDamage;
 
         }
         else if(usedSkill[0].Target == 'E'){
-            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[1].Total) * 0.11);
-            magicDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[2].Total) * 0.11);
+            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[defenser[0].Element.SelfElementIndex] / 100.0;
+            physicalDamageReduction = 1.0 - (DefenseReductionCalc(defenser[0].Atributes[1].Total) * 0.11);
+            magicDamageReduction = 1.0 - (DefenseReductionCalc(defenser[0].Atributes[2].Total) * 0.11);
             *enemyDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
-            (*defenser)[0].CurrentHP.Total -= *enemyDamage;
+            defenser[0].CurrentHP.Total -= *enemyDamage;
 
         }
         else if(usedSkill[0].Target == 'B'){
-            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*atacker)[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - (DefenseReductionCalc((*atacker)[0].Atributes[1].Total) * 0.11);
-            magicDamageReduction = 1.0 - (DefenseReductionCalc((*atacker)[0].Atributes[2].Total) * 0.11);
+            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[atacker[0].Element.SelfElementIndex] / 100.0;
+            physicalDamageReduction = 1.0 - (DefenseReductionCalc(atacker[0].Atributes[1].Total) * 0.11);
+            magicDamageReduction = 1.0 - (DefenseReductionCalc(atacker[0].Atributes[2].Total) * 0.11);
             *selfDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
-            (*atacker)[0].CurrentHP.Total -= *selfDamage;
+            atacker[0].CurrentHP.Total -= *selfDamage;
 
 
-            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[(*defenser)[0].Element.SelfElementIndex] / 100.0;
-            physicalDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[1].Total) * 0.11);
-            magicDamageReduction = 1.0 - (DefenseReductionCalc((*defenser)[0].Atributes[2].Total) * 0.11);
+            elementalEffectivness = (double)usedSkill[0].Element.Effectiveness[defenser[0].Element.SelfElementIndex] / 100.0;
+            physicalDamageReduction = 1.0 - (DefenseReductionCalc(defenser[0].Atributes[1].Total) * 0.11);
+            magicDamageReduction = 1.0 - (DefenseReductionCalc(defenser[0].Atributes[2].Total) * 0.11);
             *enemyDamage = (physicalDamage * physicalDamageReduction + magicDamage * magicDamageReduction) * elementalEffectivness;
 
-            (*defenser)[0].CurrentHP.Total -= *enemyDamage;
+            defenser[0].CurrentHP.Total -= *enemyDamage;
         }
         else{
             perror("Alvo da skill usada não reconhecido");
@@ -3172,16 +3214,16 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
         *selfEffectHit = true;
         for (I = 0; I < 8; I++){
             if(usedSkill[0].Element.StatusEffect[I].Timer > 0){
-                (*atacker)[0].Atributes[I].BonusQuantity++;
-                bonusQuantity = (*atacker)[0].Atributes[I].BonusQuantity;
-                (*atacker)[0].Atributes[I].acronym = (char**)realloc((*atacker)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
-                (*atacker)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
-                (*atacker)[0].Atributes[I].Bonus = (int*)realloc((*atacker)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
-                (*atacker)[0].Atributes[I].BonusTimer = (int*)realloc((*atacker)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
-                strcpy((*atacker)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
-                (*atacker)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
-                (*atacker)[0].Atributes[I].Total += (*atacker)[0].Atributes[I].Bonus[bonusQuantity-1];
-                (*atacker)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+                atacker[0].Atributes[I].BonusQuantity++;
+                bonusQuantity = atacker[0].Atributes[I].BonusQuantity;
+                atacker[0].Atributes[I].acronym = (char**)realloc(atacker[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                atacker[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                atacker[0].Atributes[I].Bonus = (int*)realloc(atacker[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                atacker[0].Atributes[I].BonusTimer = (int*)realloc(atacker[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                strcpy(atacker[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
+                atacker[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
+                atacker[0].Atributes[I].Total += atacker[0].Atributes[I].Bonus[bonusQuantity-1];
+                atacker[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
             }
         }
     }
@@ -3192,30 +3234,30 @@ void CalcSkill(Element allElements[10], PiPointer *atacker, int skillIndex, PiPo
         *enemyEffectHit = true;
         for (I = 0; I < 8; I++){
             if(usedSkill[0].Element.StatusEffect[I].Timer > 0){
-                (*defenser)[0].Atributes[I].BonusQuantity++;
-                bonusQuantity = (*defenser)[0].Atributes[I].BonusQuantity;
-                (*defenser)[0].Atributes[I].acronym = (char**)realloc((*defenser)[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
-                (*defenser)[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
-                (*defenser)[0].Atributes[I].Bonus = (int*)realloc((*defenser)[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
-                (*defenser)[0].Atributes[I].BonusTimer = (int*)realloc((*defenser)[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
-                strcpy((*defenser)[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
-                (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
-                (*defenser)[0].Atributes[I].Total += (*defenser)[0].Atributes[I].Bonus[bonusQuantity-1];
-                (*defenser)[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
+                defenser[0].Atributes[I].BonusQuantity++;
+                bonusQuantity = defenser[0].Atributes[I].BonusQuantity;
+                defenser[0].Atributes[I].acronym = (char**)realloc(defenser[0].Atributes[I].acronym, bonusQuantity * sizeof(char*));
+                defenser[0].Atributes[I].acronym[bonusQuantity-1] = (char*)calloc(4, sizeof(char));
+                defenser[0].Atributes[I].Bonus = (int*)realloc(defenser[0].Atributes[I].Bonus, bonusQuantity * sizeof(int));
+                defenser[0].Atributes[I].BonusTimer = (int*)realloc(defenser[0].Atributes[I].BonusTimer, bonusQuantity * sizeof(int));
+                strcpy(defenser[0].Atributes[I].acronym[bonusQuantity-1], usedSkill[0].Element.StatusEffect[I].Acronym);
+                defenser[0].Atributes[I].Bonus[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Quantity;
+                defenser[0].Atributes[I].Total += defenser[0].Atributes[I].Bonus[bonusQuantity-1];
+                defenser[0].Atributes[I].BonusTimer[bonusQuantity-1] = usedSkill[0].Element.StatusEffect[I].Timer;
             }
         }
     }
     else *enemyEffectHit = false;
 }
 
-void UseItem(PlPointer *selfPlayer, PlPointer *enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit){
+void UseItem(PlPointer selfPlayer, PlPointer enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit){
     int I, bonusQuantity;
     double pikomonDamageReduction, otherpikomonDamageReduction;
     ItPointer usedItem;
     PiPointer pikomon, otherPikomon;
-    usedItem = &(*selfPlayer)[0].Bag[itemUsedIndex];
-    pikomon = &(*selfPlayer)[0].BatlePikomons[(*selfPlayer)[0].SelectedPikomonIndex];
-    otherPikomon = &(*enemyPlayer)[0].BatlePikomons[(*enemyPlayer)[0].SelectedPikomonIndex];
+    usedItem = &selfPlayer[0].Bag[itemUsedIndex];
+    pikomon = &selfPlayer[0].BatlePikomons[selfPlayer[0].SelectedPikomonIndex];
+    otherPikomon = &enemyPlayer[0].BatlePikomons[enemyPlayer[0].SelectedPikomonIndex];
     if(usedItem[0].CurrentHPDamageIsPhysic){
         pikomonDamageReduction = 1.0 - (DefenseReductionCalc(pikomon[0].Atributes[1].Total) * 0.11);
         otherpikomonDamageReduction = 1.0 - (DefenseReductionCalc(otherPikomon[0].Atributes[1].Total) * 0.11); 
@@ -3355,12 +3397,12 @@ void UseItem(PlPointer *selfPlayer, PlPointer *enemyPlayer, int itemUsedIndex, b
     }
 }
 
-void PassPikomonTurnTime(PiPointer *pikomon){
+void PassPikomonTurnTime(PiPointer pikomon){
     //vai ter problema com o CurrentHp.acronym e os atribute.acronym. neles não se podem usar o realloc porque não libera os ponteiros individuais
     int I, J, K, indexToRemove;
     Effect *tempEffect;
     PiPointer pik;
-    pik = *pikomon;
+    pik = pikomon;
     
     for(J = 0; J < pik[0].CurrentHP.BonusQuantity; J++){
         pik[0].CurrentHP.BonusTimer[J]--;
@@ -3717,9 +3759,8 @@ void MenuShopMP() {
     printf("                |_____________________________________|\n");
 }
 
-bool ShopItems(PlPointer *players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade)
-{
-    Player *playerAtual = &(*players)[playerAtualIndex];
+bool ShopItems(PlPointer players, int playerAtualIndex, ItPointer pItems, DataQuantity itemQuantidade){
+    Player *playerAtual = &players[playerAtualIndex];
 
     printf("__\n");
     printf("|                                   |\n");
@@ -3751,7 +3792,7 @@ bool ShopItems(PlPointer *players, int playerAtualIndex, ItPointer pItems, DataQ
         return false;
     }
 
-    if (!AddItemPlayerBag(&players, playerAtualIndex, pItems, itemEscolha))
+    if (!AddItemPlayerBag(players, playerAtualIndex, pItems, itemEscolha))
     {
         printf("Falha ao adicionar o item ao inventário. Tente novamente.\n");
         return false;
@@ -3764,8 +3805,7 @@ bool ShopItems(PlPointer *players, int playerAtualIndex, ItPointer pItems, DataQ
     return true;
 }
 
-void PrintPikomonEffects(PiPointer pikomon)
-{
+void PrintPikomonEffects(PiPointer pikomon){
     int i, j;
     PiPointer pik =pikomon;
 
