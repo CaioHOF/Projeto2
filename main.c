@@ -225,7 +225,7 @@ bool ShowItems(ItPointer pItem);
 void UseItem(PlPointer selfPlayer, PlPointer enemyPlayer, int itemUsedIndex, bool *usedItemStatusHit);
 bool ShowPikomon(PiPointer pPikomon);
 Pikomon GerarPikomon(PiPointer pPikomons, int indexPikomon, Personality *personalities);
-void EscolherSkills(Player *player);
+void EscolherSkills(Player *player, Skill *Skills, int totalSkills);
 
 
 int main(){ 
@@ -2319,11 +2319,9 @@ int main(){
             SelectBattlePikomons(&pPlayers[playerOneIndex]);
             SelectBattlePikomons(&pPlayers[playerTwoIndex]);
 
-            EscolherSkills(&pPlayers[playerOneIndex]);
+            EscolherSkills(&pPlayers[playerOneIndex], pSkills, dataQuantities.Skill);
             getchar();
-            getchar();
-            EscolherSkills(&pPlayers[playerTwoIndex]);
-            getchar();
+            EscolherSkills(&pPlayers[playerTwoIndex], pSkills, dataQuantities.Skill);
             getchar();
             //Variaveis calcSkill
             bool SkillWasUsed = false;
@@ -2341,13 +2339,6 @@ int main(){
             PlPointer PlayerOne = &pPlayers[playerOneIndex], PlayerTwo = &pPlayers[playerTwoIndex];
             reset = true;
             battleIsOver = false;
-            DebugPikomons(selectedPlayerOnePicomon, 0, 1);
-            getchar();
-            getchar();
-            DebugPikomons(selectedPlayerTwoPicomon, 0, 1);
-            getchar();
-            getchar();
-            
             while(!battleIsOver){
                 //Recalcula os turnos toda a vez que tiver um reset, tipo quando a velocidade alterar
                 if(SkillWasUsed){
@@ -2381,8 +2372,11 @@ int main(){
                     getchar();
                     getchar();
                 }
-                
+                printf("reset: %s", reset ? "true" : "false");
                 if(reset){
+                    reset = false;
+                    selectedPlayerOnePicomon[0].ChargedSpeed = 0;
+                    selectedPlayerTwoPicomon[0].ChargedSpeed = 0;
                     if(selectedPlayerOnePicomon[0].Atributes[7].Total == selectedPlayerTwoPicomon[0].Atributes[7].Total){
                         if((rand() % 100 + 1) > 50) playerOneTurn = true;
                         else playerOneTurn = false;
@@ -2396,9 +2390,15 @@ int main(){
                     reset = true;
                 }
                 if(playerOneTurn){
+                    printf("TURNO DO P1");
                     selectedPlayerOnePicomon[0].ChargedSpeed += selectedPlayerOnePicomon[0].Atributes[7].Total;
                     while(selectedPlayerOnePicomon[0].ChargedSpeed - turnCost >= 0){
+                        printf("\nTurnCost: %d\n", turnCost);
+                        printf("\nTurnGain: %d\n", selectedPlayerTwoPicomon[0].Atributes[7].Total);
+                        printf("\nPikomonAtual ChargedSpeed: %d\n", selectedPlayerTwoPicomon[0].ChargedSpeed);
                         selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost;
+                        printf("selectedPlayerOnePicomon[0].ChargedSpeed -= turnCost\n");
+                        printf("\nPikomonAtual ChargedSpeed: %d\n", selectedPlayerTwoPicomon[0].ChargedSpeed);
                         if(SkillWasUsed){
                             SkillWasUsed = false;
                             if (skillHit)
@@ -2616,12 +2616,20 @@ int main(){
                         }
 
                     }
+                    printf("É PRA TROCA O TURNO\n");
                     playerOneTurn = false;
+                    printf("playerOneTurn: %s\n", playerOneTurn ? "true" : "false");
                 }
                 else{
+                    printf("TURNO DO P2");
                     selectedPlayerTwoPicomon[0].ChargedSpeed += selectedPlayerTwoPicomon[0].Atributes[7].Total;
                     while(selectedPlayerTwoPicomon[0].ChargedSpeed - turnCost >= 0){
+                        printf("\nTurnCost: %d\n", turnCost);
+                        printf("\nTurnGain: %d\n", selectedPlayerTwoPicomon[0].Atributes[7].Total);
+                        printf("\nPikomonAtual ChargedSpeed: %d\n", selectedPlayerTwoPicomon[0].ChargedSpeed);
                         selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost;
+                        printf("selectedPlayerTwoPicomon[0].ChargedSpeed -= turnCost\n");
+                        printf("\nPikomonAtual ChargedSpeed: %d\n", selectedPlayerTwoPicomon[0].ChargedSpeed);
                         if(SkillWasUsed){
                             SkillWasUsed = false;
                             if (skillHit)
@@ -2837,7 +2845,9 @@ int main(){
                         }
 
                     }
+                    printf("É PRA TROCA O TURNO\n");
                     playerOneTurn = true;
+                    printf("playerOneTurn: %s\n", playerOneTurn ? "true" : "false");
                 }
             }
             if(playerOneVictory){
@@ -4246,18 +4256,18 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn)
     //calcNextTurn vai ser a resposta a ser gerada
 
     calcNextTurn[6] = '\0';
-    bool b;
-    int i = 0, turnCost, selfSpeedCharged = 0, enemySpeedCharge = 0;
-    if(selfPikomon.Atributes[7].Total > enemyPikomon.Atributes[7].Total) turnCost = enemyPikomon.Atributes[7].Total, b = true;
-    else if(selfPikomon.Atributes[7].Total < enemyPikomon.Atributes[7].Total) turnCost = selfPikomon.Atributes[7].Total, b = false;
+    bool playerOneTurn;
+    int i = 0, turnCost, selfSpeedCharged = selfPikomon.ChargedSpeed, enemySpeedCharge = enemyPikomon.ChargedSpeed;
+    if(selfPikomon.Atributes[7].Total > enemyPikomon.Atributes[7].Total) turnCost = enemyPikomon.Atributes[7].Total, playerOneTurn = true;
+    else if(selfPikomon.Atributes[7].Total < enemyPikomon.Atributes[7].Total) turnCost = selfPikomon.Atributes[7].Total, playerOneTurn = false;
 
     if(selfPikomon.Atributes[7].Total == enemyPikomon.Atributes[7].Total){
-        if((rand() % 100 + 1) > 50) b = true;
-        else b = false;
+        if((rand() % 100 + 1) > 50) playerOneTurn = true;
+        else playerOneTurn = false;
         turnCost = selfPikomon.Atributes[7].Total;
     }
     while(i < 6){
-        if(b){
+        if(playerOneTurn){
             selfSpeedCharged += selfPikomon.Atributes[7].Total;
             while(selfSpeedCharged - turnCost >= 0){
                 selfSpeedCharged -= turnCost;
@@ -4265,7 +4275,7 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn)
                 i++;
                 if(i >= 6) break;
             }
-            b = !b;
+            playerOneTurn = false;
         }
         else{
             enemySpeedCharge += enemyPikomon.Atributes[7].Total;
@@ -4275,7 +4285,7 @@ void CalcNextTurn(Pikomon selfPikomon, Pikomon enemyPikomon, char *calcNextTurn)
                 i++;
                 if(i >= 6) break;
             }
-            b = !b;
+            playerOneTurn = true;
         }
     }
 }
@@ -4827,7 +4837,7 @@ Pikomon GerarPikomon(PiPointer pPikomons, int indexPikomon, Personality *persona
     srand(time(NULL));
     Pikomon novo;
     novo = pPikomons[indexPikomon];
-    int totalRaridades = 0;
+    /*int totalRaridades = 0;
     for (int i = 0; i < 13; i++) {
         totalRaridades += personalities[i].rarity;
     }
@@ -4849,7 +4859,7 @@ Pikomon GerarPikomon(PiPointer pPikomons, int indexPikomon, Personality *persona
     novo.Atributes[4].Base = (int)(pPikomons[indexPikomon].Atributes[4].Base * (double)novo.Personality.BaseAttackModifier / 100.0);
     novo.Atributes[5].Base = (int)(pPikomons[indexPikomon].Atributes[5].Base * (double)novo.Personality.BaseElementalAccuracyModifier / 100.0);
     novo.Atributes[6].Base = (int)(pPikomons[indexPikomon].Atributes[6].Base * (double)novo.Personality.BaseMagicAttackModifier / 100.0);
-    novo.Atributes[7].Base = (int)(pPikomons[indexPikomon].Atributes[7].Base * (double)novo.Personality.BaseSpeedModifier / 100.0);
+    novo.Atributes[7].Base = (int)(pPikomons[indexPikomon].Atributes[7].Base * (double)novo.Personality.BaseSpeedModifier / 100.0);*/
     return novo;
 }
 
@@ -4936,6 +4946,7 @@ bool ShopItems(PlPointer players, int playerAtualIndex, ItPointer pItems, DataQu
 
     int itemEscolha;
     scanf("%d", &itemEscolha);
+    itemEscolha --;
 
     if (itemEscolha == -1)
     {
@@ -5002,16 +5013,15 @@ void PrintPikomonEffects(PiPointer pikomon){
     }
 }
 
-void EscolherSkills(Player *player) {
+void EscolherSkills(Player *player, Skill *Skills, int totalSkills){
     for (int k = 0; k < 6; k++) {
         printf("%s, escolha as habilidades para %s:\n", player[0].Name, player[0].BatlePikomons[k].Name);
 
+        // Listar habilidades disponíveis para o Pikomon atual
         int skillCount = 0;
-
-        for (int i = 0; i < 4; i++) {
-            Skill currentSkill = player[0].BatlePikomons[k].Skills[i];
-            bool canLearn = currentSkill.LearnablePersonalities[player[0].BatlePikomons[k].Personality.rarity] &&
-                            currentSkill.LearnableElements[player[0].BatlePikomons[k].Element.SelfElementIndex];
+        for (int i = 0; i < totalSkills; i++) {
+            Skill currentSkill = Skills[i];
+            bool canLearn = currentSkill.LearnableElements[player[0].BatlePikomons[k].Element.SelfElementIndex];
             
             if (strlen(currentSkill.Name) > 0 && canLearn) {
                 printf("%d. %s - Tipo: %s\n", i + 1, currentSkill.Name, currentSkill.Type);
@@ -5019,23 +5029,24 @@ void EscolherSkills(Player *player) {
             }
         }
 
+        // Verificar se há habilidades disponíveis
         if (skillCount == 0) {
             printf("Nenhuma habilidade disponível para %s.\n", player[0].BatlePikomons[k].Name);
             continue; 
         }
 
+        // Selecionar habilidades para o Pikomon
         for (int j = 0; j < 4; j++) {
             printf("Digite o número da habilidade %d para %s: ", j + 1, player[0].BatlePikomons[k].Name);
             int escolha;
             scanf("%d", &escolha);
 
-            if (escolha < 1 || escolha > 4) {
+            if (escolha < 1 || escolha > totalSkills) {
                 printf("Escolha inválida. Tente novamente.\n");
                 j--; 
             } else {
-                Skill chosenSkill = player[0].BatlePikomons[k].Skills[escolha - 1];
-                bool isValidSkill = chosenSkill.LearnablePersonalities[player[0].BatlePikomons[k].Personality.rarity] &&
-                                    chosenSkill.LearnableElements[player[0].BatlePikomons[k].Element.SelfElementIndex];
+                Skill chosenSkill = Skills[escolha - 1];
+                bool isValidSkill = chosenSkill.LearnableElements[player[0].BatlePikomons[k].Element.SelfElementIndex];
 
                 if (!isValidSkill) {
                     printf("Habilidade não aprendível por este Pikomon. Tente novamente.\n");
