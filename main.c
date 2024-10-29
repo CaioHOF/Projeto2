@@ -1483,8 +1483,7 @@ int main(){
 
     //Skills//
 
-    /*char DescAtiva[3][255];
-    strcpy(DescAtiva[0], "");
+    /*strcpy(DescAtiva[0], "");
     strcpy(DescAtiva[1], "");
     strcpy(DescAtiva[2], "");
 
@@ -2318,26 +2317,14 @@ int main(){
                 }
             }
             SelectBattlePikomons(&pPlayers[playerOneIndex]);
-            for(int x = 0; x < 6; x++){
-                for(int k = 0; k < 8; k++){
-                    pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[k].Total = pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[k].Base;
-                }
-                pPlayers[playerOneIndex].PikomonsStorage[x].CurrentHP.Total = pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[0].Total;
-            }
             SelectBattlePikomons(&pPlayers[playerTwoIndex]);
-            for(int x = 0; x < 6; x++){
-                for(int k = 0; k < 8; k++){
-                    pPlayers[playerTwoIndex].PikomonsStorage[x].Atributes[k].Total = pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[k].Base;
-                }
-                pPlayers[playerTwoIndex].PikomonsStorage[x].CurrentHP.Total = pPlayers[playerOneIndex].PikomonsStorage[x].Atributes[0].Total;
-            }
 
-            //EscolherSkills(&pPlayers[playerOneIndex]);
-            //getchar();
-            //getchar();
-            //EscolherSkills(&pPlayers[playerTwoIndex]);
-            //getchar();
-            //getchar();
+            EscolherSkills(&pPlayers[playerOneIndex]);
+            getchar();
+            getchar();
+            EscolherSkills(&pPlayers[playerTwoIndex]);
+            getchar();
+            getchar();
             //Variaveis calcSkill
             bool SkillWasUsed = false;
             bool elementalEffectHit, skillHit, critHit, selfEffectHit, enemyEffectHit, usedItemStatusHit;
@@ -2348,10 +2335,19 @@ int main(){
             char calcNextTurn[7], userResponse;
             bool playerOneTurn, reset, nextTurnReset = false, battleIsOver, playerOneVictory, respostaValida, respostaValida2;
             int i = 0, turnCost;
+            pPlayers[playerOneIndex].SelectedPikomonIndex = 0;
+            pPlayers[playerTwoIndex].SelectedPikomonIndex = 0;
             PiPointer selectedPlayerOnePicomon = &pPlayers[playerOneIndex].BatlePikomons[pPlayers[playerOneIndex].SelectedPikomonIndex], selectedPlayerTwoPicomon = &pPlayers[playerTwoIndex].BatlePikomons[pPlayers[playerTwoIndex].SelectedPikomonIndex];
             PlPointer PlayerOne = &pPlayers[playerOneIndex], PlayerTwo = &pPlayers[playerTwoIndex];
             reset = true;
             battleIsOver = false;
+            DebugPikomons(selectedPlayerOnePicomon, 0, 1);
+            getchar();
+            getchar();
+            DebugPikomons(selectedPlayerTwoPicomon, 0, 1);
+            getchar();
+            getchar();
+            
             while(!battleIsOver){
                 //Recalcula os turnos toda a vez que tiver um reset, tipo quando a velocidade alterar
                 if(SkillWasUsed){
@@ -3022,39 +3018,16 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
 
     if (index == -1){
         for (index = 0; index < pikomonsQuantity; index++){
-            /*char Name[20];
-            char IconImg[7][25];
-            char Passive[20];
-            char PassiveDescription[3][255];
-            int Value;
-            Element Element;
-            Personality Personality;
-
-            Atribute CurrentHP;
-            Atribute Atributes[8];
-            //Atributes[0].Name, "HP"
-            //Atributes[1].Name, "Defense"
-            //Atributes[2].Name, "MagicDefense"
-            //Atributes[3].Name, "Accuracy"
-            //Atributes[4].Name, "Attack"
-            //Atributes[5].Name, "ElementalAccuracy"
-            //Atributes[6].Name, "MagicAttack"
-            //Atributes[7].Name, "Speed"
-            
-            int ChargedSpeed;
-            //isso é para o calculo de turno, é a velocidade que ele acumula pra poder ter mais de um turno
-
-            Skill Skills[4];*/
             printf("IconImg:\n");
             for (j = 0; j < 7; j++){
                 printf("| %s |\n", pPikomon[index].IconImg[j]);
             }
             printf("\n");
-            printf("|Index:| %2d | |,| Name:| %10s | |\n",index,pPikomon[index].Name);
+            printf("|Index:| %2d | |,| Name:| %20s | |\n",index,pPikomon[index].Name);
             printf("|Passive:| %20s | |\n | PassiveDescription: |\n %s\n%s\n%s\n",pPikomon[index].Passive,pPikomon[index].PassiveDescription[0],pPikomon[index].PassiveDescription[1],pPikomon[index].PassiveDescription[2]);
             printf("| Value: | %3d | |\n",pPikomon[index].Value);
             printf("| Element: |\n");
-            printf("| name: | %s | |,| Acronym: | %4s | |\n",pPikomon[index].Element.Name,pPikomon[index].Element.Acronym);
+            printf("| name: | %20s | |,| Acronym: | %4s | |\n",pPikomon[index].Element.Name,pPikomon[index].Element.Acronym);
             for (int p = 0; p < 10; p++){
                 printf("| Effectiveness[%d]: | %d | | ",p,pPikomon[index].Element.Effectiveness[p]);
             }
@@ -3073,39 +3046,8 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
             for (int p = 0; p < 8; p++){
             printf("|Atributes[%2d]|\n",p);
             printf("| Name: | %20s | |,| Base: | %2d | |,| Total: | | %2d |,| BonusQuantity: | | %2d |",pPikomon[index].Atributes[p].Name,pPikomon[index].Atributes[p].Base,pPikomon[index].Atributes[p].Total,pPikomon[index].Atributes[p].BonusQuantity);
+            printf("\n\n");
             }
-
-
-            /*
-            printf("| Index:| %2d | |,| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
-                    index,
-                    pPikomon[index].Name,
-                    pPikomon[index].Element.Name,
-                    pPikomon[index].Atributes[0].Base,
-                    pPikomon[index].Atributes[4].Base,
-                    pPikomon[index].Atributes[1].Base,
-                    pPikomon[index].Atributes[6].Base,
-                    pPikomon[index].Atributes[2].Base,
-                    pPikomon[index].Atributes[7].Base,
-                    pPikomon[index].Atributes[3].Base,
-                    pPikomon[index].Atributes[5].Base);
-
-
-            // Exibir IconImg do Pikomon
-
-
-            // Exibir habilidades do Pikomon
-            for (k = 0; k < 4; k++)
-            {
-                if (strlen(pPikomon[index].Skills[k].Name) > 0)
-                {
-                    printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %d | |,| MagicAttackScale:| %d | |;\n",
-                            pPikomon[index].Skills[k].Name,
-                            pPikomon[index].Skills[k].Target,
-                            pPikomon[index].Skills[k].AttackScale,
-                            pPikomon[index].Skills[k].MagicAttackScale);
-                }
-            }*/
         }
     }
     else if (index >= 0 && index < pikomonsQuantity){
@@ -3117,11 +3059,11 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
                 printf("| %s |\n", pPikomon[index].IconImg[j]);
             }
             printf("\n");
-            printf("|Index:| %2d | |,| Name:| %10s | |\n",index,pPikomon[index].Name);
+            printf("|Index:| %2d | |,| Name:| %20s | |\n",index,pPikomon[index].Name);
             printf("|Passive:| %20s | |\n | PassiveDescription: |\n %s\n%s\n%s\n",pPikomon[index].Passive,pPikomon[index].PassiveDescription[0],pPikomon[index].PassiveDescription[1],pPikomon[index].PassiveDescription[2]);
             printf("| Value: | %3d | |\n",pPikomon[index].Value);
             printf("| Element: |\n");
-            printf("| name: | %s | |,| Acronym: | %4s | |\n",pPikomon[index].Element.Name,pPikomon[index].Element.Acronym);
+            printf("| name: | %20s | |,| Acronym: | %4s | |\n",pPikomon[index].Element.Name,pPikomon[index].Element.Acronym);
             for (int p = 0; p < 10; p++){
                 printf("| Effectiveness[%d]: | %d | | ",p,pPikomon[index].Element.Effectiveness[p]);
             }
@@ -3140,41 +3082,8 @@ bool DebugPikomons(PiPointer pPikomon, int index, int pikomonsQuantity){
             for (int p = 0; p < 8; p++){
             printf("|Atributes[%2d]|\n",p);
             printf("| Name: | %20s | |,| Base: | %2d | |,| Total: | | %2d |,| BonusQuantity: | | %2d |",pPikomon[index].Atributes[p].Name,pPikomon[index].Atributes[p].Base,pPikomon[index].Atributes[p].Total,pPikomon[index].Atributes[p].BonusQuantity);
+            printf("\n\n");
             }
-            /*
-            printf("| Nome:| %10s | |,| Element:| %10s | |,| HP:| %3d | |,| Atk:| %3d | |,| Def:| %3d | |,| SpA:| %3d | |,| SpD:| %3d | |,| Spd:| %3d |,| Acu:| %3d |,| Eac:| %3d | |\n",
-                   pPikomon[index].Name,
-                   pPikomon[index].Element.Name,
-                   pPikomon[index].Atributes[0].Base,
-                   pPikomon[index].Atributes[4].Base,
-                   pPikomon[index].Atributes[1].Base,
-                   pPikomon[index].Atributes[6].Base,
-                   pPikomon[index].Atributes[2].Base,
-                   pPikomon[index].Atributes[7].Base,
-                   pPikomon[index].Atributes[3].Base,
-                   pPikomon[index].Atributes[5].Base);
-
-
-
-            printf("IconImg:\n");
-            for (j = 0; j < 7; j++)
-            {
-                printf("| %s |\n", pPikomon[index].IconImg[j]);
-            }
-            printf("\n");
-
-            // Exibir habilidades do Pikomon
-            for (k = 0; k < 4; k++)
-            {
-                if (strlen(pPikomon[index].Skills[k].Name) > 0)
-                {
-                    printf("| Skill Name:| %20s | |,| Target:| %c | |,| AttackScale:| %d | |,| MagicAttackScale:| %d | |;\n",
-                           pPikomon[index].Skills[k].Name,
-                           pPikomon[index].Skills[k].Target,
-                           pPikomon[index].Skills[k].AttackScale,
-                           pPikomon[index].Skills[k].MagicAttackScale);
-                }
-            }*/
         }
     }
     else
@@ -4311,11 +4220,13 @@ void SelectBattlePikomons(PlPointer player){
             getchar();
             k--; 
         } else {
-            DebugPlayers(player, 0, 2);
-            getchar();
-            getchar();
             player[0].BatlePikomons[k] = player[0].PikomonsStorage[escolha - 1];
-            DebugPlayers(player, 0, 2);
+            for(int ki = 0; ki < 8; ki++){
+                player[0].BatlePikomons[k].Atributes[ki].Total = player[0].PikomonsStorage[escolha - 1].Atributes[ki].Base;
+            }
+            player[0].BatlePikomons[k].CurrentHP.Total = player[0].BatlePikomons[k].Atributes[0].Total;
+            player[0].BatlePikomons[k].CurrentHP.Base = player[0].BatlePikomons[k].Atributes[0].Total;
+            DebugPikomons(&player[0].BatlePikomons[k], 0, 1);
             getchar();
             getchar();
             escolhidos[countEscolhidos++] = escolha - 1; 
@@ -4885,13 +4796,13 @@ void MenuBattle(Pikomon epPikomon, Pikomon ppPikomon, char *Turnos) {
     printf(" __________________________________________________________________________________________________________________________________________ \n");
     printf("|                    %-20s                                                                                                  |\n", epPikomon.Name);
     printf("|                    HP: %d/%d                                                                                                           |\n", epPikomon.CurrentHP.Total, epPikomon.Atributes[0].Total);
-    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[0]);
-    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[1]);
-    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[2]);
-    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[3]);
-    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[4]);
-    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[5]);
-    printf("|%19s                                                                                                                       |\n", ppPikomon.IconImg[6]);
+    printf("|%19s                                                                                                                       |\n", epPikomon.IconImg[0]);
+    printf("|%19s                                                                                                                       |\n", epPikomon.IconImg[1]);
+    printf("|%19s                                                                                                                       |\n", epPikomon.IconImg[2]);
+    printf("|%19s                                                                                                                       |\n", epPikomon.IconImg[3]);
+    printf("|%19s                                                                                                                       |\n", epPikomon.IconImg[4]);
+    printf("|%19s                                                                                                                       |\n", epPikomon.IconImg[5]);
+    printf("|%19s                                                                                                                       |\n", epPikomon.IconImg[6]);
     printf("|                                                                                                                                          |\n");
     printf("|__________________________________________________________________________________________________________________________________________|\n\n");
 
