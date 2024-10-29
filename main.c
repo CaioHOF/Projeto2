@@ -836,6 +836,9 @@ int main(){
     SaveElements(allElements, elements);
     */
 
+    //Itens//
+    
+
 
     dBPersonalities = fopen(personalities, "rb");
     if(dBPersonalities == NULL){
@@ -1096,6 +1099,1111 @@ int main(){
 
     SavePikomons(pPikomons, dataQuantities.Pikomon, pikomoms);
     SaveDataQuantity(dataQuantities, dataQuantity);*/
+
+    //Itens//
+    char DescAtiva[3][255];
+    strcpy(DescAtiva[0], "");
+    strcpy(DescAtiva[1], "");
+    strcpy(DescAtiva[2], "");
+
+    char descItens[3][255];
+    strcpy(descItens[0], "Uma poção que cura 10 de HP.");
+    strcpy(descItens[1], "");
+    strcpy(descItens[2], "");
+
+    Effect Heal;
+    strcpy(Heal.Acronym, "HP");
+    Heal.Quantity = 10;
+    Heal.Timer = 1;
+    Effect Stats[8];
+    strcpy(Stats[0].Acronym, "HP");
+    strcpy(Stats[0].Acronym, "HP");
+    strcpy(Stats[1].Acronym, "Def");
+    strcpy(Stats[2].Acronym, "MaD");
+    strcpy(Stats[3].Acronym, "Acc");
+    strcpy(Stats[4].Acronym, "Atk");
+    strcpy(Stats[5].Acronym, "MAc");
+    strcpy(Stats[6].Acronym, "MaA");
+    strcpy(Stats[7].Acronym, "Spd");
+    Stats[0].Quantity = 0;
+    Stats[0].Timer = 0;
+    Stats[1].Quantity = 0;
+    Stats[1].Timer = 0;
+    Stats[2].Quantity = 0;
+    Stats[2].Timer = 0;
+    Stats[3].Quantity = 0;
+    Stats[3].Timer = 0;
+    Stats[4].Quantity = 0;
+    Stats[4].Timer = 0;
+    Stats[5].Quantity = 0;
+    Stats[5].Timer = 0;
+    Stats[6].Quantity = 0;
+    Stats[6].Timer = 0;
+    Stats[7].Quantity = 0;
+    Stats[7].Timer = 0;
+
+    AddItem(&pItems, &dataQuantities, "Poção Básica", "Cura", descItens, "", DescAtiva, 5, false, 'S', Heal, 'S', 100, Stats);
+
+    char descItens1[3][255];
+    strcpy(descItens1[0], "Uma poção que cura 25 de HP.");
+    strcpy(descItens1[1], "");
+    strcpy(descItens1[2], "");
+
+    Effect Heal1;
+    strcpy(Heal1.Acronym, "HP");
+    Heal1.Quantity = 25;
+    Heal1.Timer = 1;
+    Effect Stats1[8];
+    strcpy(Stats1[0].Acronym, "HP");
+    strcpy(Stats1[1].Acronym, "Def");
+    strcpy(Stats1[2].Acronym, "MaD");
+    strcpy(Stats1[3].Acronym, "Acc");
+    strcpy(Stats1[4].Acronym, "Atk");
+    strcpy(Stats1[5].Acronym, "MAc");
+    strcpy(Stats1[6].Acronym, "MaA");
+    strcpy(Stats1[7].Acronym, "Spd");
+    Stats1[0].Quantity = 0;
+    Stats1[0].Timer = 0;
+    Stats1[1].Quantity = 0;
+    Stats1[1].Timer = 0;
+    Stats1[2].Quantity = 0;
+    Stats1[2].Timer = 0;
+    Stats1[3].Quantity = 0;
+    Stats1[3].Timer = 0;
+    Stats1[4].Quantity = 0;
+    Stats1[4].Timer = 0;
+    Stats1[5].Quantity = 0;
+    Stats1[5].Timer = 0;
+    Stats1[6].Quantity = 0;
+    Stats1[6].Timer = 0;
+    Stats1[7].Quantity = 0;
+    Stats1[7].Timer = 0;
+
+    AddItem(&pItems, &dataQuantities, "Poção Média", "Cura", descItens1, "", DescAtiva, 5, false, 'S', Heal1, 'S', 100, Stats1);
+
+    char descItens2[3][255];
+    strcpy(descItens2[0], "Uma poção que cura 50 de HP.");
+    strcpy(descItens2[1], "");
+    strcpy(descItens2[2], "");
+
+    Effect Heal2;
+    strcpy(Heal2.Acronym, "HP");
+    Heal2.Quantity = 50;
+    Heal2.Timer = 1;
+    Effect Stats2[8];
+    strcpy(Stats2[0].Acronym, "HP");
+    strcpy(Stats2[1].Acronym, "Def");
+    strcpy(Stats2[2].Acronym, "MaD");
+    strcpy(Stats2[3].Acronym, "Acc");
+    strcpy(Stats2[4].Acronym, "Atk");
+    strcpy(Stats2[5].Acronym, "MAc");
+    strcpy(Stats2[6].Acronym, "MaA");
+    strcpy(Stats2[7].Acronym, "Spd");
+    Stats2[0].Quantity = 0;
+    Stats2[0].Timer = 0;
+    Stats2[1].Quantity = 0;
+    Stats2[1].Timer = 0;
+    Stats2[2].Quantity = 0;
+    Stats2[2].Timer = 0;
+    Stats2[3].Quantity = 0;
+    Stats2[3].Timer = 0;
+    Stats2[4].Quantity = 0;
+    Stats2[4].Timer = 0;
+    Stats2[5].Quantity = 0;
+    Stats2[5].Timer = 0;
+    Stats2[6].Quantity = 0;
+    Stats2[6].Timer = 0;
+    Stats2[7].Quantity = 0;
+    Stats2[7].Timer = 0;
+
+    AddItem(&pItems, &dataQuantities, "Poção Máxima", "Cura", descItens1, "", DescAtiva, 5, false, 'S', Heal2, 'S', 100, Stats2);
+
+    char descItens3[3][255];
+    strcpy(descItens3[0], "Um dispositivo que cura todos");
+    strcpy(descItens3[1], "os Pikomons em campo, curando");
+    strcpy(descItens3[2], "50 de HP ao longo de 3 turnos.");
+
+    Effect Heal3;
+    strcpy(Heal3.Acronym, "HP");
+    Heal3.Quantity = 60;
+    Heal3.Timer = 3;
+    Effect Stats3[8];
+    strcpy(Stats3[0].Acronym, "HP");
+    strcpy(Stats3[1].Acronym, "Def");
+    strcpy(Stats3[2].Acronym, "MaD");
+    strcpy(Stats3[3].Acronym, "Acc");
+    strcpy(Stats3[4].Acronym, "Atk");
+    strcpy(Stats3[5].Acronym, "MAc");
+    strcpy(Stats3[6].Acronym, "MaA");
+    strcpy(Stats3[7].Acronym, "Spd");
+    Stats3[0].Quantity = 0;
+    Stats3[0].Timer = 0;
+    Stats3[1].Quantity = 0;
+    Stats3[1].Timer = 0;
+    Stats3[2].Quantity = 0;
+    Stats3[2].Timer = 0;
+    Stats3[3].Quantity = 0;
+    Stats3[3].Timer = 0;
+    Stats3[4].Quantity = 0;
+    Stats3[4].Timer = 0;
+    Stats3[5].Quantity = 0;
+    Stats3[5].Timer = 0;
+    Stats3[6].Quantity = 0;
+    Stats3[6].Timer = 0;
+    Stats3[7].Quantity = 0;
+    Stats3[7].Timer = 0;
+
+    AddItem(&pItems, &dataQuantities, "Granada de Cura", "Cura", descItens3, "", DescAtiva, 5, false, 'B', Heal3, 'B', 100, Stats3);
+
+    char descItens4[3][255];
+    strcpy(descItens4[0], "Uma seringa que coloca o oponente");
+    strcpy(descItens4[1], "em um estado de Sono por 3 turnos.");
+    strcpy(descItens4[2], "");
+
+    Effect Sleep;
+    strcpy(Sleep.Acronym, "HP");
+    Sleep.Quantity = 0;
+    Sleep.Timer = 0;
+    Effect SleepStats[8];
+    strcpy(SleepStats[0].Acronym, "HP");
+    strcpy(SleepStats[0].Acronym, "HP");
+    strcpy(SleepStats[1].Acronym, "Def");
+    strcpy(SleepStats[2].Acronym, "MaD");
+    strcpy(SleepStats[3].Acronym, "Acc");
+    strcpy(SleepStats[4].Acronym, "Atk");
+    strcpy(SleepStats[5].Acronym, "MAc");
+    strcpy(SleepStats[6].Acronym, "MaA");
+    strcpy(SleepStats[7].Acronym, "Spd");
+    SleepStats[0].Quantity = 0;
+    SleepStats[0].Timer = 0;
+    SleepStats[1].Quantity = 0;
+    SleepStats[1].Timer = 0;
+    SleepStats[2].Quantity = 0;
+    SleepStats[2].Timer = 0;
+    SleepStats[3].Quantity = 0;
+    SleepStats[3].Timer = 0;
+    SleepStats[4].Quantity = 0;
+    SleepStats[4].Timer = 0;
+    SleepStats[5].Quantity = 0;
+    SleepStats[5].Timer = 0;
+    SleepStats[6].Quantity = 0;
+    SleepStats[6].Timer = 0;
+    SleepStats[7].Quantity = -100;
+    SleepStats[7].Timer = 3;
+
+    AddItem(&pItems, &dataQuantities, "Sonífero", "Condições", descItens4, "", DescAtiva, 30, false, 'E', Sleep, 'E', 100, SleepStats);
+
+    char descItens5[3][255];
+    strcpy(descItens5[0], "Um pequeno dispositivo que");
+    strcpy(descItens5[1], "diminui as Precisões dos dois");
+    strcpy(descItens5[2], "Pikomons em campo em 25.");
+
+    Effect Smoke;
+    strcpy(Smoke.Acronym, "HP");
+    Smoke.Quantity = 0;
+    Smoke.Timer = 0;
+    Effect SmokeStats[8];
+    strcpy(SmokeStats[0].Acronym, "HP");
+    strcpy(SmokeStats[1].Acronym, "Def");
+    strcpy(SmokeStats[2].Acronym, "MaD");
+    strcpy(SmokeStats[3].Acronym, "Acc");
+    strcpy(SmokeStats[4].Acronym, "Atk");
+    strcpy(SmokeStats[5].Acronym, "MAc");
+    strcpy(SmokeStats[6].Acronym, "MaA");
+    strcpy(SmokeStats[7].Acronym, "Spd");
+    SmokeStats[0].Quantity = 0;
+    SmokeStats[0].Timer = 0;
+    SmokeStats[1].Quantity = 0;
+    SmokeStats[1].Timer = 0;
+    SmokeStats[2].Quantity = 0;
+    SmokeStats[2].Timer = 0;
+    SmokeStats[3].Quantity = -25;
+    SmokeStats[3].Timer = 3;
+    SmokeStats[4].Quantity = 0;
+    SmokeStats[4].Timer = 0;
+    SmokeStats[5].Quantity = -25;
+    SmokeStats[5].Timer = 3;
+    SmokeStats[6].Quantity = 0;
+    SmokeStats[6].Timer = 0;
+    SmokeStats[7].Quantity = 0;
+    SmokeStats[7].Timer = 0;
+
+    AddItem(&pItems, &dataQuantities, "Bomba de Fumaça", "Atributos", descItens5, "", DescAtiva, 5, false, 'B', Smoke, 'B', 100, SmokeStats);
+
+    char descItens6[3][255];
+    strcpy(descItens6[0], "Uma bebida que aumenta a Velocidade");
+    strcpy(descItens6[1], "do seu Pikomon em 20.");
+    strcpy(descItens6[2], "");
+
+    Effect Drink;
+    strcpy(Drink.Acronym, "HP");
+    Drink.Quantity = 0;
+    Drink.Timer = 0;
+    Effect DrinkStats[8];
+    strcpy(DrinkStats[0].Acronym, "HP");
+    strcpy(DrinkStats[1].Acronym, "Def");
+    strcpy(DrinkStats[2].Acronym, "MaD");
+    strcpy(DrinkStats[3].Acronym, "Acc");
+    strcpy(DrinkStats[4].Acronym, "Atk");
+    strcpy(DrinkStats[5].Acronym, "MAc");
+    strcpy(DrinkStats[6].Acronym, "MaA");
+    strcpy(DrinkStats[7].Acronym, "Spd");
+    DrinkStats[0].Quantity = 0;
+    DrinkStats[0].Timer = 0;
+    DrinkStats[1].Quantity = 0;
+    DrinkStats[1].Timer = 0;
+    DrinkStats[2].Quantity = 0;
+    DrinkStats[2].Timer = 0;
+    DrinkStats[3].Quantity = 0;
+    DrinkStats[3].Timer = 0;
+    DrinkStats[4].Quantity = 0;
+    DrinkStats[4].Timer = 0;
+    DrinkStats[5].Quantity = 0;
+    DrinkStats[5].Timer = 0;
+    DrinkStats[6].Quantity = 0;
+    DrinkStats[6].Timer = 0;
+    DrinkStats[7].Quantity = 20;
+    DrinkStats[7].Timer = 3;
+
+    AddItem(&pItems, &dataQuantities, "Energético", "Atributos", descItens6, "", DescAtiva, 5, false, 'S', Drink, 'S', 100, DrinkStats);
+
+    char descItens7[3][255];
+    strcpy(descItens7[0], "Uma bebida que aumenta o Ataque");
+    strcpy(descItens7[1], "Mágico do seu Pikomon em 20.");
+    strcpy(descItens7[2], "");
+
+    Effect Coffee;
+    strcpy(Coffee.Acronym, "HP");
+    Coffee.Quantity = 0;
+    Coffee.Timer = 0;
+    Effect CoffeeStats[8];
+    strcpy(CoffeeStats[0].Acronym, "HP");
+    strcpy(CoffeeStats[1].Acronym, "Def");
+    strcpy(CoffeeStats[2].Acronym, "MaD");
+    strcpy(CoffeeStats[3].Acronym, "Acc");
+    strcpy(CoffeeStats[4].Acronym, "Atk");
+    strcpy(CoffeeStats[5].Acronym, "MAc");
+    strcpy(CoffeeStats[6].Acronym, "MaA");
+    strcpy(CoffeeStats[7].Acronym, "Spd");
+    CoffeeStats[0].Quantity = 0;
+    CoffeeStats[0].Timer = 0;
+    CoffeeStats[1].Quantity = 0;
+    CoffeeStats[1].Timer = 0;
+    CoffeeStats[2].Quantity = 0;
+    CoffeeStats[2].Timer = 0;
+    CoffeeStats[3].Quantity = 0;
+    CoffeeStats[3].Timer = 0;
+    CoffeeStats[4].Quantity = 0;
+    CoffeeStats[4].Timer = 0;
+    CoffeeStats[5].Quantity = 0;
+    CoffeeStats[5].Timer = 0;
+    CoffeeStats[6].Quantity = 20;
+    CoffeeStats[6].Timer = 3;
+    CoffeeStats[7].Quantity = 0;
+    CoffeeStats[7].Timer = 0;
+
+    AddItem(&pItems, &dataQuantities, "Bebida Cafeinada", "Atributos", descItens7, "", DescAtiva, 5, false, 'S', Coffee, 'S', 100, CoffeeStats);
+
+    char descItens8[3][255];
+    strcpy(descItens8[0], "Uma armadura que aumenta a");
+    strcpy(descItens8[1], "Defesa do seu Pikomon em 20.");
+    strcpy(descItens8[2], "");
+
+    Effect Armor;
+    strcpy(Armor.Acronym, "HP");
+    Armor.Quantity = 0;
+    Armor.Timer = 0;
+    Effect ArmorStats[8];
+    strcpy(ArmorStats[0].Acronym, "HP");
+    strcpy(ArmorStats[1].Acronym, "Def");
+    strcpy(ArmorStats[2].Acronym, "MaD");
+    strcpy(ArmorStats[3].Acronym, "Acc");
+    strcpy(ArmorStats[4].Acronym, "Atk");
+    strcpy(ArmorStats[5].Acronym, "MAc");
+    strcpy(ArmorStats[6].Acronym, "MaA");
+    strcpy(ArmorStats[7].Acronym, "Spd");
+    ArmorStats[0].Quantity = 0;
+    ArmorStats[0].Timer = 0;
+    ArmorStats[1].Quantity = 20;
+    ArmorStats[1].Timer = 3;
+    ArmorStats[2].Quantity = 0;
+    ArmorStats[2].Timer = 0;
+    ArmorStats[3].Quantity = 0;
+    ArmorStats[3].Timer = 0;
+    ArmorStats[4].Quantity = 0;
+    ArmorStats[4].Timer = 0;
+    ArmorStats[5].Quantity = 0;
+    ArmorStats[5].Timer = 0;
+    ArmorStats[6].Quantity = 0;
+    ArmorStats[6].Timer = 0;
+    ArmorStats[7].Quantity = 0;
+    ArmorStats[7].Timer = 0;
+
+    AddItem(&pItems, &dataQuantities, "Armadura", "Atributos", descItens8, "", DescAtiva, 5, false, 'S', Armor, 'S', 100, ArmorStats);
+
+    char descItens9[3][255];
+    strcpy(descItens9[0], "Um talismã que aumenta a");
+    strcpy(descItens9[1], "Defesa Mágica do seu Pikomon");
+    strcpy(descItens9[2], "em 20.");
+
+    Effect Talisman;
+    strcpy(Armor.Acronym, "HP");
+    Talisman.Quantity = 0;
+    Talisman.Timer = 0;
+    Effect TalismanStats[8];
+    strcpy(TalismanStats[0].Acronym, "HP");
+    strcpy(TalismanStats[1].Acronym, "Def");
+    strcpy(TalismanStats[2].Acronym, "MaD");
+    strcpy(TalismanStats[3].Acronym, "Acc");
+    strcpy(TalismanStats[4].Acronym, "Atk");
+    strcpy(TalismanStats[5].Acronym, "MAc");
+    strcpy(TalismanStats[6].Acronym, "MaA");
+    strcpy(TalismanStats[7].Acronym, "Spd");
+    TalismanStats[0].Quantity = 0;
+    TalismanStats[0].Timer = 0;
+    TalismanStats[1].Quantity = 0;
+    TalismanStats[1].Timer = 0;
+    TalismanStats[2].Quantity = 20;
+    TalismanStats[2].Timer = 3;
+    TalismanStats[3].Quantity = 0;
+    TalismanStats[3].Timer = 0;
+    TalismanStats[4].Quantity = 0;
+    TalismanStats[4].Timer = 0;
+    TalismanStats[5].Quantity = 0;
+    TalismanStats[5].Timer = 0;
+    TalismanStats[6].Quantity = 0;
+    TalismanStats[6].Timer = 0;
+    TalismanStats[7].Quantity = 0;
+    TalismanStats[7].Timer = 0;
+
+    AddItem(&pItems, &dataQuantities, "Talisman", "Atributos", descItens9, "", DescAtiva, 5, false, 'S', Talisman, 'S', 100, TalismanStats);
+
+    SaveItems(pItems, dataQuantities.Item, items);
+    SaveDataQuantity(dataQuantities, dataQuantity);
+
+    //Skills//
+
+    char DescAtiva[3][255];
+    strcpy(DescAtiva[0], "");
+    strcpy(DescAtiva[1], "");
+    strcpy(DescAtiva[2], "");
+
+    bool LearnElementsComum[10];
+    LearnElementsComum[0] = true;
+    LearnElementsComum[1] = true;
+    LearnElementsComum[2] = true;
+    LearnElementsComum[3] = true;
+    LearnElementsComum[4] = true;
+    LearnElementsComum[5] = true;
+    LearnElementsComum[6] = true;
+    LearnElementsComum[7] = true;
+    LearnElementsComum[8] = true;
+    LearnElementsComum[9] = true;
+
+    bool LearnElementsFire[10];
+    LearnElementsFire[0] = true;
+    LearnElementsFire[1] = true;
+    LearnElementsFire[2] = false;
+    LearnElementsFire[3] = false;
+    LearnElementsFire[4] = false;
+    LearnElementsFire[5] = false;
+    LearnElementsFire[6] = true;
+    LearnElementsFire[7] = false;
+    LearnElementsFire[8] = false;
+    LearnElementsFire[9] = false;
+
+    bool LearnElementsWater[10];
+    LearnElementsWater[0] = true;
+    LearnElementsWater[1] = false;
+    LearnElementsWater[2] = true;
+    LearnElementsWater[3] = false;
+    LearnElementsWater[4] = false;
+    LearnElementsWater[5] = false;
+    LearnElementsWater[6] = false;
+    LearnElementsWater[7] = true;
+    LearnElementsWater[8] = false;
+    LearnElementsWater[9] = false;
+
+    bool LearnElementsPlant[10];
+    LearnElementsPlant[0] = true;
+    LearnElementsPlant[1] = false;
+    LearnElementsPlant[2] = false;
+    LearnElementsPlant[3] = true;
+    LearnElementsPlant[4] = false;
+    LearnElementsPlant[5] = false;
+    LearnElementsPlant[6] = false;
+    LearnElementsPlant[7] = false;
+    LearnElementsPlant[8] = false;
+    LearnElementsPlant[9] = true;
+
+    bool LearnElementsElec[10];
+    LearnElementsElec[0] = true;
+    LearnElementsElec[1] = false;
+    LearnElementsElec[2] = false;
+    LearnElementsElec[3] = false;
+    LearnElementsElec[4] = true;
+    LearnElementsElec[5] = false;
+    LearnElementsElec[6] = true;
+    LearnElementsElec[7] = false;
+    LearnElementsElec[8] = false;
+    LearnElementsElec[9] = false;
+
+    bool LearnElementsSpook[10];
+    LearnElementsSpook[0] = true;
+    LearnElementsSpook[1] = false;
+    LearnElementsSpook[2] = false;
+    LearnElementsSpook[3] = false;
+    LearnElementsSpook[4] = false;
+    LearnElementsSpook[5] = true;
+    LearnElementsSpook[6] = false;
+    LearnElementsSpook[7] = false;
+    LearnElementsSpook[8] = false;
+    LearnElementsSpook[9] = false;
+
+    bool LearnElementsLight[10];
+    LearnElementsLight[0] = true;
+    LearnElementsLight[1] = false;
+    LearnElementsLight[2] = false;
+    LearnElementsLight[3] = false;
+    LearnElementsLight[4] = true;
+    LearnElementsLight[5] = false;
+    LearnElementsLight[6] = true;
+    LearnElementsLight[7] = false;
+    LearnElementsLight[8] = false;
+    LearnElementsLight[9] = false;
+
+    bool LearnElementsIce[10];
+    LearnElementsIce[0] = true;
+    LearnElementsIce[1] = false;
+    LearnElementsIce[2] = true;
+    LearnElementsIce[3] = false;
+    LearnElementsIce[4] = false;
+    LearnElementsIce[5] = false;
+    LearnElementsIce[6] = false;
+    LearnElementsIce[7] = true;
+    LearnElementsIce[8] = false;
+    LearnElementsIce[9] = false;
+
+    bool LearnElementsStone[10];
+    LearnElementsIce[0] = true;
+    LearnElementsIce[1] = true;
+    LearnElementsIce[2] = false;
+    LearnElementsIce[3] = false;
+    LearnElementsIce[4] = false;
+    LearnElementsIce[5] = false;
+    LearnElementsIce[6] = false;
+    LearnElementsIce[7] = false;
+    LearnElementsIce[8] = true;
+    LearnElementsIce[9] = false;
+
+    bool LearnElementsTox[10];
+    LearnElementsTox[0] = true;
+    LearnElementsTox[1] = false;
+    LearnElementsTox[2] = false;
+    LearnElementsTox[3] = false;
+    LearnElementsTox[4] = false;
+    LearnElementsTox[5] = false;
+    LearnElementsTox[6] = false;
+    LearnElementsTox[7] = false;
+    LearnElementsTox[8] = false;
+    LearnElementsTox[9] = true;
+
+    bool LearnPersonalities[13];
+    LearnPersonalities[0] = true;
+    LearnPersonalities[1] = true;
+    LearnPersonalities[2] = true;
+    LearnPersonalities[3] = true;
+    LearnPersonalities[4] = true;
+    LearnPersonalities[5] = true;
+    LearnPersonalities[6] = true;
+    LearnPersonalities[7] = true;
+    LearnPersonalities[8] = true;
+    LearnPersonalities[9] = true;
+    LearnPersonalities[10] = true;
+    LearnPersonalities[11] = true;
+    LearnPersonalities[12] = true;
+
+    bool LearnPersonalitiesBasic[13];
+    LearnPersonalities[0] = true;
+    LearnPersonalities[1] = true;
+    LearnPersonalities[2] = true;
+    LearnPersonalities[3] = true;
+    LearnPersonalities[4] = true;
+    LearnPersonalities[5] = true;
+    LearnPersonalities[6] = true;
+    LearnPersonalities[7] = true;
+    LearnPersonalities[8] = true;
+    LearnPersonalities[9] = true;
+    LearnPersonalities[10] = true;
+    LearnPersonalities[11] = true;
+    LearnPersonalities[12] = true;
+
+    bool LearnPersonalitiesPhys[13];
+    LearnPersonalitiesPhys[0] = true;
+    LearnPersonalitiesPhys[1] = false;
+    LearnPersonalitiesPhys[2] = false;
+    LearnPersonalitiesPhys[3] = false;
+    LearnPersonalitiesPhys[4] = false;
+    LearnPersonalitiesPhys[5] = true;
+    LearnPersonalitiesPhys[6] = false;
+    LearnPersonalitiesPhys[7] = false;
+    LearnPersonalitiesPhys[8] = false;
+    LearnPersonalitiesPhys[9] = false;
+    LearnPersonalitiesPhys[10] = false;
+    LearnPersonalitiesPhys[11] = false;
+    LearnPersonalitiesPhys[12] = true;
+
+    bool LearnPersonalitiesMagic[13];
+    LearnPersonalitiesMagic[0] = true;
+    LearnPersonalitiesMagic[1] = false;
+    LearnPersonalitiesMagic[2] = false;
+    LearnPersonalitiesMagic[3] = false;
+    LearnPersonalitiesMagic[4] = true;
+    LearnPersonalitiesMagic[5] = false;
+    LearnPersonalitiesMagic[6] = false;
+    LearnPersonalitiesMagic[7] = false;
+    LearnPersonalitiesMagic[8] = false;
+    LearnPersonalitiesMagic[9] = false;
+    LearnPersonalitiesMagic[10] = true;
+    LearnPersonalitiesMagic[11] = false;
+    LearnPersonalitiesMagic[12] = false;
+
+    bool LearnPersonalitiesStatus[13];
+    LearnPersonalitiesMagic[0] = false;
+    LearnPersonalitiesMagic[1] = true;
+    LearnPersonalitiesMagic[2] = true;
+    LearnPersonalitiesMagic[3] = true;
+    LearnPersonalitiesMagic[4] = false;
+    LearnPersonalitiesMagic[5] = false;
+    LearnPersonalitiesMagic[6] = true;
+    LearnPersonalitiesMagic[7] = false;
+    LearnPersonalitiesMagic[8] = true;
+    LearnPersonalitiesMagic[9] = true;
+    LearnPersonalitiesMagic[10] = false;
+    LearnPersonalitiesMagic[11] = false;
+    LearnPersonalitiesMagic[12] = false;
+
+    Effect EffNull[8];
+    strcpy(EffNull[0].Acronym, "HP");
+    EffNull[0].Quantity = 0; //HP
+    EffNull[0].Timer = 0;
+    strcpy(EffNull[1].Acronym, "Def");
+    EffNull[1].Quantity = 0; //Def
+    EffNull[1].Timer = 0;
+    strcpy(EffNull[2].Acronym, "MaD");
+    EffNull[2].Quantity = 0; //MaD
+    EffNull[2].Timer = 0;
+    strcpy(EffNull[3].Acronym, "Acc");
+    EffNull[3].Quantity = 0; //Acc
+    EffNull[3].Timer = 0;
+    strcpy(EffNull[4].Acronym, "Atk");
+    EffNull[4].Quantity = 0; //Atk
+    EffNull[4].Timer = 0;
+    strcpy(EffNull[5].Acronym, "EAc");
+    EffNull[5].Quantity = 0; //EAc
+    EffNull[5].Timer = 0;
+    strcpy(EffNull[6].Acronym, "MaA");
+    EffNull[6].Quantity = 0; //MaA
+    EffNull[6].Timer = 0;
+    strcpy(EffNull[7].Acronym, "Spd");
+    EffNull[7].Quantity = 0; //Spd
+    EffNull[7].Timer = 0;
+
+    Effect Eff1[8];
+    strcpy(Eff1[0].Acronym, "HP");
+    Eff1[0].Quantity = 0;
+    Eff1[0].Timer = 0;
+    strcpy(Eff1[1].Acronym, "Def");
+    Eff1[1].Quantity = 0;
+    Eff1[1].Timer = 0;
+    strcpy(Eff1[2].Acronym, "MaD");
+    Eff1[2].Quantity = 0;
+    Eff1[2].Timer = 0;
+    strcpy(Eff1[3].Acronym, "Acc");
+    Eff1[3].Quantity = 0;
+    Eff1[3].Timer = 0;
+    strcpy(Eff1[4].Acronym, "Atk");
+    Eff1[4].Quantity = 0;
+    Eff1[4].Timer = 0;
+    strcpy(Eff1[5].Acronym, "EAc");
+    Eff1[5].Quantity = 0;
+    Eff1[5].Timer = 0;
+    strcpy(Eff1[6].Acronym, "MaD");
+    Eff1[6].Quantity = 0;
+    Eff1[6].Timer = 0;
+    strcpy(Eff1[7].Acronym, "Spd");
+    Eff1[7].Quantity = 10;
+    Eff1[7].Timer = 4;
+
+    Effect Eff2[8];
+    strcpy(Eff2[0].Acronym, "HP");
+    Eff2[0].Quantity = 0; //HP
+    Eff2[0].Timer = 0;
+    strcpy(Eff2[1].Acronym, "Def");
+    Eff2[1].Quantity = 0; //Def
+    Eff2[1].Timer = 0;
+    strcpy(Eff2[2].Acronym, "MaD");
+    Eff2[2].Quantity = 0; //MaD
+    Eff2[2].Timer = 0;
+    strcpy(Eff2[3].Acronym, "Acc");
+    Eff2[3].Quantity = 0; //Acc
+    Eff2[3].Timer = 0;
+    strcpy(Eff2[4].Acronym, "Atk");
+    Eff2[4].Quantity = 15; //Atk
+    Eff2[4].Timer = 3;
+    strcpy(Eff2[5].Acronym, "EAc");
+    Eff2[5].Quantity = 0; //EAc
+    Eff2[5].Timer = 0;
+    strcpy(Eff2[6].Acronym, "MaA");
+    Eff2[6].Quantity = 15; //MaA
+    Eff2[6].Timer = 3;
+    strcpy(Eff2[7].Acronym, "Spd");
+    Eff2[7].Quantity = 10; //Spd
+    Eff2[7].Timer = 3;
+
+    Effect Eff3[8];
+    strcpy(Eff3[0].Acronym, "HP");
+    Eff3[0].Quantity = 10; //HP
+    Eff3[0].Timer = 1;
+    strcpy(Eff3[1].Acronym, "Def");
+    Eff3[1].Quantity = 0; //Def
+    Eff3[1].Timer = 0;
+    strcpy(Eff3[2].Acronym, "MaD");
+    Eff3[2].Quantity = 0; //MaD
+    Eff3[2].Timer = 0;
+    strcpy(Eff3[3].Acronym, "Acc");
+    Eff3[3].Quantity = 0; //Acc
+    Eff3[3].Timer = 0;
+    strcpy(Eff3[4].Acronym, "Atk");
+    Eff3[4].Quantity = 0; //Atk
+    Eff3[4].Timer = 0;
+    strcpy(Eff3[5].Acronym, "EAc");
+    Eff3[5].Quantity = 0; //EAc
+    Eff3[5].Timer = 0;
+    strcpy(Eff3[6].Acronym, "MaA");
+    Eff3[6].Quantity = 0; //MaA
+    Eff3[6].Timer = 0;
+    strcpy(Eff3[7].Acronym, "Spd");
+    Eff3[7].Quantity = 0; //Spd
+    Eff3[7].Timer = 0;
+
+    Effect Eff4[8];
+    strcpy(Eff4[0].Acronym, "HP");
+    Eff4[0].Quantity = 0; //HP
+    Eff4[0].Timer = 0;
+    strcpy(Eff4[1].Acronym, "Def");
+    Eff4[1].Quantity = 0; //Def
+    Eff4[1].Timer = 0;
+    strcpy(Eff4[2].Acronym, "MaD");
+    Eff4[2].Quantity = 0; //MaD
+    Eff4[2].Timer = 0;
+    strcpy(Eff4[3].Acronym, "Acc");
+    Eff4[3].Quantity = 0; //Acc
+    Eff4[3].Timer = 0;
+    strcpy(Eff4[4].Acronym, "Atk");
+    Eff4[4].Quantity = 0; //Atk
+    Eff4[4].Timer = 0;
+    strcpy(Eff4[5].Acronym, "EAc");
+    Eff4[5].Quantity = 0; //EAc
+    Eff4[5].Timer = 0;
+    strcpy(Eff4[6].Acronym, "MaA");
+    Eff4[6].Quantity = 0; //MaA
+    Eff4[6].Timer = 0;
+    strcpy(Eff4[7].Acronym, "Spd");
+    Eff4[7].Quantity = -15; //Spd
+    Eff4[7].Timer = 3;
+
+    Effect Eff5[8];
+    strcpy(Eff5[0].Acronym, "HP");
+    Eff5[0].Quantity = 0; //HP
+    Eff5[0].Timer = 0;
+    strcpy(Eff5[1].Acronym, "Def");
+    Eff5[1].Quantity = 0; //Def
+    Eff5[1].Timer = 0;
+    strcpy(Eff5[2].Acronym, "MaD");
+    Eff5[2].Quantity = 0; //MaD
+    Eff5[2].Timer = 0;
+    strcpy(Eff5[3].Acronym, "Acc");
+    Eff5[3].Quantity = 0; //Acc
+    Eff5[3].Timer = 0;
+    strcpy(Eff5[4].Acronym, "Atk");
+    Eff5[4].Quantity = -15; //Atk
+    Eff5[4].Timer = 3;
+    strcpy(Eff5[5].Acronym, "EAc");
+    Eff5[5].Quantity = 0; //EAc
+    Eff5[5].Timer = 0;
+    strcpy(Eff5[6].Acronym, "MaA");
+    Eff5[6].Quantity = -15; //MaA
+    Eff5[6].Timer = 3;
+    strcpy(Eff5[7].Acronym, "Spd");
+    Eff5[7].Quantity = 0; //Spd
+    Eff5[7].Timer = 0;
+
+    Effect Eff6[8];
+    strcpy(Eff6[0].Acronym, "HP");
+    Eff6[0].Quantity = 0; //HP
+    Eff6[0].Timer = 0;
+    strcpy(Eff6[1].Acronym, "Def");
+    Eff6[1].Quantity = 0; //Def
+    Eff6[1].Timer = 0;
+    strcpy(Eff6[2].Acronym, "MaD");
+    Eff6[2].Quantity = 0; //MaD
+    Eff6[2].Timer = 0;
+    strcpy(Eff6[3].Acronym, "Acc");
+    Eff6[3].Quantity = 0; //Acc
+    Eff6[3].Timer = 0;
+    strcpy(Eff6[4].Acronym, "Atk");
+    Eff6[4].Quantity = 0; //Atk
+    Eff6[4].Timer = 0;
+    strcpy(Eff6[5].Acronym, "EAc");
+    Eff6[5].Quantity = 0; //EAc
+    Eff6[5].Timer = 0;
+    strcpy(Eff6[6].Acronym, "MaA");
+    Eff6[6].Quantity = 0; //MaA
+    Eff6[6].Timer = 0;
+    strcpy(Eff6[7].Acronym, "Spd");
+    Eff6[7].Quantity = 25; //Spd
+    Eff6[7].Timer = 1;
+
+    Effect Eff7[8];
+    strcpy(Eff7[0].Acronym, "HP");
+    Eff7[0].Quantity = 0; //HP
+    Eff7[0].Timer = 0;
+    strcpy(Eff7[1].Acronym, "Def");
+    Eff7[1].Quantity = 0; //Def
+    Eff7[1].Timer = 0;
+    strcpy(Eff7[2].Acronym, "MaD");
+    Eff7[2].Quantity = 0; //MaD
+    Eff7[2].Timer = 0;
+    strcpy(Eff7[3].Acronym, "Acc");
+    Eff7[3].Quantity = -10; //Acc
+    Eff7[3].Timer = 2;
+    strcpy(Eff7[4].Acronym, "Atk");
+    Eff7[4].Quantity = 0; //Atk
+    Eff7[4].Timer = 0;
+    strcpy(Eff7[5].Acronym, "EAc");
+    Eff7[5].Quantity = -10; //EAc
+    Eff7[5].Timer = 2;
+    strcpy(Eff7[6].Acronym, "MaA");
+    Eff7[6].Quantity = 0; //MaA
+    Eff7[6].Timer = 0;
+    strcpy(Eff7[7].Acronym, "Spd");
+    Eff7[7].Quantity = 0; //Spd
+    Eff7[7].Timer = 0;
+
+    Effect Eff8[8];
+    strcpy(Eff8[0].Acronym, "HP");
+    Eff8[0].Quantity = 0; //HP
+    Eff8[0].Timer = 0;
+    strcpy(Eff8[1].Acronym, "Def");
+    Eff8[1].Quantity = -15; //Def
+    Eff8[1].Timer = 3;
+    strcpy(Eff8[2].Acronym, "MaD");
+    Eff8[2].Quantity = -15; //MaD
+    Eff8[2].Timer = 3;
+    strcpy(Eff8[3].Acronym, "Acc");
+    Eff8[3].Quantity = -10; //Acc
+    Eff8[3].Timer = 2;
+    strcpy(Eff8[4].Acronym, "Atk");
+    Eff8[4].Quantity = 0; //Atk
+    Eff8[4].Timer = 0;
+    strcpy(Eff8[5].Acronym, "EAc");
+    Eff8[5].Quantity = 0; //EAc
+    Eff8[5].Timer = 0;
+    strcpy(Eff8[6].Acronym, "MaA");
+    Eff8[6].Quantity = 0; //MaA
+    Eff8[6].Timer = 0;
+    strcpy(Eff8[7].Acronym, "Spd");
+    Eff8[7].Quantity = 0; //Spd
+    Eff8[7].Timer = 0;
+
+    Effect EffKABOOM[8];
+    strcpy(EffKABOOM[0].Acronym, "HP");
+    EffKABOOM[0].Quantity = -100; //HP
+    EffKABOOM[0].Timer = 1;
+    strcpy(EffKABOOM[1].Acronym, "Def");
+    EffKABOOM[1].Quantity = 0; //Def
+    EffKABOOM[1].Timer = 0;
+    strcpy(EffKABOOM[2].Acronym, "MaD");
+    EffKABOOM[2].Quantity = 0; //MaD
+    EffKABOOM[2].Timer = 0;
+    strcpy(EffKABOOM[3].Acronym, "Acc");
+    EffKABOOM[3].Quantity = 0; //Acc
+    EffKABOOM[3].Timer = 0;
+    strcpy(EffKABOOM[4].Acronym, "Atk");
+    EffKABOOM[4].Quantity = 0; //Atk
+    EffKABOOM[4].Timer = 0;
+    strcpy(EffKABOOM[5].Acronym, "EAc");
+    EffKABOOM[5].Quantity = 0; //EAc
+    EffKABOOM[5].Timer = 0;
+    strcpy(EffKABOOM[6].Acronym, "MaA");
+    EffKABOOM[6].Quantity = 0; //MaA
+    EffKABOOM[6].Timer = 0;
+    strcpy(EffKABOOM[7].Acronym, "Spd");
+    EffKABOOM[7].Quantity = 0; //Spd
+    EffKABOOM[7].Timer = 0;
+
+    char Descri1[3][255];
+    strcpy(Descri1[0], "Um ataque básico.");
+    strcpy(Descri1[1], "");
+    strcpy(Descri1[2], "Comum, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Mordida", "Físico", Descri1, "", DescAtiva, LearnPersonalitiesBasic, LearnElementsComum, 0, allElements[0], 'E', 100, 10, 10, 0, 0, 15, 'E', 0, EffNull, 0, EffNull);
+                                            //bool AddSkill(SkPointer *pSkills, DataQuantity *dataQuantities, char *name, char *type, char description[3][255], 
+                                            // char *active, char activeDescription[3][255], bool learnablePersonalities[13], bool LearnableElements[10], 
+                                            // int elementEffectHitChance, Element element, char target, int hitChance, int  attackBase, int attackScale, 
+                                            // int magicBase, int magicAttackScale, int critChance, char effectTarget, int enemyEffectHitChance, Effect enemyEffect[8], 
+                                            // int selfEffectHitChance, Effect selfEffect[8]);
+
+
+    char Descri2[3][255];
+    strcpy(Descri2[0], "Um ataque que dá dano ao usuário");
+    strcpy(Descri2[1], "e ao oponente.");
+    strcpy(Descri2[2], "Comum, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Último Recurso", "Físico", Descri2, "", DescAtiva, LearnPersonalitiesBasic, LearnElementsComum, 0, allElements[0], 'E', 100, 10, 30, 0, 0, 15, 'E', 0, EffNull , 0, EffNull);
+
+    char Descri3[3][255];
+    strcpy(Descri3[0], "Um ataque básico.");
+    strcpy(Descri3[1], "");
+    strcpy(Descri3[2], "Comum, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Berrante", "Mágico", Descri3, "", DescAtiva, LearnPersonalitiesBasic, LearnElementsComum, 0, allElements[0], 'E', 100, 0, 0, 15, 0, 15, 'E', 0, EffNull, 0, EffNull);
+
+
+    char Descri4[3][255];
+    strcpy(Descri4[0], "Um ataque que aumenta a");
+    strcpy(Descri4[1], "Velocidade do usuário.");
+    strcpy(Descri4[2], "Comum, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Ataque Rápido", "Físico", Descri4, "", DescAtiva, LearnPersonalitiesBasic, LearnElementsComum, 0, allElements[0], 'E', 100, 5, 0, 0, 0, 15, 'S', 0, EffNull, 100, Eff1);
+
+    char Descri5[3][255];
+    strcpy(Descri5[0], "Um ataque que pode queimar");
+    strcpy(Descri5[1], "o oponente.");
+    strcpy(Descri5[2], "Flamejante, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Baque Ardente", "Físico", Descri5, "", DescAtiva, LearnPersonalitiesPhys, LearnElementsFire, 0, allElements[1], 'E', 100, 5, 30, 0, 0, 15, 'E', 20, allElements[1].StatusEffect, 0, EffNull);
+
+    char Descri6[3][255];
+    strcpy(Descri6[0], "Um ataque que pode queimar");
+    strcpy(Descri6[1], "o oponente.");
+    strcpy(Descri6[2], "Flamejante, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Onda de Calor", "Mágico", Descri6, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsFire, 0, allElements[1], 'E', 100, 0, 0, 5, 30, 15, 'E', 20, allElements[1].StatusEffect, 0, EffNull);
+
+    char Descri7[3][255];
+    strcpy(Descri7[0], "Um ataque que pode queimar");
+    strcpy(Descri7[1], "o oponente. Não dá dano.");
+    strcpy(Descri7[2], "Flamejante, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Faísca", "Status", Descri7, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsFire, 0, allElements[1], 'E', 100, 0, 0, 0, 0, 0, 'E', 100, allElements[1].StatusEffect, 0, EffNull);
+
+    char Descri8[3][255];
+    strcpy(Descri8[0], "Um ataque que pode dá grande");
+    strcpy(Descri8[1], "dano ao usuário e o oponente. Pode queimar.");
+    strcpy(Descri8[2], "Flamejante, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Terra Arrasada", "Mágico", Descri8, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsFire, 0, allElements[1], 'B', 100, 0, 0, 30, 0, 0, 'B', 50, allElements[1].StatusEffect, 50, allElements[1].StatusEffect);
+
+    char Descri9[3][255];
+    strcpy(Descri9[0], "Um ataque básico.");
+    strcpy(Descri9[1], "");
+    strcpy(Descri9[2], "Aquático, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Jato de Água", "Mágico", Descri9, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsWater, 0, allElements[2], 'E', 100, 0, 0, 10, 15, 15, 'E', 0, EffNull, 0, EffNull);
+
+    char Descri10[3][255];
+    strcpy(Descri10[0], "Um ataque que aumenta ambos os");
+    strcpy(Descri10[1], "Ataques e Velocidade do usuário.");
+    strcpy(Descri10[2], "Aquático, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Salto Carpado", "Status", Descri10, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsWater, 0, allElements[2], 'S', 100, 0, 0, 0, 0, 0, 'S', 0, EffNull, 100, Eff2);
+
+    char Descri11[3][255];
+    strcpy(Descri11[0], "Um ataque que Encharca o");
+    strcpy(Descri11[1], "oponente.");
+    strcpy(Descri11[2], "Aquático, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Encharcar", "Status", Descri11, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsWater, 0, allElements[2], 'E', 100, 0, 0, 0, 0, 0, 'E', 100, allElements[2].StatusEffect, 0, EffNull);
+
+    char Descri12[3][255];
+    strcpy(Descri12[0], "Um ataque que possui maior");
+    strcpy(Descri12[1], "chance de ser Crítico.");
+    strcpy(Descri12[2], "Aquático, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Mergulho Torpedo", "Físico'", Descri12, "", DescAtiva, LearnPersonalitiesPhys, LearnElementsWater, 0, allElements[2], 'E', 100, 10, 10, 0, 0, 50, 'E', 0, EffNull, 0, EffNull);
+
+    char Descri13[3][255];
+    strcpy(Descri13[0], "Um ataque comum.");
+    strcpy(Descri13[1], "");
+    strcpy(Descri13[2], "Natural, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Galho Espinhoso", "Físico", Descri13, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsPlant, 0, allElements[3], 'E', 100, 7, 35, 0, 0, 15, 'E', 0, EffNull, 0, EffNull);
+
+    char Descri14[3][255];
+    strcpy(Descri14[0], "Um ataque que retorna ao usuário");
+    strcpy(Descri14[1], "parte do dano dado.");
+    strcpy(Descri14[2], "Natural, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Raíz Drenante", "Mágico", Descri14, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsPlant, 0, allElements[3],  'E', 100, 0, 0, 10, 15, 15, 'S', 0, EffNull, 100, Eff3);
+
+    char Descri15[3][255];
+    strcpy(Descri15[0], "Um ataque que Enraíza");
+    strcpy(Descri15[1], "o oponente.");
+    strcpy(Descri15[2], "Natural, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Enraizar", "Status", Descri15, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsPlant, 0, allElements[3], 'E', 100, 0, 0, 0, 0, 0, 'E', 100, allElements[2].StatusEffect, 0, EffNull);
+
+    char Descri16[3][255];
+    strcpy(Descri16[0], "Um ataque que diminui a");
+    strcpy(Descri16[1], "Velocidade do oponente.");
+    strcpy(Descri16[2], "Natural, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Pólen Atordoante", "Status", Descri16, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsPlant, 0, allElements[3], 'E', 100, 5, 0, 0, 0, 15, 'E', 100, Eff4, 0, EffNull);    
+
+    char Descri17[3][255];
+    strcpy(Descri17[0], "Um ataque poderosíssimo");
+    strcpy(Descri17[1], "que nocauteia o usuário.");
+    strcpy(Descri17[2], "Elétrico, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Curto Circuito", "Mágico", Descri17, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsElec, 0, allElements[4], 'E', 100, 0, 0, 40, 0, 0, 'S', 0, EffNull, 100, EffKABOOM);
+
+    char Descri18[3][255];
+    strcpy(Descri18[0], "Um ataque fraco que");
+    strcpy(Descri18[1], "pode Paralisar.");
+    strcpy(Descri18[2], "Elétrico, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Choque Fraco", "Mágico", Descri18, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsElec, 0, allElements[4], 'E', 100, 0, 0, 5, 15, 15, 'E', 0, EffNull, 30, allElements[4].StatusEffect);
+
+    char Descri19[3][255];
+    strcpy(Descri19[0], "Um ataque comum.");
+    strcpy(Descri19[1], "");
+    strcpy(Descri19[2], "Misterioso, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Pó Mágico", "Mágico", Descri19, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsSpook, 0, allElements[5], 'E', 100, 0, 0, 10, 20, 15, 'E', 0, EffNull, 0, EffNull);
+
+    char Descri20[3][255];
+    strcpy(Descri20[0], "Um ataque comum.");
+    strcpy(Descri20[1], "");
+    strcpy(Descri20[2], "Misterioso, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Tapa Dimensional", "Mágico", Descri20, "", DescAtiva, LearnPersonalitiesPhys, LearnElementsSpook, 0, allElements[5], 'E', 100, 10, 20, 0, 0, 15, 'E', 0, EffNull, 0, EffNull);
+
+    char Descri21[3][255];
+    strcpy(Descri21[0], "Um ataque que Assombra");
+    strcpy(Descri21[1], "o oponente.");
+    strcpy(Descri21[2], "Misterioso, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Assombração", "Status", Descri21, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsSpook, 0, allElements[5], 'E', 0, 0, 0, 0, 0, 0, 'E', 100, allElements[5].StatusEffect, 0, EffNull);
+
+    char Descri22[3][255];
+    strcpy(Descri22[0], "Um ataque que retorna ao usuário");
+    strcpy(Descri22[1], "parte do dano aplicado.");
+    strcpy(Descri22[2], "Misterioso, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Drenagem de Vida", "Mágico", Descri22, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsSpook, 0, allElements[5], 'E', 100, 0, 0, 10, 15, 15, 'S', 0, EffNull, 100, Eff3);
+
+    char Descri23[3][255];
+    strcpy(Descri23[0], "Um ataque que Cega o oponente.");
+    strcpy(Descri23[1], "");
+    strcpy(Descri23[2], "Luminoso, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Flashbang", "Status", Descri23, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsLight, 0, allElements[6], 'E', 100, 0, 0, 0, 0, 0, 'E', 0, EffNull, 100, allElements[6].StatusEffect);
+
+    char Descri24[3][255];
+    strcpy(Descri24[0], "Um golpe básico.");
+    strcpy(Descri24[1], "");
+    strcpy(Descri24[2], "Luminoso, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Carga Iluminada", "Físico", Descri24, "", DescAtiva, LearnPersonalitiesPhys, LearnElementsLight, 0, allElements[6], 'E', 100, 10, 30, 0, 0, 15, 'E', 0, EffNull, 0, EffNull);
+
+    char Descri25[3][255];
+    strcpy(Descri25[0], "Um golpe que diminui");
+    strcpy(Descri25[1], "ambos os ataques do oponente.");
+    strcpy(Descri25[2], "Luminoso, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Olhar Desconsertante", "Status", Descri25, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsLight, 0, allElements[6], 'E', 100, 0, 0, 0, 0, 0, 'E', 100, Eff5, 0, EffNull);
+        
+    char Descri26[3][255];
+    strcpy(Descri26[0], "Um ataque poderosíssimo");
+    strcpy(Descri26[1], "que nocauteia o usuário.");
+    strcpy(Descri26[2], "Luminoso, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Explosão Solar", "Mágico", Descri26, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsLight, 0, allElements[6], 'E', 100, 0, 0, 40, 0, 0, 'S', 0, EffNull, 100, EffKABOOM);
+        
+    char Descri27[3][255];
+    strcpy(Descri27[0], "Um golpe soterra o");
+    strcpy(Descri27[1], "oponente.");
+    strcpy(Descri27[2], "Mineral, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Soterragem", "Status", Descri27, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsStone, 0, allElements[8], 'E', 100, 0, 0, 0, 0, 0, 'E', 100, allElements[7].StatusEffect, 0, EffNull);    
+        
+    char Descri28[3][255];
+    strcpy(Descri28[0], "Um golpe que possui");
+    strcpy(Descri28[1], "mais chances de Critar.");
+    strcpy(Descri28[2], "Mineral, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Cacos de Pedra", "Físico", Descri28, "", DescAtiva, LearnPersonalitiesPhys, LearnElementsStone, 0, allElements[8], 'E', 100, 10, 15, 0, 0, 50, 'E', 0, EffNull, 0, EffNull);    
+        
+    char Descri29[3][255];
+    strcpy(Descri29[0], "Um golpe que possui");
+    strcpy(Descri29[1], "mais chances de Critar");
+    strcpy(Descri29[2], "Mineral, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Cacos de Pedra", "Mágico", Descri29, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsStone, 0, allElements[8], 'E', 100, 0, 0, 10, 15, 50, 'E', 0, EffNull, 0, EffNull);    
+        
+    char Descri30[3][255];
+    strcpy(Descri30[0], "Um golpe que aumenta a");
+    strcpy(Descri30[1], "Velocidade do usuário.");
+    strcpy(Descri30[2], "Mineral, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Cacos de Pedra", "Status", Descri30, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsStone, 0, allElements[8], 'E', 100, 0, 0, 0, 0, 0, 'S', 0, EffNull, 100, Eff6);  
+        
+    char Descri31[3][255];
+    strcpy(Descri31[0], "Um golpe básico.");
+    strcpy(Descri31[1], "");
+    strcpy(Descri31[2], "Gélido, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Frente Fria", "Físico", Descri31, "", DescAtiva, LearnPersonalitiesPhys, LearnElementsIce, 0, allElements[7], 'E', 100, 10, 20, 0, 0, 15, 'E', 0, EffNull, 0, EffNull);  
+
+    char Descri32[3][255];
+    strcpy(Descri32[0], "Um golpe que diminui as");
+    strcpy(Descri32[1], "Precisões do oponente.");
+    strcpy(Descri32[2], "Gélido, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Granizo", "Mágico", Descri32, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsIce, 0, allElements[7], 'E', 100, 0, 0, 10, 20, 15, 'E', 100, Eff7, 0, EffNull);  
+
+    char Descri33[3][255];
+    strcpy(Descri33[0], "Um golpe que dá Calafrios");
+    strcpy(Descri33[1], "ao oponente.");
+    strcpy(Descri33[2], "Gélido, Status");
+
+    AddSkill(&pSkills, &dataQuantities, "Hipotermizar", "Status", Descri33, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsIce, 0, allElements[7], 'E', 100, 0, 0, 0, 0, 0, 'E', 100, allElements[7].StatusEffect, 0, EffNull); 
+
+    char Descri34[3][255];
+    strcpy(Descri34[0], "Um golpe que pode Envenenar");
+    strcpy(Descri34[1], "o oponente.");
+    strcpy(Descri34[2], "Venenoso, Físico");
+
+    AddSkill(&pSkills, &dataQuantities, "Mordida Podre", "Físico", Descri34, "", DescAtiva, LearnPersonalitiesPhys, LearnElementsTox, 0, allElements[9], 'E', 100, 10, 10, 0, 0, 15, 'E', 50, allElements[9].StatusEffect, 0, EffNull); 
+        
+    char Descri35[3][255];
+    strcpy(Descri35[0], "Um golpe que pode Envenenar");
+    strcpy(Descri35[1], "o oponente.");
+    strcpy(Descri35[2], "Venenoso, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Cuspe Tóxico", "Mágico", Descri35, "", DescAtiva, LearnPersonalitiesMagic, LearnElementsTox, 0, allElements[9], 'E', 100, 0, 0, 10, 10, 15, 'E', 50, allElements[9].StatusEffect, 0, EffNull);     
+        
+    char Descri36[3][255];
+    strcpy(Descri36[0], "Um golpe que diminui as");
+    strcpy(Descri36[1], "Defesas do oponente.");
+    strcpy(Descri36[2], "Venenoso, Mágico");
+
+    AddSkill(&pSkills, &dataQuantities, "Sopro Neurotóxico", "Status", Descri36, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsTox, 0, allElements[9], 'E', 100, 0, 0, 0, 0, 0, 'E', 100, Eff8, 0, EffNull);   
+
+    SaveSkills(pSkills, dataQuantities.Skill, skills);
+    SaveDataQuantity(dataQuantities, dataQuantity);
 
     //------------------------------------------------------------------------------------------------------------------//
 
