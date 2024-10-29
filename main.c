@@ -1101,7 +1101,7 @@ int main(){
     SaveDataQuantity(dataQuantities, dataQuantity);*/
 
     //Itens//
-    char DescAtiva[3][255];
+    /*char DescAtiva[3][255];
     strcpy(DescAtiva[0], "");
     strcpy(DescAtiva[1], "");
     strcpy(DescAtiva[2], "");
@@ -1479,11 +1479,11 @@ int main(){
     AddItem(&pItems, &dataQuantities, "Talisman", "Atributos", descItens9, "", DescAtiva, 5, false, 'S', Talisman, 'S', 100, TalismanStats);
 
     SaveItems(pItems, dataQuantities.Item, items);
-    SaveDataQuantity(dataQuantities, dataQuantity);
+    SaveDataQuantity(dataQuantities, dataQuantity);*/
 
     //Skills//
 
-    char DescAtiva[3][255];
+    /*char DescAtiva[3][255];
     strcpy(DescAtiva[0], "");
     strcpy(DescAtiva[1], "");
     strcpy(DescAtiva[2], "");
@@ -2203,7 +2203,7 @@ int main(){
     AddSkill(&pSkills, &dataQuantities, "Sopro Neurotóxico", "Status", Descri36, "", DescAtiva, LearnPersonalitiesStatus, LearnElementsTox, 0, allElements[9], 'E', 100, 0, 0, 0, 0, 0, 'E', 100, Eff8, 0, EffNull);   
 
     SaveSkills(pSkills, dataQuantities.Skill, skills);
-    SaveDataQuantity(dataQuantities, dataQuantity);
+    SaveDataQuantity(dataQuantities, dataQuantity);*/
 
     //------------------------------------------------------------------------------------------------------------------//
 
